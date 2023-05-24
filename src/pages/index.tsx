@@ -5,6 +5,8 @@ import { signIn, signOut, useSession } from "next-auth/react";
 
 import { api } from "@/utils/api";
 import { ButtonPrimaryL } from "@/components/Buttons";
+import { Logo } from "@/components/Logo";
+import LeftsidePanel from "@/components/LeftsidePanel";
 
 const Home: NextPage = () => {
   return (
@@ -14,7 +16,9 @@ const Home: NextPage = () => {
         <meta name="description" content="Kanban task management web app" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="">
+      <main className="grid h-full min-h-screen w-full grid-cols-main-layout">
+        <LeftsidePanel />
+
         <ButtonPrimaryL>Sign in</ButtonPrimaryL>
       </main>
     </>

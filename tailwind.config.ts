@@ -48,6 +48,12 @@ export default {
           { lineHeight: "1.4375rem", fontWeight: "700" },
         ],
       },
+      gridTemplateColumns: {
+        "main-layout": "18.75rem 1fr",
+      },
+      gridTemplateRows: {
+        "main-layout": "6rem 1fr",
+      },
     },
   },
   plugins: [],
