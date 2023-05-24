@@ -5,6 +5,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import { api } from "@/utils/api";
 
 import "@/styles/globals.css";
+import { ThemeProvider } from "next-themes";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -17,9 +18,11 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <div className={plusJakartaSans.className}>
-        <Component {...pageProps} />
-      </div>
+      <ThemeProvider attribute="class">
+        <div className={plusJakartaSans.className}>
+          <Component {...pageProps} />
+        </div>
+      </ThemeProvider>
     </SessionProvider>
   );
 };
