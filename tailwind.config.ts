@@ -16,6 +16,8 @@ export default {
         "light-gray": "hsl(220, 69%, 97%)",
         red: "hsl(0, 78%, 63%)",
         "red-hover": "hsl(0, 100%, 80%)",
+        "button-secondary": "hsla(242, 48%, 58%, 0.1)",
+        "button-secondary-hover": "hsla(242, 48%, 58%, 0.25)",
       },
       fontSize: {
         "heading-xl": ["1.5rem", { lineHeight: "1.875rem", fontWeight: "700" }],
@@ -37,6 +39,14 @@ export default {
         ],
         "body-l": ["0.8125rem", { lineHeight: "1.4375rem", fontWeight: "500" }],
         "body-m": ["0.75rem", { lineHeight: "0.9375rem", fontWeight: "700" }],
+        "button-primary": [
+          "0.9375rem",
+          { lineHeight: "1.1875rem", fontWeight: "700" },
+        ],
+        "button-secondary": [
+          "0.8125rem",
+          { lineHeight: "1.4375rem", fontWeight: "700" },
+        ],
       },
     },
   },
