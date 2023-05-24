@@ -17,6 +17,27 @@ export default {
         red: "hsl(0, 78%, 63%)",
         "red-hover": "hsl(0, 100%, 80%)",
       },
+      fontSize: {
+        "heading-xl": ["1.5rem", { lineHeight: "1.875rem", fontWeight: "700" }],
+        "heading-l": [
+          "1.125rem",
+          { lineHeight: "1.4375rem", fontWeight: "700" },
+        ],
+        "heading-m": [
+          "0.9375rem",
+          { lineHeight: "1.375rem", fontWeight: "700" },
+        ],
+        "heading-s": [
+          "0.75rem",
+          {
+            lineHeight: "0.9375rem",
+            letterSpacing: "0.15rem",
+            fontWeight: "700",
+          },
+        ],
+        "body-l": ["0.8125rem", { lineHeight: "1.4375rem", fontWeight: "500" }],
+        "body-m": ["0.75rem", { lineHeight: "0.9375rem", fontWeight: "700" }],
+      },
     },
   },
   plugins: [],
