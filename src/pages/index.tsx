@@ -7,6 +7,7 @@ import { api } from "@/utils/api";
 import { ButtonPrimaryL } from "@/components/Buttons";
 import { Logo } from "@/components/Logo";
 import LeftsidePanel from "@/components/LeftsidePanel";
+import { TopPanel } from "@/components/TopPanel";
 
 const Home: NextPage = () => {
   return (
@@ -16,10 +17,9 @@ const Home: NextPage = () => {
         <meta name="description" content="Kanban task management web app" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="grid h-full min-h-screen w-full grid-cols-main-layout">
+      <main className="grid h-full min-h-screen w-full grid-cols-main-layout grid-rows-main-layout">
         <LeftsidePanel />
-
-        <ButtonPrimaryL>Sign in</ButtonPrimaryL>
+        <TopPanel boardName="Platform Launch" />
       </main>
     </>
   );
