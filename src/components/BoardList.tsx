@@ -16,8 +16,8 @@ const boads = [
 
 export default function BoardList() {
   return (
-    <div className="flex flex-col">
-      <h2 className="pl-8 text-heading-s uppercase text-medium-gray">
+    <div className="flex flex-col pr-6">
+      <h2 className="pb-[1.1875rem] pl-8 text-heading-s uppercase text-medium-gray">
         ALL BOARDS ({boads.length})
       </h2>
       {boads.map((board) => (
