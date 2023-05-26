@@ -52,6 +52,7 @@ export default {
         "main-layout": "18.75rem 1fr",
       },
       gridTemplateRows: {
+        "left-panel-desktop": "7rem 1fr auto",
         "main-layout": "6rem 1fr",
       },
     },

@@ -21,7 +21,7 @@ export function ThemeToggleSwitch() {
 
   return (
     <div className="px-6">
-      <div className="flex min-h-[3rem] w-full items-center justify-center bg-light-gray dark:bg-very-dark-gray">
+      <div className="flex min-h-[3rem] w-full items-center justify-center rounded-md bg-light-gray dark:bg-very-dark-gray">
         <label className="relative inline-flex cursor-pointer items-center gap-6">
           <Image
             src={lightThemeIcon as StaticImageData}
