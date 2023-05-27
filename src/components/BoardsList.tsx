@@ -1,5 +1,5 @@
-import BoardListItem from "./BoardListItem";
-const boads = [
+import { BoardListItem } from "@/components/BoardListItem";
+const boards = [
   {
     title: "Platform Launch",
     selected: true,
@@ -14,13 +14,13 @@ const boads = [
   },
 ];
 
-export default function BoardList() {
+export function BoardsList() {
   return (
     <div className="flex flex-col pr-6">
       <h2 className="pb-[1.1875rem] pl-8 text-heading-s uppercase text-medium-gray">
-        ALL BOARDS ({boads.length})
+        ALL BOARDS ({boards.length})
       </h2>
-      {boads.map((board) => (
+      {boards.map((board) => (
         <BoardListItem
           key={board.title}
           title={board.title}

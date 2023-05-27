@@ -1,9 +1,9 @@
 import { Logo } from "@/components/Logo";
 import { ThemeToggleSwitch } from "./ThemeToggleSwitch";
-import BoardList from "./BoardList";
-import HidePanelButton from "./HidePanelButton";
+import { BoardsList } from "@/components/BoardsList";
+import { HidePanelButton } from "@/components/HidePanelButton";
 
-export default function LeftsidePanel() {
+export function LeftsidePanel() {
   return (
     <div
       className="col-start-1 col-end-2 row-start-1 row-end-3 
@@ -13,7 +13,7 @@ export default function LeftsidePanel() {
     "
     >
       <Logo />
-      <BoardList />
+      <BoardsList />
       <div className="pb-8">
         <ThemeToggleSwitch />
         <HidePanelButton />
