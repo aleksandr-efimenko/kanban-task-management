@@ -18,7 +18,7 @@ const Home: NextPage = () => {
         <meta name="description" content="Kanban task management web app" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="grid h-full min-h-screen w-full grid-cols-main-layout grid-rows-main-layout">
+      <main className="grid h-screen w-full grid-cols-main-layout grid-rows-main-layout overflow-hidden">
         <LeftsidePanel />
         <TopPanel boardName="Platform Launch" />
         <BoardView />

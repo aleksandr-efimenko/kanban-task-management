@@ -3,7 +3,7 @@ import { TaskCard } from "@/components/TaskCard";
 
 export function TaskColumn({ column }: { column: Column }) {
   return (
-    <div className="flex flex-col gap-5 overflow-y-auto">
+    <div className="flex flex-col gap-5 overflow-auto">
       {column.tasks.map((task) => (
         <TaskCard
           key={task.title}
