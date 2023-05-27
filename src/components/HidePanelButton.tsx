@@ -2,7 +2,7 @@ import hideIcon from "~/assets/icon-hide-sidebar.svg";
 import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 
-export default function HidePanelButton() {
+export function HidePanelButton() {
   return (
     <Link
       href="javascript:void(0)"

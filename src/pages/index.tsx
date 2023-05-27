@@ -6,8 +6,9 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { api } from "@/utils/api";
 import { ButtonPrimaryL } from "@/components/Buttons";
 import { Logo } from "@/components/Logo";
-import LeftsidePanel from "@/components/LeftsidePanel";
+import { LeftsidePanel } from "@/components/LeftsidePanel";
 import { TopPanel } from "@/components/TopPanel";
+import { BoardView } from "@/components/BoardView";
 
 const Home: NextPage = () => {
   return (
@@ -20,6 +21,7 @@ const Home: NextPage = () => {
       <main className="grid h-full min-h-screen w-full grid-cols-main-layout grid-rows-main-layout">
         <LeftsidePanel />
         <TopPanel boardName="Platform Launch" />
+        <BoardView />
       </main>
     </>
   );

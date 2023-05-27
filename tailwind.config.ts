@@ -50,10 +50,17 @@ export default {
       },
       gridTemplateColumns: {
         "main-layout": "18.75rem 1fr",
+        "board-view": "17.5rem",
       },
       gridTemplateRows: {
         "left-panel-desktop": "7rem 1fr auto",
         "main-layout": "6rem 1fr",
+      },
+      boxShadow: {
+        "task-card-shadow": "0px 4px 6px rgba(54, 78, 126, 0.101545)",
+      },
+      gridAutoColumns: {
+        "board-view": "17.5rem",
       },
     },
   },
