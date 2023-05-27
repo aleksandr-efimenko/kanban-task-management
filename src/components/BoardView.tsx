@@ -1,6 +1,7 @@
 import boardData from "@/data/defaultBoard.json";
 import { TaskColumn } from "@/components/TaskColumn";
 import { type Column } from "@/utils/DataTypes";
+import { NewColumnButton } from "./NewColumnButton";
 
 export function BoardView() {
   const columns: Column[] = boardData.boards[0].columns;
@@ -15,6 +16,7 @@ export function BoardView() {
       {columns.map((column) => (
         <TaskColumn key={column.name} column={column} />
       ))}
+      <NewColumnButton />
     </div>
   );
 }
