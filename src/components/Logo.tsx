@@ -3,6 +3,7 @@ import darkLogo from "~/assets/logo-dark.svg";
 import lightLogo from "~/assets/logo-light.svg";
 import Image, { type StaticImageData } from "next/image";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 export function Logo() {
   const [mounted, setMounted] = useState(false);
@@ -18,8 +19,8 @@ export function Logo() {
   }
 
   return (
-    <div className="max-h-7 py-8 md:px-[1.625rem] lg:px-[2.125rem]">
+    <Link href="/" className="max-h-7 py-8 md:px-[1.625rem] lg:px-[2.125rem]">
       <Image src={src} alt="Logo" width={152} height={25} />
-    </div>
+    </Link>
   );
 }
