@@ -1,16 +1,22 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 import { api } from "@/utils/api";
-import { ButtonPrimaryL } from "@/components/Buttons";
-import { Logo } from "@/components/Logo";
-import { LeftsidePanel } from "@/components/LeftsidePanel";
-import { TopPanel } from "@/components/TopPanel";
-import { BoardView } from "@/components/BoardView";
+
+import defaultBoards from "@/data/defaultBoard.json";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const Home: NextPage = () => {
+  const router = useRouter();
+  useEffect(() => {
+    console.log(defaultBoards);
+    if (!defaultBoards || !defaultBoards.boards || !defaultBoards.boards[0]) {
+      return;
+    }
+    void router.push(`/boards/${defaultBoards.boards[0].id}`);
+  }, [router]);
   return (
     <>
       <Head>
@@ -18,11 +24,6 @@ const Home: NextPage = () => {
         <meta name="description" content="Kanban task management web app" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="grid h-screen w-full grid-cols-main-layout grid-rows-main-layout overflow-hidden">
-        <LeftsidePanel />
-        <TopPanel boardName="Platform Launch" />
-        <BoardView />
-      </main>
     </>
   );
 };
