@@ -1,6 +1,7 @@
 {
   "boards": [
     {
+      "id": "1",
       "name": "Platform Launch",
       "columns": [
         {
@@ -287,10 +288,12 @@
       ]
     },
     {
+      "id": "2",
       "name": "Marketing Plan",
       "columns": [
         {
           "name": "Todo",
+          "color": "#49C4E5",
           "tasks": [
             {
               "title": "Plan Product Hunt launch",
@@ -368,20 +371,25 @@
           ]
         },
         {
-          "name": "Doing",
+          "name": "Doing",        
+          "color": "#8471F2",
           "tasks": []
         },
         {
           "name": "Done",
+          "color": "#67E2AE",
+
           "tasks": []
         }
       ]
     },
     {
+      "id": "3",
       "name": "Roadmap",
       "columns": [
         {
           "name": "Now",
+          "color": "#49C4E5",
           "tasks": [
             {
               "title": "Launch version one",
@@ -421,10 +429,12 @@
         },
         {
           "name": "Next",
+          "color": "#8471F2",
           "tasks": []
         },
         {
           "name": "Later",
+          "color": "#67E2AE",
           "tasks": []
         }
       ]
