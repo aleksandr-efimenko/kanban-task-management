@@ -5,7 +5,7 @@ import Link from "next/link";
 export function HidePanelButton() {
   return (
     <Link
-      href="javascript:void(0)"
+      href="#"
       className="flex min-h-[3rem] items-center gap-[0.9375rem] pl-8"
     >
       <Image

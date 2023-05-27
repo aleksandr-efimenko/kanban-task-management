@@ -8,6 +8,7 @@ export interface Board {
 export interface Column {
   name: string;
   tasks: Task[];
+  color?: string;
 }
 
 export interface Task {
