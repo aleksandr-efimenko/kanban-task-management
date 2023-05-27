@@ -1,6 +1,6 @@
 import { type Subtask } from "@/utils/DataTypes";
 
-export default function TaskCard({
+export function TaskCard({
   title,
   subtasks,
 }: {
@@ -10,9 +10,9 @@ export default function TaskCard({
   const subtasksNumber = subtasks.length;
   const subtasksDone = subtasks.filter((subtask) => subtask.isCompleted).length;
   return (
-    <div className="bg-medium-gray">
+    <div className="rounded-lg bg-white px-4 py-6 shadow-task-card-shadow dark:bg-dark-gray">
       <h3 className="text-heading-m">{title}</h3>
-      <p className="mt-2 text-body-m">
+      <p className="mt-2 text-body-m text-medium-gray">
         {subtasksDone} of {subtasksNumber} subtasks
       </p>
     </div>
