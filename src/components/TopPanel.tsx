@@ -1,7 +1,14 @@
 import { ButtonPrimaryL } from "./Buttons";
 import { ThreeDotsButton } from "./ThreeDotsButton";
+import { useRouter } from "next/router";
+import { useContext } from "react";
+import { BoardsContext } from "@/context/BoardsContext";
 
-export function TopPanel({ boardName }: { boardName: string }) {
+export function TopPanel() {
+  const router = useRouter();
+  const { boards } = useContext(BoardsContext);
+  const currentBoard = boards.find((board) => board.id === router.query.id);
+  const boardName = currentBoard ? currentBoard.name : "Board not found";
   return (
     <div
       className="col-start-2 col-end-2 row-start-1 row-end-2 

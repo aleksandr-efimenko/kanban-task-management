@@ -1,20 +1,11 @@
 import { BoardListItem } from "@/components/BoardListItem";
-const boards = [
-  {
-    title: "Platform Launch",
-    selected: true,
-  },
-  {
-    title: "Marketing Plan",
-    selected: false,
-  },
-  {
-    title: "Roadmap",
-    selected: false,
-  },
-];
+import { useContext } from "react";
+import { BoardsContext } from "@/context/BoardsContext";
+import { useRouter } from "next/router";
 
 export function BoardsList() {
+  const { boards } = useContext(BoardsContext);
+  const router = useRouter();
   return (
     <div className="flex flex-col pr-6">
       <h2 className="pb-[1.1875rem] pl-8 text-heading-s uppercase text-medium-gray">
@@ -22,9 +13,10 @@ export function BoardsList() {
       </h2>
       {boards.map((board) => (
         <BoardListItem
-          key={board.title}
-          title={board.title}
-          selected={board.selected}
+          key={board.name}
+          title={board.name}
+          id={board.id}
+          selected={board.id === router.query.id}
         />
       ))}
     </div>
