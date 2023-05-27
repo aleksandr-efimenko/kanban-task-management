@@ -4,14 +4,16 @@ import Link from "next/link";
 
 export function BoardListItem({
   title,
+  id,
   selected,
 }: {
   title: string;
+  id: string;
   selected?: boolean;
 }) {
   return (
     <Link
-      href={`/board/${title}`}
+      href={`/boards/${id}`}
       className={`group flex min-h-[3rem] w-full items-center gap-4  text-ellipsis rounded-r-full pl-8 duration-200 hover:bg-purple-hover hover:text-white ${
         selected ? "bg-purple text-white" : "text-medium-gray"
       }`}
