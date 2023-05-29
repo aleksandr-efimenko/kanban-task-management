@@ -41,15 +41,7 @@ export function LeftPanelItem({
   );
 }
 
-export function BoardListItem({
-  title,
-  href,
-  selected,
-}: {
-  title: string;
-  href: string;
-  selected?: boolean;
-}) {
+export function BoardListItem({ title, href, selected }: BoardListItemProps) {
   return (
     <LeftPanelItem title={title} href={href} selected={selected}>
       <Image
@@ -63,30 +55,5 @@ export function BoardListItem({
         ].join(" ")}
       />
     </LeftPanelItem>
-  );
-}
-
-export function CreateBoardButton({
-  handleClick,
-}: {
-  handleClick?: () => void;
-}) {
-  return (
-    <Link
-      href="#"
-      className={`group flex min-h-[3rem] w-full items-center gap-4 
-      overflow-hidden text-ellipsis rounded-r-full pl-8 text-purple duration-200
-      hover:scale-105`}
-      onClick={handleClick}
-    >
-      <Image
-        src={boardIcon as StaticImageData}
-        alt="Board icon"
-        width={16}
-        height={16}
-        className="filter-purple"
-      />
-      <p className="flex-1">+ Create new board</p>
-    </Link>
   );
 }

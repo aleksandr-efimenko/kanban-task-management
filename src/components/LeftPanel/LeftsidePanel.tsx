@@ -1,7 +1,7 @@
 import { Logo } from "@/components/Logo";
 import { ThemeToggleSwitch } from "@/components/ThemeToggleSwitch";
 import { BoardsList } from "@/components/BoardsList";
-import { HidePanelButton } from "@/components/HidePanelButton";
+import { HidePanelButton } from "@/components/LeftPanel/HidePanelButton";
 
 export function LeftsidePanel() {
   return (
