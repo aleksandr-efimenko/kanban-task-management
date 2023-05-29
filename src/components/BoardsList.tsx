@@ -1,4 +1,4 @@
-import { BoardListItem } from "@/components/BoardListItem";
+import { BoardListItem } from "@/components/LeftPanelItem";
 import { useContext } from "react";
 import { BoardsContext } from "@/context/BoardsContext";
 import { useRouter } from "next/router";
@@ -15,7 +15,7 @@ export function BoardsList() {
         <BoardListItem
           key={board.name}
           title={board.name}
-          id={board.id}
+          href={`/boards/${board.id}`}
           selected={board.id === router.query.id}
         />
       ))}
