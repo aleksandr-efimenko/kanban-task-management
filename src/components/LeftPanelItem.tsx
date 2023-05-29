@@ -3,11 +3,14 @@ import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 
 export type LeftPanelItemProps = {
+  children: React.ReactNode;
+  handleClick?: () => void;
+} & BoardListItemProps;
+
+export type BoardListItemProps = {
   title: string;
   href: string;
-  children: React.ReactNode;
   selected?: boolean;
-  handleClick?: () => void;
 };
 
 export function LeftPanelItem({
@@ -16,13 +19,7 @@ export function LeftPanelItem({
   children,
   selected,
   handleClick,
-}: {
-  title: string;
-  href: string;
-  children: React.ReactNode;
-  selected?: boolean;
-  handleClick?: () => void;
-}) {
+}: LeftPanelItemProps) {
   return (
     <Link
       href={href}
@@ -61,5 +58,30 @@ export function BoardListItem({
         ].join(" ")}
       />
     </LeftPanelItem>
+  );
+}
+
+export function CreateBoardButton({
+  handleClick,
+}: {
+  handleClick?: () => void;
+}) {
+  return (
+    <Link
+      href="#"
+      className={`group flex min-h-[3rem] w-full items-center gap-4 
+      overflow-hidden text-ellipsis rounded-r-full pl-8 text-purple duration-200
+      `}
+      onClick={handleClick}
+    >
+      <Image
+        src={boardIcon as StaticImageData}
+        alt="Board icon"
+        width={16}
+        height={16}
+        className="filter-purple"
+      />
+      <p className="flex-1">+ Create new board</p>
+    </Link>
   );
 }

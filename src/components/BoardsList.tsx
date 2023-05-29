@@ -1,4 +1,4 @@
-import { BoardListItem } from "@/components/LeftPanelItem";
+import { BoardListItem, CreateBoardButton } from "@/components/LeftPanelItem";
 import { useContext } from "react";
 import { BoardsContext } from "@/context/BoardsContext";
 import { useRouter } from "next/router";
@@ -19,6 +19,7 @@ export function BoardsList() {
           selected={board.id === router.query.id}
         />
       ))}
+      <CreateBoardButton />
     </div>
   );
 }

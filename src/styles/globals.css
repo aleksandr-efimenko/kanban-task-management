@@ -5,6 +5,6 @@
 @layer utilities {
   .filter-purple {
     filter: invert(34%) sepia(100%) saturate(588%) hue-rotate(209deg)
-      brightness(89%) contrast(85%);
+      brightness(75%) contrast(85%);
   }
 }
