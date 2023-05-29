@@ -3,14 +3,17 @@ import { TaskColumn } from "@/components/TaskColumn";
 import { type Column } from "@/utils/DataTypes";
 import { NewColumnButton } from "@/components/NewColumnButton";
 import { useContext } from "react";
-import { BoardsContext } from "@/context/BoardsContext";
+
 import { BoardViewContainer } from "@/components/BoardView";
 import Head from "next/head";
+import { useBoards } from "@/context/BoardsContext";
 
 export default function BoardView() {
   const router = useRouter();
-  const { boards } = useContext(BoardsContext);
+  const boards = useBoards();
   const currentBoard = boards.find((board) => board.id === router.query.id);
+  console.log(currentBoard);
+  console.log(router.query.id);
   if (!currentBoard) {
     return (
       <BoardViewContainer>

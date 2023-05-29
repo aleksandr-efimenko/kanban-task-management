@@ -6,6 +6,7 @@ import { api } from "@/utils/api";
 import "@/styles/globals.css";
 import { ThemeProvider } from "next-themes";
 import Layout from "@/components/Layout";
+import { BoardsProvider } from "@/context/BoardsContext";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -15,7 +16,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
     <SessionProvider session={session}>
       <ThemeProvider attribute="class">
         <Layout>
-          <Component {...pageProps} />
+          <BoardsProvider>
+            <Component {...pageProps} />
+          </BoardsProvider>
         </Layout>
       </ThemeProvider>
     </SessionProvider>

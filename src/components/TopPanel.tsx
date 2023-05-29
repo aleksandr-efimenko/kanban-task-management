@@ -1,12 +1,11 @@
+import { useBoards } from "@/context/BoardsContext";
 import { ButtonPrimaryL } from "./Buttons";
 import { ThreeDotsButton } from "./ThreeDotsButton";
 import { useRouter } from "next/router";
-import { useContext } from "react";
-import { BoardsContext } from "@/context/BoardsContext";
 
 export function TopPanel() {
   const router = useRouter();
-  const { boards } = useContext(BoardsContext);
+  const boards = useBoards();
   const currentBoard = boards.find((board) => board.id === router.query.id);
   const boardName = currentBoard ? currentBoard.name : "Board not found";
   return (
