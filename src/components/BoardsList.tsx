@@ -1,5 +1,5 @@
-import { BoardListItem, CreateBoardButton } from "@/components/LeftPanelItem";
-import { useContext } from "react";
+import { BoardListItem } from "@/components/LeftPanel/LeftPanelItem";
+import { CreateNewBoardButton } from "@/components/LeftPanel/CreateNewBoardButton";
 import { useRouter } from "next/router";
 import { useBoards } from "@/context/BoardsContext";
 
@@ -20,7 +20,7 @@ export function BoardsList() {
           selected={board.id === router.query.id}
         />
       ))}
-      <CreateBoardButton />
+      <CreateNewBoardButton />
     </div>
   );
 }

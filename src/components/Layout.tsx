@@ -1,4 +1,4 @@
-import { LeftsidePanel } from "./LeftsidePanel";
+import { LeftsidePanel } from "./LeftPanel/LeftsidePanel";
 import { TopPanel } from "./TopPanel";
 import { Plus_Jakarta_Sans } from "next/font/google";
 

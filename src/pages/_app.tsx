@@ -14,13 +14,13 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <ThemeProvider attribute="class">
-        <Layout>
-          <BoardsProvider>
+      <BoardsProvider>
+        <ThemeProvider attribute="class">
+          <Layout>
             <Component {...pageProps} />
-          </BoardsProvider>
-        </Layout>
-      </ThemeProvider>
+          </Layout>
+        </ThemeProvider>
+      </BoardsProvider>
     </SessionProvider>
   );
 };
