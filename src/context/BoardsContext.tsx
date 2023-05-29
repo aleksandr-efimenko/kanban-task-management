@@ -1,5 +1,4 @@
 import { createContext, useContext, useReducer } from "react";
-
 import defaultBoardsData from "@/data/defaultBoard.json";
 import { type Board } from "@/utils/DataTypes";
 
@@ -60,7 +59,7 @@ function boardsReducer(boards: Board[], action: BoardAction) {
           if (!action.name) {
             throw Error("Name is required to change a board");
           }
-          return {...t, name: action.name}
+          return (t.name = action.name);
         } else {
           return t;
         }
