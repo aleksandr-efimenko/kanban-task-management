@@ -1,5 +1,5 @@
 import { Logo } from "@/components/Logo";
-import { ThemeToggleSwitch } from "./ThemeToggleSwitch";
+import { ThemeToggleSwitch } from "@/components/ThemeToggleSwitch";
 import { BoardsList } from "@/components/BoardsList";
 import { HidePanelButton } from "@/components/HidePanelButton";
 
@@ -14,7 +14,7 @@ export function LeftsidePanel() {
     >
       <Logo />
       <BoardsList />
-      <div className="pb-8">
+      <div className="flex flex-col gap-2 pb-8 pr-8">
         <ThemeToggleSwitch />
         <HidePanelButton />
       </div>

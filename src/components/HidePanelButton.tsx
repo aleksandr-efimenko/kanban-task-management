@@ -1,20 +1,20 @@
 import hideIcon from "~/assets/icon-hide-sidebar.svg";
 import Image, { type StaticImageData } from "next/image";
-import Link from "next/link";
+import { LeftPanelItem } from "./LeftPanelItem";
 
 export function HidePanelButton() {
+  const handleClick = () => {
+    console.log("Hide sidebar");
+  };
   return (
-    <Link
-      href="#"
-      className="flex min-h-[3rem] items-center gap-[0.9375rem] pl-8"
-    >
+    <LeftPanelItem title="Hide Sidebar" href="#" handleClick={handleClick}>
       <Image
         src={hideIcon as StaticImageData}
         alt="Hide sidebar icon"
         width={18}
         height={16}
+        className="group-hover:filter-purple"
       />
-      <p className="text-medium-gray">Hide Sidebar</p>
-    </Link>
+    </LeftPanelItem>
   );
 }
