@@ -3,6 +3,7 @@ import Link from "next/link";
 import boardIcon from "~/assets/icon-board.svg";
 import Image from "next/image";
 import { useBoardsDispatch } from "@/context/BoardsContext";
+import { ActionKind } from "@/context/BoardsContext";
 
 export function CreateNewBoardButton({
   handleClick,
@@ -10,7 +11,7 @@ export function CreateNewBoardButton({
   handleClick?: () => void;
 }) {
   const dispatch = useBoardsDispatch();
-
+  console.log(new Date());
   return (
     <Link
       href="#"
@@ -19,11 +20,8 @@ export function CreateNewBoardButton({
         hover:scale-105`}
       onClick={() =>
         dispatch({
-          type: "ADD",
-          payload: {
-            id: "",
-            name: "New Board",
-          },
+          type: ActionKind.ADD_BOARD,
+          boardName: "New Board",
         })
       }
     >
