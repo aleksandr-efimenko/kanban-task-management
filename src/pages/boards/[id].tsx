@@ -28,7 +28,7 @@ export default function BoardView() {
     if (columns?.length === 0) {
       return (
         <BoardViewContainer columns={false}>
-          <EmptyBoard />
+          <EmptyBoard boardId={currentBoard.id} />
         </BoardViewContainer>
       );
     }
