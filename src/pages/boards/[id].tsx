@@ -5,6 +5,7 @@ import { BoardViewContainer } from "@/components/BoardViews/BoardView";
 import Head from "next/head";
 import { useBoards } from "@/context/BoardsContext";
 import { EmptyBoard } from "@/components/BoardViews/EmptyBoard";
+import { uuid } from "uuidv4";
 
 export default function BoardView() {
   const router = useRouter();
@@ -12,8 +13,6 @@ export default function BoardView() {
 
   const currentBoard = boards?.find((board) => board.id === router.query.id);
   const columns = currentBoard?.columns;
-  console.log(currentBoard);
-  console.log(router.query.id);
 
   const boardView = () => {
     // if user opens a board that doesn't exist
@@ -35,7 +34,7 @@ export default function BoardView() {
     return (
       <BoardViewContainer columns={true}>
         {columns?.map((column) => (
-          <TaskColumn key={column.id} column={column} />
+          <TaskColumn key={column.id ? column.id : uuid()} column={column} />
         ))}
         <NewColumnButton />
       </BoardViewContainer>
