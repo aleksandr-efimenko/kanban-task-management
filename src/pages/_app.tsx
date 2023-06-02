@@ -7,6 +7,7 @@ import "@/styles/globals.css";
 import { ThemeProvider } from "next-themes";
 import Layout from "@/components/Layout";
 import { BoardsProvider } from "@/context/BoardsContext";
+import { ModalProvider } from "@/context/ModalContext";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -14,13 +15,15 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <BoardsProvider>
-        <ThemeProvider attribute="class">
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </ThemeProvider>
-      </BoardsProvider>
+      <ThemeProvider attribute="class">
+        <ModalProvider>
+          <BoardsProvider>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </BoardsProvider>
+        </ModalProvider>
+      </ThemeProvider>
     </SessionProvider>
   );
 };
