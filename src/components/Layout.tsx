@@ -10,6 +10,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
+      <div id="modal-root"></div>
       <main
         className={`${plusJakartaSans.className} grid h-screen w-full grid-cols-main-layout grid-rows-main-layout overflow-hidden`}
       >
