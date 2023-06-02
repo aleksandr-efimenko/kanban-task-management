@@ -4,9 +4,11 @@ export const useModal = () => {
   const [modal, setModal] = useState(false);
   const [modalContent, setModalContent] = useState<React.ReactNode>(null);
 
-  const handleModal = (content: React.ReactNode) => {
+  const handleModal = (content: React.ReactNode = false) => {
     setModal(!modal);
-    if (content) setModalContent(content);
+    if (content) {
+      setModalContent(content);
+    }
   };
 
   return {
