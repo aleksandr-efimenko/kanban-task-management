@@ -1,7 +1,7 @@
 import { ButtonPrimaryS } from "../Buttons";
 import { TextField } from "../Inputs/LabelledTextField";
 
-export default function AddBoard() {
+export function AddBoard() {
   return (
     <div className="flex flex-col gap-6">
       <h2 className="text-heading-l">Add New Board</h2>

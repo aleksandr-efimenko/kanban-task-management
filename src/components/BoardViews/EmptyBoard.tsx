@@ -4,11 +4,14 @@ import { ButtonPrimaryL } from "../Buttons";
 export function EmptyBoard({ boardId }: { boardId: string }) {
   const dispatch = useBoardsDispatch();
 
-  const handleCreateColumn = (boardId: string) => {
+  const handleCreateColumn = () => {
+    console.log(boardId);
     dispatch({
       type: ActionKind.ADD_COLUMN,
       boardId: boardId,
+      columnName: "New Column dsds",
     });
+    console.log("column created");
   };
   return (
     <div className="flex items-center justify-center">
@@ -17,7 +20,7 @@ export function EmptyBoard({ boardId }: { boardId: string }) {
           This board is empty. Create a new column to get started.
         </h4>
         <div className="w-fit ">
-          <ButtonPrimaryL onClick={() => handleCreateColumn(boardId)}>
+          <ButtonPrimaryL onClick={() => handleCreateColumn()}>
             + Add New Column
           </ButtonPrimaryL>
         </div>

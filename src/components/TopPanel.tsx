@@ -6,7 +6,8 @@ import { useRouter } from "next/router";
 export function TopPanel() {
   const router = useRouter();
   const boards = useBoards();
-  const currentBoard = boards.find((board) => board.id === router.query.id);
+
+  const currentBoard = boards?.find((board) => board.id === router.query.id);
   const boardName = currentBoard ? currentBoard.name : "Board not found";
   return (
     <div
