@@ -19,7 +19,7 @@ export function ModalWindow() {
         -translate-x-1/2 -translate-y-1/2 transform rounded-md
         bg-white p-8 dark:bg-dark-gray"
       >
-        {modalContent}
+        <div className="flex flex-col gap-6">{modalContent}</div>
       </div>
     </div>,
     document.querySelector("#modal-root") as HTMLElement
