@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { ButtonPrimaryS } from "../Buttons";
 import { TextField } from "../Inputs/LabelledTextField";
 import { ModalWindowTitle } from "./ModalWindowTitle";
-import { ActionKind, useBoardsDispatch } from "@/context/BoardsContext";
+import { useBoardsDispatch } from "@/context/BoardsContext";
 import { ModalContext } from "@/context/ModalContext";
 
 export function AddBoard() {
@@ -16,11 +16,10 @@ export function AddBoard() {
 
   const handleCreateBoard = () => {
     //add board to boards
-    console.log(boardsDispatch);
     if (!boardsDispatch) return;
     if (!board.title) return;
     boardsDispatch({
-      type: ActionKind.ADD_BOARD,
+      type: "ADD_BOARD",
       boardName: board.title,
     });
 
