@@ -6,8 +6,9 @@ import { useBoardsDispatch } from "@/context/BoardsContext";
 import { ModalContext } from "@/context/ModalContext";
 
 export function AddBoard() {
-  const [board, setBoard] = useState({
+  const [boardForm, setBoardForm] = useState({
     title: "",
+    titleError: "",
     columns: [],
   });
 
@@ -17,26 +18,37 @@ export function AddBoard() {
   const handleCreateBoard = () => {
     //add board to boards
     if (!boardsDispatch) return;
-    if (!board.title) return;
+    if (!boardForm.title) {
+      setBoardForm({
+        ...boardForm,
+        titleError: "Cant't be empty",
+      });
+      return;
+    }
     boardsDispatch({
       type: "ADD_BOARD",
-      boardName: board.title,
+      boardName: boardForm.title,
     });
 
     //close modal
     handleModal(null);
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setBoardForm({ ...boardForm, title: e.target.value, titleError: "" });
+  };
+
   return (
     <>
       <ModalWindowTitle title="Add New Board" />
       <TextField
-        label="Name"
+        label="Board Name"
         id="board-name"
         type="text"
         placeholder="e.g. Web Design"
-        value={board.title}
-        setValue={(value) => setBoard({ ...board, title: value })}
+        value={boardForm.title}
+        onChange={handleInputChange}
+        errorMessage={boardForm.titleError}
       />
       <ButtonPrimaryS onClick={handleCreateBoard}>
         Create New Board

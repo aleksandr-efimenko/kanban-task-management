@@ -1,22 +1,32 @@
-import { TextInput } from "./TextInput";
+import {
+  TextInput,
+  type TextFieldWithoutLabelProps,
+} from "@/components/Inputs/TextInput";
 
-export function TextField({
-  label,
-  id,
-  type,
-  placeholder,
-  value,
-  setValue,
-  errorMessage,
-}: {
+export type TextFieldWithLabelProps = TextFieldWithoutLabelProps & {
   label: string;
   id: string;
-  type: string;
-  placeholder?: string;
-  value: string;
-  setValue: (value: string) => void;
-  errorMessage?: string;
-}) {
+};
+
+/**
+ * This component is a wrapper for TextInput component.
+ * It adds a label to the input.
+ * @param props  - label, id, errorMessage, and all props from TextInput
+ * @returns   - a label and TextInput
+ * @example
+ * <TextField
+ *  label="Board Name"
+ *  id="board-name"
+ *  type="text"
+ *  placeholder="e.g. Web Design"
+ *  value={boardForm.title}
+ *  onChange={handleInputChange}
+ *  errorMessage={boardForm.titleError}
+ * />
+ *
+ */
+export function TextField(props: TextFieldWithLabelProps) {
+  const { id, label, errorMessage } = props;
   return (
     <div className="flex flex-col gap-2">
       <label
@@ -25,14 +35,7 @@ export function TextField({
       >
         {label}
       </label>
-      <TextInput
-        type={type}
-        placeholder={placeholder}
-        id={id}
-        value={value}
-        setValue={setValue}
-        errorMessage={errorMessage}
-      />
+      <TextInput {...props} errorMessage={errorMessage} />
     </div>
   );
 }
