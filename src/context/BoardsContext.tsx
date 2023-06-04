@@ -1,7 +1,14 @@
-import { createContext, useContext, useReducer, type Dispatch } from "react";
+import {
+  createContext,
+  useContext,
+  useReducer,
+  type Dispatch,
+  type Reducer,
+} from "react";
 import defaultBoardsData from "@/data/defaultBoard.json";
 import { type Board } from "@/utils/DataTypes";
 import { uuid } from "uuidv4";
+import { type BoardActions, neverReached } from "@/context/BoardActions";
 
 const initialBoards = defaultBoardsData.boards;
 const boardsWithIds: Board[] = initialBoards.map((board) => ({
@@ -21,41 +28,15 @@ const boardsWithIds: Board[] = initialBoards.map((board) => ({
   })),
 }));
 
-const BoardsContext = createContext<typeof boardsWithIds | null>(null);
+const BoardsContext = createContext<Board[] | null>(null);
 export const BoardsDispatchContext =
-  createContext<Dispatch<BoardAction> | null>(null);
-
-// An enum with all the types of actions to use in our reducer
-export enum ActionKind {
-  ADD_BOARD,
-  CHANGE_BOARD,
-  DELETE_BOARD,
-  ADD_COLUMN,
-  CHANGE_COLUMN,
-  DELETE_COLUMN,
-  ADD_TASK,
-  CHANGE_TASK,
-  DELETE_TASK,
-  ADD_SUBTASK,
-  CHANGE_SUBTASK,
-  DELETE_SUBTASK,
-}
-
-// An interface for our actions
-interface BoardAction {
-  type: ActionKind;
-  boardId?: string;
-  boardName?: string;
-  columnId?: string;
-  columnName?: string;
-  taskId?: string;
-  taskName?: string;
-  subtaskId?: string;
-  subtaskName?: string;
-}
+  createContext<Dispatch<BoardActions> | null>(null);
 
 export function BoardsProvider({ children }: { children: React.ReactNode }) {
-  const [boards, dispatch] = useReducer(boardsReducer, boardsWithIds);
+  const [boards, dispatch] = useReducer<Reducer<Board[], BoardActions>>(
+    boardsReducer,
+    boardsWithIds
+  );
 
   return (
     <BoardsContext.Provider value={boards}>
@@ -74,9 +55,9 @@ export function useBoardsDispatch() {
   return useContext(BoardsDispatchContext);
 }
 
-function boardsReducer(boards: typeof boardsWithIds, action: BoardAction) {
+function boardsReducer(boards: Board[], action: BoardActions): Board[] {
   switch (action.type) {
-    case ActionKind.ADD_BOARD: {
+    case "ADD_BOARD": {
       const newBoard: Board = {
         id: uuid(),
         name: action.boardName || "New Board",
@@ -84,7 +65,7 @@ function boardsReducer(boards: typeof boardsWithIds, action: BoardAction) {
       };
       return [...boards, newBoard];
     }
-    case ActionKind.CHANGE_BOARD: {
+    case "CHANGE_BOARD": {
       const newBoards = boards.map((board) => {
         if (board.id === action.boardId) {
           return {
@@ -96,13 +77,15 @@ function boardsReducer(boards: typeof boardsWithIds, action: BoardAction) {
       });
       return newBoards;
     }
-    case ActionKind.DELETE_BOARD: {
+    case "DELETE_BOARD": {
       const newBoards = boards.filter((board) => board.id !== action.boardId);
       return newBoards;
     }
 
     default: {
-      throw new Error(`Unhandled action type: ${action.type}`);
+      // Make sure we always handle all action types
+      neverReached(action);
     }
   }
+  return boards;
 }
