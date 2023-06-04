@@ -7,6 +7,7 @@ export function TextField({
   placeholder,
   value,
   setValue,
+  errorMessage,
 }: {
   label: string;
   id: string;
@@ -14,10 +15,14 @@ export function TextField({
   placeholder?: string;
   value: string;
   setValue: (value: string) => void;
+  errorMessage?: string;
 }) {
   return (
     <div className="flex flex-col gap-2">
-      <label className="text-body-m text-medium-gray" htmlFor={id}>
+      <label
+        className="relative text-body-m text-medium-gray dark:text-white"
+        htmlFor={id}
+      >
         {label}
       </label>
       <TextInput
@@ -26,6 +31,7 @@ export function TextField({
         id={id}
         value={value}
         setValue={setValue}
+        errorMessage={errorMessage}
       />
     </div>
   );
