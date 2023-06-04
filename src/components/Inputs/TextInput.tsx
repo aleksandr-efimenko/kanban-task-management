@@ -9,10 +9,10 @@ export function TextInput(props: TextFieldWithoutLabelProps) {
     ? "border-red"
     : "border-dark-gray-input-border focus:border-purple";
   return (
-    <div className="relative">
+    <div className="relative w-full">
       <input
         {...props}
-        className={`w-full rounded-s 
+        className={`w-full rounded-s
       border px-4 pb-[0.5625rem] pt-2 
        focus:outline-none dark:bg-dark-gray
       dark:text-white

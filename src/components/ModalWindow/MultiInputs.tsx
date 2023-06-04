@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { TextInput } from "../Inputs/TextInput";
 import { ButtonSecondary } from "../Buttons";
 import closeIcon from "~/assets/icon-cross.svg";
@@ -7,13 +6,15 @@ import Image, { type StaticImageData } from "next/image";
 export function MultiInputs({
   label,
   buttonText,
-  initialInputs = ["", ""],
+  inputs,
+  setInputs,
 }: {
   label: string;
   buttonText: string;
+  inputs: string[];
+  setInputs: (inputs: string[]) => void;
   initialInputs?: string[];
 }) {
-  const [inputs, setInputs] = useState<string[]>(initialInputs);
   const handleRemoveInput = (index: number) => {
     const newInputs = [...inputs];
     newInputs.splice(index, 1);

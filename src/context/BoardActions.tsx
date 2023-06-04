@@ -28,7 +28,9 @@ export type BoardActions =
 
 type AddBoardAction = {
   type: "ADD_BOARD";
+  boardId: string;
   boardName: string;
+  columns: string[];
 };
 
 type ChangeBoardAction = {

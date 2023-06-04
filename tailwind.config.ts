@@ -18,6 +18,7 @@ export default {
         "red-hover": "hsl(0, 100%, 80%)",
         "button-secondary": "hsla(242, 48%, 58%, 0.1)",
         "button-secondary-hover": "hsla(242, 48%, 58%, 0.25)",
+        "dark-gray-input-border": "rgba(130, 143, 163, 0.25)",
         "gradient-dark-gray-start": "hsla(235, 12%, 19%, 0.25)",
         "gradient-dark-gray-end": "hsla(235, 12%, 19%, 0.13)",
         "gradient-light-gray-start": "hsla(219, 63%, 95%, 1)",

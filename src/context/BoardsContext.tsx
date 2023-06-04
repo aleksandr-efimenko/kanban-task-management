@@ -6,9 +6,10 @@ import {
   type Reducer,
 } from "react";
 import defaultBoardsData from "@/data/defaultBoard.json";
-import { type Board } from "@/utils/DataTypes";
+import type { Task, Board } from "@/utils/DataTypes";
 import { uuid } from "uuidv4";
 import { type BoardActions, neverReached } from "@/context/BoardActions";
+import { generateColor } from "@/utils/generateColor";
 
 const initialBoards = defaultBoardsData.boards;
 const boardsWithIds: Board[] = initialBoards.map((board) => ({
@@ -59,9 +60,14 @@ function boardsReducer(boards: Board[], action: BoardActions): Board[] {
   switch (action.type) {
     case "ADD_BOARD": {
       const newBoard: Board = {
-        id: uuid(),
+        id: action.boardId,
         name: action.boardName || "New Board",
-        columns: [],
+        columns: action.columns.map((column) => ({
+          id: uuid(),
+          name: column,
+          color: generateColor(),
+          tasks: [] as Task[],
+        })),
       };
       return [...boards, newBoard];
     }

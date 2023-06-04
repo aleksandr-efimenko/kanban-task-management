@@ -25,7 +25,7 @@ export type TextFieldWithLabelProps = TextFieldWithoutLabelProps & {
  * />
  *
  */
-export function TextField(props: TextFieldWithLabelProps) {
+export function LabelledTextField(props: TextFieldWithLabelProps) {
   const { id, label, errorMessage } = props;
   return (
     <div className="flex flex-col gap-2">

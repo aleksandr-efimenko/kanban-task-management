@@ -2,7 +2,7 @@ export function Button(props: React.ComponentPropsWithoutRef<"button">) {
   return (
     <button
       {...props}
-      className={`w-full rounded-3xl px-4 py-3 duration-200 ${
+      className={`w-full rounded-3xl px-4 py-2 duration-200 ${
         props.className || ""
       }`}
     >

@@ -1,22 +1,20 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import { signIn, signOut, useSession } from "next-auth/react";
-
 import { api } from "@/utils/api";
-
-import defaultBoards from "@/data/defaultBoard.json";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { useBoards } from "@/context/BoardsContext";
 
 const Home: NextPage = () => {
   const router = useRouter();
+  const boards = useBoards();
   useEffect(() => {
-    console.log(defaultBoards);
-    if (!defaultBoards || !defaultBoards.boards || !defaultBoards.boards[0]) {
+    if (!boards || !boards || !boards[0]) {
       return;
     }
-    void router.push(`/boards/${defaultBoards.boards[0].id}`);
-  }, [router]);
+    void router.push(`/boards/${boards[0].id}`);
+  }, [router, boards]);
   return (
     <>
       <Head>
