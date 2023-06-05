@@ -1,18 +1,11 @@
-import { ActionKind, useBoardsDispatch } from "@/context/BoardsContext";
-import { ButtonPrimaryL } from "../Buttons";
+import { useContext } from "react";
+import { ButtonPrimaryL } from "@/components/Buttons";
+import { ModalContext } from "@/context/ModalContext";
+import { AddColumn } from "@/components/ModalWindow/AddColumn";
 
 export function EmptyBoard({ boardId }: { boardId: string }) {
-  const dispatch = useBoardsDispatch();
+  const { handleModal } = useContext(ModalContext);
 
-  const handleCreateColumn = () => {
-    console.log(boardId);
-    dispatch({
-      type: ActionKind.ADD_COLUMN,
-      boardId: boardId,
-      columnName: "New Column dsds",
-    });
-    console.log("column created");
-  };
   return (
     <div className="flex items-center justify-center">
       <div className="flex flex-col items-center justify-center gap-8">
@@ -20,7 +13,9 @@ export function EmptyBoard({ boardId }: { boardId: string }) {
           This board is empty. Create a new column to get started.
         </h4>
         <div className="w-fit ">
-          <ButtonPrimaryL onClick={() => handleCreateColumn()}>
+          <ButtonPrimaryL
+            onClick={() => handleModal(<AddColumn boardId={boardId} />)}
+          >
             + Add New Column
           </ButtonPrimaryL>
         </div>
