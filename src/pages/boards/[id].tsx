@@ -36,7 +36,7 @@ export default function BoardView() {
         {columns?.map((column) => (
           <TaskColumn key={column.id ? column.id : uuid()} column={column} />
         ))}
-        <NewColumnButton />
+        <NewColumnButton boardId={currentBoard.id} />
       </BoardViewContainer>
     );
   };

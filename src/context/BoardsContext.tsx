@@ -88,6 +88,61 @@ function boardsReducer(boards: Board[], action: BoardActions): Board[] {
       return newBoards;
     }
 
+    case "ADD_COLUMN": {
+      const newBoards = boards.map((board) => {
+        if (board.id === action.boardId) {
+          return {
+            ...board,
+            columns: [
+              ...board.columns,
+              {
+                id: uuid(),
+                name: action.columnName,
+                color: generateColor(),
+                tasks: [] as Task[],
+              },
+            ],
+          };
+        }
+        return board;
+      });
+      return newBoards;
+    }
+    case "CHANGE_COLUMN": {
+      const newBoards = boards.map((board) => {
+        if (board.id === action.boardId) {
+          return {
+            ...board,
+            columns: board.columns.map((column) => {
+              if (column.id === action.columnId) {
+                return {
+                  ...column,
+                  name: action.columnName,
+                };
+              }
+              return column;
+            }),
+          };
+        }
+        return board;
+      });
+      return newBoards;
+    }
+    case "DELETE_COLUMN": {
+      const newBoards = boards.map((board) => {
+        if (board.id === action.boardId) {
+          return {
+            ...board,
+            columns: board.columns.filter(
+              (column) => column.id !== action.columnId
+            ),
+          };
+        }
+        return board;
+      });
+      return newBoards;
+    }
+
     default: {
       // Make sure we always handle all action types
       neverReached(action);

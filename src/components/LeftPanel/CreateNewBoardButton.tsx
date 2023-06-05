@@ -14,7 +14,7 @@ export function CreateNewBoardButton() {
       className={`group flex min-h-[3rem] w-full items-center gap-4 
         overflow-hidden text-ellipsis rounded-r-full pl-8 text-purple duration-200
         hover:scale-105`}
-      onClick={() => handleModal(<AddBoard />)}
+      onClick={() => handleModal((<AddBoard />) as React.ReactNode)}
     >
       <Image
         src={boardIcon as StaticImageData}

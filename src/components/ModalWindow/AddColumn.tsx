@@ -13,7 +13,7 @@ export function AddColumn({ boardId }: { boardId: string }) {
 
   const handleAddColumn = () => {
     if (columnName === "") {
-      setErrorMessage("Cannot be empty");
+      setErrorMessage("Can't be empty");
       return;
     }
 

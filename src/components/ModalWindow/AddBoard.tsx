@@ -38,7 +38,7 @@ export function AddBoard() {
     });
 
     //close modal
-    handleModal(null);
+    handleModal();
     void router.push(`/boards/${boardId}`);
   };
 
