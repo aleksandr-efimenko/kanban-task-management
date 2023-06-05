@@ -1,3 +1,13 @@
-export function ModalWindowTitle({ title }: { title: string }) {
-  return <h2 className="text-heading-l">{title}</h2>;
+export function ModalWindowTitle({
+  title,
+  destructive,
+}: {
+  title: string;
+  destructive?: boolean;
+}) {
+  return (
+    <h2 className={`text-heading-l ${destructive ? "text-red" : ""}`}>
+      {title}
+    </h2>
+  );
 }
