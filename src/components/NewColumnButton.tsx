@@ -1,6 +1,13 @@
-export function NewColumnButton() {
+import { useContext } from "react";
+import { ModalContext } from "@/context/ModalContext";
+import { AddColumn } from "@/components/ModalWindow/AddColumn";
+
+export function NewColumnButton({ boardId }: { boardId: string }) {
+  const { handleModal } = useContext(ModalContext);
+
   return (
     <button
+      onClick={() => handleModal(<AddColumn boardId={boardId} />)}
       className="flex items-center 
     justify-center rounded-md 
     bg-gradient-to-b from-gradient-light-gray-start to-gradient-light-gray-end dark:from-gradient-dark-gray-start dark:to-gradient-dark-gray-end"
