@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { ButtonPrimaryL } from "@/components/Buttons";
+import { ButtonPrimaryL } from "@/components/Buttons/MainButtons";
 import { ModalContext } from "@/context/ModalContext";
 import { AddColumn } from "@/components/ModalWindow/AddColumn";
 

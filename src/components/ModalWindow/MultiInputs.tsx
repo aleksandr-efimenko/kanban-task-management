@@ -1,5 +1,5 @@
 import { TextInput } from "../Inputs/TextInput";
-import { ButtonSecondary } from "../Buttons";
+import { ButtonSecondary } from "../Buttons/MainButtons";
 import closeIcon from "~/assets/icon-cross.svg";
 import Image, { type StaticImageData } from "next/image";
 

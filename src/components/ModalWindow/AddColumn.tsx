@@ -1,7 +1,7 @@
 import { useBoardsDispatch } from "@/context/BoardsContext";
 import { ModalContext } from "@/context/ModalContext";
 import { useContext, useState } from "react";
-import { ButtonPrimaryS } from "../Buttons";
+import { ButtonPrimaryS } from "../Buttons/MainButtons";
 import { LabelledTextField } from "../Inputs/LabelledTextField";
 import { ModalWindowTitle } from "./ModalWindowTitle";
 

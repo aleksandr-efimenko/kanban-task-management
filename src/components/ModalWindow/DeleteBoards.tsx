@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { ButtonDestructive, ButtonSecondary } from "../Buttons";
+import { ButtonDestructive, ButtonSecondary } from "../Buttons/MainButtons";
 import { ModalWindowTitle } from "./ModalWindowTitle";
 import { ModalContext } from "@/context/ModalContext";
 import { useBoardsDispatch } from "@/context/BoardsContext";

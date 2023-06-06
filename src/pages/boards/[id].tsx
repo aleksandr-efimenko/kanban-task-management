@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { TaskColumn } from "@/components/TaskColumn";
-import { NewColumnButton } from "@/components/NewColumnButton";
+import { NewColumnButton } from "@/components/Buttons/NewColumnButton";
 import { BoardViewContainer } from "@/components/BoardViews/BoardView";
 import Head from "next/head";
 import { useBoards } from "@/context/BoardsContext";

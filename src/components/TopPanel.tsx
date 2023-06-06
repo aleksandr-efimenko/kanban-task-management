@@ -1,6 +1,6 @@
 import { useBoards } from "@/context/BoardsContext";
-import { ButtonPrimaryL } from "./Buttons";
-import { ThreeDotsButton } from "./ThreeDotsButton";
+import { ButtonPrimaryL } from "./Buttons/MainButtons";
+import { ThreeDotsButton } from "@/components/Buttons/ThreeDotsButton";
 import { useRouter } from "next/router";
 
 export function TopPanel() {
