@@ -1,6 +1,6 @@
 import { useBoards } from "@/context/BoardsContext";
 import { ButtonPrimaryL } from "./Buttons/MainButtons";
-import { ThreeDotsButton } from "@/components/Buttons/ThreeDotsButton";
+import { ThreeDotsButton } from "@/components/Buttons/ThreeDotsMenu";
 import { useRouter } from "next/router";
 
 export function TopPanel() {
@@ -9,6 +9,7 @@ export function TopPanel() {
 
   const currentBoard = boards?.find((board) => board.id === router.query.id);
   const boardName = currentBoard ? currentBoard.name : "Board not found";
+  const boardId = currentBoard ? currentBoard.id : "";
   return (
     <div
       className="col-start-2 col-end-2 row-start-1 row-end-2 
@@ -19,7 +20,7 @@ export function TopPanel() {
         <h1 className="text-heading-xl">{boardName}</h1>
         <div className="flex items-center gap-6">
           <ButtonPrimaryL>+ Add new Task</ButtonPrimaryL>
-          <ThreeDotsButton />
+          <ThreeDotsButton type="board" id={boardId} />
         </div>
       </div>
     </div>

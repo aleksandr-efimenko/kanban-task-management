@@ -11,10 +11,17 @@ export function DropdownMenuItem({
   destructive,
   onClick,
 }: DropdownMenuItemProps) {
-  const color = destructive ? "text-red" : "text-medium-gray";
+  const bgColor = destructive
+    ? "text-red"
+    : "text-medium-gray hover:text-white";
+
   return (
     <Link href="#" onClick={onClick}>
-      <p className={`text-body-l  ${color}`}>{title}</p>
+      <p
+        className={`rounded-lg px-4 py-2 text-body-l hover:bg-purple  ${bgColor}`}
+      >
+        {title}
+      </p>
     </Link>
   );
 }
