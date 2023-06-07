@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { DropdownMenuItem } from "@/components/DropDownMenu/DropdownMenuItem";
 import { EditTask } from "../ModalWindow/EditTask";
 import { DeleteTask } from "../ModalWindow/DeleteDialogs/DeleteTask";
+import { useBoards } from "@/context/BoardsContext";
 
 export function DropdownEditTaskItem({ taskId }: { taskId: string }) {
   const { handleModal } = useContext(ModalContext);
@@ -20,28 +21,13 @@ export function DropdownEditTaskItem({ taskId }: { taskId: string }) {
   );
 }
 
-export function DropdownDeleteTaskItem({
-  taskId,
-  taskName,
-  boardId,
-  columnId,
-}: {
-  taskId: string;
-  taskName: string;
-  boardId: string;
-  columnId: string;
-}) {
+export function DropdownDeleteTaskItem({ taskId }: { taskId: string }) {
   const { handleModal } = useContext(ModalContext);
+  const boards = useBoards();
+
   const handleDeleteTask = () => {
     handleModal(
-      (
-        <DeleteTask
-          taskId={taskId}
-          taskName={taskName}
-          boardId={boardId}
-          columnId={columnId}
-        />
-      ) as React.ReactNode
+      (<DeleteTask taskId={taskId} taskName={taskName} />) as React.ReactNode
     );
   };
 
