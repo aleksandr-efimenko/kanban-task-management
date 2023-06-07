@@ -8,6 +8,7 @@ import { ThemeProvider } from "next-themes";
 import Layout from "@/components/Layout";
 import { BoardsProvider } from "@/context/BoardsContext";
 import { ModalProvider } from "@/context/ModalContext";
+import { DropdownMenuProvider } from "@/context/DrowdownMenuContext";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -18,9 +19,11 @@ const MyApp: AppType<{ session: Session | null }> = ({
       <ThemeProvider attribute="class">
         <BoardsProvider>
           <ModalProvider>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
+            <DropdownMenuProvider>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </DropdownMenuProvider>
           </ModalProvider>
         </BoardsProvider>
       </ThemeProvider>

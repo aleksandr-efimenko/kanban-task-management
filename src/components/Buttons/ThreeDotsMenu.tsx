@@ -1,7 +1,8 @@
 import Image, { type StaticImageData } from "next/image";
 import threeDotsIcon from "~/assets/icon-vertical-ellipsis.svg";
 import { BoardDropDownMenu } from "@/components/DropDownMenu/DropdownMenu";
-import { useState } from "react";
+import { useContext } from "react";
+import { DropdownMenuContext } from "@/context/DrowdownMenuContext";
 
 export type DropDownItemType = {
   type: "board" | "task";
@@ -9,7 +10,7 @@ export type DropDownItemType = {
 };
 
 export function ThreeDotsButton({ type, id }: DropDownItemType) {
-  const [menu, setMenu] = useState(false);
+  const { menu, handleMenu } = useContext(DropdownMenuContext);
   const getMenu = () => {
     if (type === "board") {
       return <BoardDropDownMenu boardId={id} />;
@@ -17,9 +18,7 @@ export function ThreeDotsButton({ type, id }: DropDownItemType) {
       return;
     }
   };
-  const handleMenu = () => {
-    setMenu(!menu);
-  };
+
   return (
     <div className="relative">
       <button
