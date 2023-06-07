@@ -27,26 +27,10 @@ export function BoardDropDownMenu({ boardId }: { boardId: string }) {
   return <DropdownMenu buttons={buttons} />;
 }
 
-export function TaskDropDownMenu({
-  taskId,
-  boardId,
-  columnId,
-  taskName,
-}: {
-  taskId: string;
-  boardId: string;
-  columnId: string;
-  taskName: string;
-}) {
+export function TaskDropDownMenu({ taskId }: { taskId: string }) {
   const buttons = [
     <DropdownEditTaskItem taskId={taskId} key={uuid()} />,
-    <DropdownDeleteTaskItem
-      taskId={taskId}
-      key={uuid()}
-      boardId={boardId}
-      columnId={columnId}
-      taskName={taskName}
-    />,
+    <DropdownDeleteTaskItem taskId={taskId} key={uuid()} />,
   ];
   return <DropdownMenu buttons={buttons} />;
 }
