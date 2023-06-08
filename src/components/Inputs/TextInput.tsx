@@ -33,7 +33,7 @@ export function TextInput(props: TextFieldWithoutLabelProps) {
   const borderColor = errorMessage
     ? "border-red"
     : "border-dark-gray-input-border focus:border-purple";
-  const inputClassName = `w-full rounded-s
+  const inputClassName = `w-full rounded rounded-s
     border px-4 pb-[0.5625rem] pt-2 
      focus:outline-none dark:bg-dark-gray
     dark:text-white

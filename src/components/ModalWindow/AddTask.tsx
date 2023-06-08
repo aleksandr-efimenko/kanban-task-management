@@ -6,6 +6,7 @@ import { MultiInputs } from "./MultiInputs";
 import { useBoards, useBoardsDispatch } from "@/context/BoardsContext";
 import { ModalContext } from "@/context/ModalContext";
 import { uuid } from "uuidv4";
+import { SelectInput } from "../Inputs/SelectInput";
 
 const taskDefaultData = {
   title: "Add New Task",
@@ -28,6 +29,10 @@ const taskDefaultData = {
     label: "Subtasks",
     buttonText: "+ Add New Subtask",
   },
+  selectInput: {
+    label: "Current Status",
+    id: "task-status",
+  },
   button: {
     text: "Create Task",
   },
@@ -39,6 +44,7 @@ const taskFormDefaultData = {
   description: "",
   descriptionError: "",
   subtasks: ["", ""],
+  status: "",
 };
 
 export default function AddTask({ boardId }: { boardId: string }) {
@@ -48,6 +54,7 @@ export default function AddTask({ boardId }: { boardId: string }) {
     description: taskFormDefaultData.description,
     descriptionError: taskFormDefaultData.descriptionError,
     subtasks: taskFormDefaultData.subtasks,
+    status: taskFormDefaultData.status,
   });
 
   const boardsDispatch = useBoardsDispatch();
@@ -56,6 +63,7 @@ export default function AddTask({ boardId }: { boardId: string }) {
   if (!boards) return null;
   const currentBoard = boards.find((board) => board.id === boardId);
   if (!currentBoard) return null;
+  const columns = currentBoard.columns.map((column) => column.name);
 
   const handleCreateBoard = () => {
     //add board to boards
@@ -123,6 +131,15 @@ export default function AddTask({ boardId }: { boardId: string }) {
         inputs={taskForm.subtasks}
         setInputs={(subtasks) => setTaskForm({ ...taskForm, subtasks })}
       />
+      <SelectInput
+        currentOption={taskForm.status}
+        value={taskForm.status}
+        onChange={(e) => setTaskForm({ ...taskForm, status: e.target.value })}
+        id={taskDefaultData.selectInput.id}
+        label={taskDefaultData.selectInput.label}
+        options={columns.map((column) => column)}
+      />
+
       <ButtonPrimaryS onClick={handleCreateBoard}>
         {taskDefaultData.button.text}
       </ButtonPrimaryS>

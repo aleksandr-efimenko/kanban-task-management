@@ -21,7 +21,7 @@ export function MultiInputs({
     setInputs(newInputs);
   };
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex max-h-60 flex-col gap-3  overflow-auto">
       <label className="relative text-body-m text-medium-gray dark:text-white">
         {label}
       </label>

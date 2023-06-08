@@ -15,9 +15,9 @@ export function ModalWindow() {
 
       <div
         className="absolute left-1/2
-        top-1/2 z-50 w-[30rem]
-        -translate-x-1/2 -translate-y-1/2 transform rounded-md
-        bg-white p-8 dark:bg-dark-gray"
+        top-1/2 z-50 max-h-full
+        w-[30rem] -translate-x-1/2 -translate-y-1/2 transform
+         rounded-md bg-white p-8 dark:bg-dark-gray"
       >
         <div className="flex flex-col gap-6">{modalContent}</div>
       </div>

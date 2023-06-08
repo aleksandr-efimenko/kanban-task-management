@@ -26,9 +26,7 @@ export function DropdownDeleteTaskItem({ taskId }: { taskId: string }) {
   const boards = useBoards();
 
   const handleDeleteTask = () => {
-    handleModal(
-      (<DeleteTask taskId={taskId} taskName={taskName} />) as React.ReactNode
-    );
+    handleModal((<DeleteTask taskId={taskId} />) as React.ReactNode);
   };
 
   const title = "Delete task";

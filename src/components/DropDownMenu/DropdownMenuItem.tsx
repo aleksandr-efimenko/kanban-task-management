@@ -17,7 +17,7 @@ export function DropdownMenuItem({
 
   const handleClick = () => {
     onClick();
-    handleMenu();
+    if (handleMenu) handleMenu();
   };
   const bgColor = destructive
     ? "text-red"
