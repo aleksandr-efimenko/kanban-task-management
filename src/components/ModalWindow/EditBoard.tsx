@@ -56,6 +56,7 @@ export function EditBoard({ boardId }: { boardId: string }) {
         value={boardForm.title}
         onChange={handleInputChange}
         errorMessage={boardForm.titleError}
+        inputType="textInput"
       />
 
       <MultiInputs

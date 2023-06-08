@@ -39,6 +39,7 @@ export function AddBoard() {
 
     //close modal
     handleModal();
+    //go to new board
     void router.push(`/boards/${boardId}`);
   };
 
@@ -57,6 +58,7 @@ export function AddBoard() {
         value={boardForm.title}
         onChange={handleInputChange}
         errorMessage={boardForm.titleError}
+        inputType="textInput"
       />
 
       <MultiInputs

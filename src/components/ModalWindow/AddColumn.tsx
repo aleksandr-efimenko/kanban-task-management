@@ -37,8 +37,11 @@ export function AddColumn({ boardId }: { boardId: string }) {
           type="text"
           placeholder="e.g. Web Design"
           value={columnName}
-          onChange={(e) => setColumnName(e.target.value)}
+          onChange={(e: React.FormEvent<HTMLInputElement>): void =>
+            setColumnName((e.target as HTMLInputElement).value)
+          }
           errorMessage={errorMesage}
+          inputType="textInput"
         />
 
         <ButtonPrimaryS onClick={handleAddColumn}>

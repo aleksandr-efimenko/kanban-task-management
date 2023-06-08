@@ -29,7 +29,8 @@ export function MultiInputs({
         <div className="flex w-full gap-4" key={index}>
           <TextInput
             value={input}
-            onChange={(e) => {
+            inputType="textInput"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               const newInputs = [...inputs];
               newInputs[index] = e.target.value;
               setInputs(newInputs);
