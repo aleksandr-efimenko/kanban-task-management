@@ -1,6 +1,9 @@
 import Image, { type StaticImageData } from "next/image";
 import threeDotsIcon from "~/assets/icon-vertical-ellipsis.svg";
-import { BoardDropdownMenu } from "@/components/DropDownMenu/DropdownMenu";
+import {
+  BoardDropdownMenu,
+  TaskDropdownMenu,
+} from "@/components/DropDownMenu/DropdownMenu";
 import { useContext } from "react";
 import { DropdownMenuContext } from "@/context/DrowdownMenuContext";
 
@@ -10,12 +13,12 @@ export type DropDownItemType = {
 };
 
 export function ThreeDotsButton({ type, id }: DropDownItemType) {
-  const { menu, handleMenu } = useContext(DropdownMenuContext);
+  const { menuIsOpen, handleMenu } = useContext(DropdownMenuContext);
   const getMenu = () => {
     if (type === "board") {
       return <BoardDropdownMenu boardId={id} />;
     } else if (type === "task") {
-      return;
+      return <TaskDropdownMenu taskId={id} />;
     }
   };
 
@@ -23,7 +26,7 @@ export function ThreeDotsButton({ type, id }: DropDownItemType) {
     <div className="relative">
       <button
         onClick={handleMenu}
-        className="h-5 w-5 rounded-full hover:brightness-50 dark:hover:brightness-200"
+        className="flex h-5 w-5 items-center justify-center rounded-full hover:brightness-50 dark:hover:brightness-200"
       >
         <Image
           src={threeDotsIcon as StaticImageData}
@@ -32,7 +35,7 @@ export function ThreeDotsButton({ type, id }: DropDownItemType) {
           height={20}
         />
       </button>
-      {menu && getMenu()}
+      {menuIsOpen && getMenu()}
     </div>
   );
 }

@@ -2,14 +2,15 @@ import {
   TextInput,
   type TextFieldWithoutLabelProps,
 } from "@/components/Inputs/TextInput";
+import { uuid } from "uuidv4";
 
 export type TextFieldWithLabelProps = TextFieldWithoutLabelProps & {
   label: string;
-  id: string;
 };
 
 export function LabelledTextField(props: TextFieldWithLabelProps) {
-  const { id, label, errorMessage } = props;
+  const { label, errorMessage } = props;
+  const id = "board-name";
   return (
     <div className="flex flex-col gap-2">
       <label

@@ -8,6 +8,7 @@ export function TaskColumn({ column }: { column: Column }) {
       <div className="flex flex-col gap-5 ">
         {column.tasks.map((task) => (
           <TaskCard
+            taskId={task.id}
             key={task.title}
             title={task.title}
             subtasks={task.subtasks}

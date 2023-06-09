@@ -2,20 +2,19 @@ import Image, { type StaticImageData } from "next/image";
 import { useState } from "react";
 import { TaskStatuskDropdownMenu } from "../DropDownMenu/DropdownMenu";
 import chevronIcon from "~/assets/icon-chevron-down.svg";
-import { set } from "zod";
 
 export type SelectInputProps = React.ComponentPropsWithoutRef<"select"> & {
   label: string;
-  id: string;
   options: string[];
   currentOption: string;
 };
 
 export function SelectInput(props: SelectInputProps) {
-  const { id, label, options, currentOption } = props;
+  const { label, options, currentOption } = props;
   const [selectedOption, setSelectedOption] = useState(
     currentOption ? currentOption : options[0]
   );
+  const id = "status-select";
   const [showOptions, setShowOptions] = useState(false);
   const handleSelect = (value: string) => {
     setSelectedOption(value);

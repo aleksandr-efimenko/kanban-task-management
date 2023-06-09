@@ -67,6 +67,9 @@ export default {
       gridAutoColumns: {
         "board-view": "17.5rem",
       },
+      backgroundImage: {
+        check: 'url("/assets/icon-check.svg")',
+      },
     },
   },
   plugins: [],

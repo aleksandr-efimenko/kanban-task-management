@@ -104,7 +104,6 @@ export default function AddTask({ boardId }: { boardId: string }) {
       <ModalWindowTitle title="Add New Task" />
       <LabelledTextField
         label={taskDefaultData.inputs.textInput.label}
-        id={taskDefaultData.inputs.textInput.id}
         type="text"
         placeholder={taskDefaultData.inputs.textInput.placeholder}
         value={taskForm.title}
@@ -135,7 +134,6 @@ export default function AddTask({ boardId }: { boardId: string }) {
         currentOption={taskForm.status}
         value={taskForm.status}
         onChange={(e) => setTaskForm({ ...taskForm, status: e.target.value })}
-        id={taskDefaultData.selectInput.id}
         label={taskDefaultData.selectInput.label}
         options={columns.map((column) => column)}
       />

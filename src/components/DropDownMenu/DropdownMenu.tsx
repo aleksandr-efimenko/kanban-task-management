@@ -9,7 +9,8 @@ import {
 } from "./DropdownMenuTask";
 import { DropdownMenuItem } from "./DropdownMenuItem";
 import { DropdownMenuContext } from "@/context/DrowdownMenuContext";
-import { useContext } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
+import { listenForOutsideClicks } from "@/utils/listenForOutsideClicks";
 
 export function DropdownMenu({
   buttons,
@@ -18,9 +19,16 @@ export function DropdownMenu({
   buttons: JSX.Element[];
   position?: string;
 }) {
+  // const menuRef = useRef(null);
+  // const [listening, setListening] = useState(false);
+  // const { menuIsOpen, handleMenu } = useContext(DropdownMenuContext);
+  // useEffect(
+  //   listenForOutsideClicks(listening, setListening, menuRef, handleMenu)
+  // );
   return (
     <div
-      className={`absolute flex flex-col rounded-lg bg-white 
+      // ref={menuRef}
+      className={`absolute flex max-h-40 flex-col overflow-auto rounded-lg bg-white 
     py-4 dark:bg-very-dark-gray ${position ? position : "right-0"}`}
     >
       {buttons}

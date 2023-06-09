@@ -1,9 +1,9 @@
 import { ModalContext } from "@/context/ModalContext";
 import { useContext } from "react";
 import { DropdownMenuItem } from "@/components/DropDownMenu/DropdownMenuItem";
-import { EditTask } from "../ModalWindow/EditTask";
 import { DeleteTask } from "../ModalWindow/DeleteDialogs/DeleteTask";
 import { useBoards } from "@/context/BoardsContext";
+import EditTask from "../ModalWindow/EditTask";
 
 export function DropdownEditTaskItem({ taskId }: { taskId: string }) {
   const { handleModal } = useContext(ModalContext);

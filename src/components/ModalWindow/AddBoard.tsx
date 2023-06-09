@@ -52,7 +52,6 @@ export function AddBoard() {
       <ModalWindowTitle title="Add New Board" />
       <LabelledTextField
         label="Board Name"
-        id="board-name"
         type="text"
         placeholder="e.g. Web Design"
         value={boardForm.title}
