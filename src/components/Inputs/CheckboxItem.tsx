@@ -2,13 +2,17 @@ import { useBoardsDispatch } from "@/context/BoardsContext";
 import { type Subtask } from "@/utils/DataTypes";
 
 export function CheckboxItem({ subtask }: { subtask: Subtask }) {
-  const { title, isCompleted } = subtask;
+  const { id, title, isCompleted } = subtask;
   const dispatch = useBoardsDispatch();
+
+  if (!dispatch) return null;
   const handleCheckboxChange = () => {
-    // dispatch({
-    //   type: "CHANGE_SUBTASK",
-    //   payload: { subtaskId: subtask.id },
-    // });
+    dispatch({
+      type: "CHANGE_SUBTASK",
+      subtaskId: id,
+      subtaskName: title,
+      isCompleted: !isCompleted,
+    });
   };
   const checkedClass = isCompleted ? "line-through opacity-50" : "";
   return (
@@ -20,7 +24,7 @@ export function CheckboxItem({ subtask }: { subtask: Subtask }) {
     >
       <input
         type="checkbox"
-        className="h-4 w-4 cursor-pointer appearance-none rounded-sm border
+        className="h-4 w-4 cursor-pointer appearance-none rounded-sm border 
          border-medium-gray border-opacity-25 outline-none checked:border-transparent
          checked:bg-purple checked:bg-check checked:bg-center checked:bg-no-repeat focus:outline-none"
         checked={isCompleted}
@@ -28,7 +32,7 @@ export function CheckboxItem({ subtask }: { subtask: Subtask }) {
       />
 
       <span
-        className={`text-body-m text-black dark:text-white ${checkedClass}`}
+        className={`select-none text-body-m text-black dark:text-white ${checkedClass}`}
       >
         {title}
       </span>
