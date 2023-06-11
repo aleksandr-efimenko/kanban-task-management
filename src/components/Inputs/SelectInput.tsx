@@ -7,17 +7,16 @@ export type SelectInputProps = React.ComponentPropsWithoutRef<"select"> & {
   label: string;
   options: string[];
   currentOption: string;
+  handleSelectOption: (value: string) => void;
 };
 
 export function SelectInput(props: SelectInputProps) {
-  const { label, options, currentOption } = props;
-  const [selectedOption, setSelectedOption] = useState(
-    currentOption ? currentOption : options[0]
-  );
-  const id = "status-select";
+  const { label, options, currentOption, handleSelectOption } = props;
   const [showOptions, setShowOptions] = useState(false);
+
+  const id = "status-select";
   const handleSelect = (value: string) => {
-    setSelectedOption(value);
+    handleSelectOption(value);
     setShowOptions(false);
   };
   return (
@@ -31,6 +30,7 @@ export function SelectInput(props: SelectInputProps) {
       <div className="custom-select relative">
         <select
           onClick={() => {
+            handleSelectOption(currentOption);
             setShowOptions(!showOptions);
           }}
           className="
@@ -45,8 +45,8 @@ export function SelectInput(props: SelectInputProps) {
             "
           {...props}
         >
-          <option className="hidden" value={selectedOption}>
-            {selectedOption}
+          <option className="hidden" value={currentOption}>
+            {currentOption}
           </option>
         </select>
         {showOptions && (

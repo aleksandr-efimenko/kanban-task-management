@@ -2,6 +2,7 @@ import { ModalContext } from "@/context/ModalContext";
 import { type Subtask } from "@/utils/DataTypes";
 import { useContext } from "react";
 import { TaskView } from "./ModalWindow/TaskView";
+import { getSubtasksDescription } from "@/utils/SubtasksTitle";
 
 export function TaskCard({
   taskId,
@@ -16,8 +17,8 @@ export function TaskCard({
   const handleOpenTask = () => {
     handleModal(<TaskView taskId={taskId} />);
   };
-  const subtasksNumber = subtasks.length;
-  const subtasksDone = subtasks.filter((subtask) => subtask.isCompleted).length;
+
+  const subtasksDescription = getSubtasksDescription(subtasks);
   return (
     <div
       className="cursor-pointer rounded-lg bg-white px-4 py-6 shadow-task-card-shadow 
@@ -25,9 +26,7 @@ export function TaskCard({
       onClick={handleOpenTask}
     >
       <h3 className="text-heading-m">{title}</h3>
-      <p className="mt-2 text-body-m text-medium-gray">
-        {subtasksDone} of {subtasksNumber} subtasks
-      </p>
+      <p className="mt-2 text-body-m text-medium-gray">{subtasksDescription}</p>
     </div>
   );
 }

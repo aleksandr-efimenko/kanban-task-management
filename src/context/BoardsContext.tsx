@@ -10,6 +10,11 @@ import type { Task, Board } from "@/utils/DataTypes";
 import { uuid } from "uuidv4";
 import { type BoardActions, neverReached } from "@/context/BoardActions";
 import { generateColor } from "@/utils/generateColor";
+import {
+  getBoardIdByTaskId,
+  getColumnIdByTaskId,
+  getTaskIdFromSubtask,
+} from "@/utils/getBoardData";
 
 const initialBoards = defaultBoardsData.boards;
 const boardsWithIds: Board[] = initialBoards.map((board) => ({
@@ -136,6 +141,84 @@ function boardsReducer(boards: Board[], action: BoardActions): Board[] {
             columns: board.columns.filter(
               (column) => column.id !== action.columnId
             ),
+          };
+        }
+        return board;
+      });
+      return newBoards;
+    }
+
+    case "ADD_TASK": {
+      console.log(boards);
+      console.log(action);
+      const subtasks = action.subtasks ? action.subtasks : [];
+      const newBoards = boards.map((board) => {
+        if (board.id === action.boardId) {
+          return {
+            ...board,
+            columns: board.columns.map((column) => {
+              if (column.id === action.columnId) {
+                return {
+                  ...column,
+                  tasks: [
+                    ...column.tasks,
+                    {
+                      id: action.taskId,
+                      title: action.taskName,
+                      description: action.taskDescription,
+                      status: column.name,
+                      subtasks: subtasks,
+                    } as Task,
+                  ],
+                };
+              }
+              return column;
+            }),
+          };
+        }
+        return board;
+      });
+      return newBoards;
+    }
+
+    case "CHANGE_SUBTASK": {
+      const taskId = getTaskIdFromSubtask(action.subtaskId, boards);
+      if (!taskId) return boards;
+      const boardId = getBoardIdByTaskId(taskId, boards);
+      if (!boardId) return boards;
+      const columnId = getColumnIdByTaskId(taskId, boards);
+      if (!columnId) return boards;
+
+      const newBoards = boards.map((board) => {
+        if (board.id === boardId) {
+          return {
+            ...board,
+            columns: board.columns.map((column) => {
+              if (column.id === columnId) {
+                return {
+                  ...column,
+                  tasks: column.tasks.map((task) => {
+                    if (task.id === taskId) {
+                      return {
+                        ...task,
+                        subtasks: task.subtasks.map((subtask) => {
+                          if (subtask.id === action.subtaskId) {
+                            return {
+                              ...subtask,
+                              name: action.subtaskName,
+                              isCompleted: action.isCompleted,
+                            };
+                          }
+                          return subtask;
+                        }),
+                      };
+                    }
+                    return task;
+                  }),
+                };
+              }
+              return column;
+            }),
           };
         }
         return board;

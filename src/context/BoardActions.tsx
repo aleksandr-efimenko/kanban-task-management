@@ -1,3 +1,5 @@
+import { Subtask } from "@/utils/DataTypes";
+
 // An enum with all the types of actions to use in our reducer
 export enum ActionKind {
   ADD_COLUMN,
@@ -65,9 +67,12 @@ type DeleteColumnAction = {
 
 type AddTaskAction = {
   type: "ADD_TASK";
-  boardId: string;
-  columnId: string;
+  taskId: string;
   taskName: string;
+  columnId: string;
+  boardId: string;
+  taskDescription: string;
+  subtasks?: Subtask[];
 };
 
 type ChangeTaskAction = {
@@ -95,11 +100,9 @@ type AddSubtaskAction = {
 
 type ChangeSubtaskAction = {
   type: "CHANGE_SUBTASK";
-  boardId: string;
-  columnId: string;
-  taskId: string;
   subtaskId: string;
   subtaskName: string;
+  isCompleted: boolean;
 };
 
 type DeleteSubtaskAction = {

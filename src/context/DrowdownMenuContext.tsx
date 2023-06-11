@@ -1,7 +1,7 @@
 import { useState, createContext } from "react";
 
 export type DropdownMenuContextType = {
-  menu: boolean;
+  menuIsOpen: boolean;
   handleMenu: () => void;
 };
 
@@ -14,11 +14,13 @@ export function DropdownMenuProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [menu, setMenu] = useState(false);
-  const handleMenu = () => setMenu(!menu);
+  const [menuIsOpen, setMenu] = useState(false);
+  const handleMenu = () => setMenu(!menuIsOpen);
 
   return (
-    <DropdownMenuContext.Provider value={{ menu, handleMenu }}>
+    <DropdownMenuContext.Provider
+      value={{ menuIsOpen: menuIsOpen, handleMenu }}
+    >
       {children}
     </DropdownMenuContext.Provider>
   );

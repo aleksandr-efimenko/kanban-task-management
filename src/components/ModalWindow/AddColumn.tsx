@@ -33,7 +33,6 @@ export function AddColumn({ boardId }: { boardId: string }) {
         <ModalWindowTitle title="Add New Column" />
         <LabelledTextField
           label="Board Name"
-          id="board-name"
           type="text"
           placeholder="e.g. Web Design"
           value={columnName}

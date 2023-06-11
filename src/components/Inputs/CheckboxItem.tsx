@@ -32,7 +32,7 @@ export function CheckboxItem({ subtask }: { subtask: Subtask }) {
       />
 
       <span
-        className={`select-none text-body-m text-black dark:text-white ${checkedClass}`}
+        className={`w-full select-none text-body-m text-black dark:text-white ${checkedClass}`}
       >
         {title}
       </span>

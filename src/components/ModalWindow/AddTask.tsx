@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ButtonPrimaryS } from "../Buttons/MainButtons";
 import { LabelledTextField } from "../Inputs/LabelledTextField";
 import { ModalWindowTitle } from "./ModalWindowTitle";
@@ -8,7 +8,7 @@ import { ModalContext } from "@/context/ModalContext";
 import { uuid } from "uuidv4";
 import { SelectInput } from "../Inputs/SelectInput";
 
-const taskDefaultData = {
+const taskFieldsStaticData = {
   title: "Add New Task",
 
   inputs: {
@@ -60,12 +60,19 @@ export default function AddTask({ boardId }: { boardId: string }) {
   const boardsDispatch = useBoardsDispatch();
   const { handleModal } = useContext(ModalContext);
   const boards = useBoards();
-  if (!boards) return null;
-  const currentBoard = boards.find((board) => board.id === boardId);
-  if (!currentBoard) return null;
-  const columns = currentBoard.columns.map((column) => column.name);
+  const currentBoard = boards?.find((board) => board.id === boardId);
+  const columnNames = currentBoard?.columns.map((column) => column.name);
+  useEffect(() => {
+    if (!columnNames) return;
+    if (!columnNames.length) return;
+    if (taskForm.status) return;
+    setTaskForm({
+      ...taskForm,
+      status: columnNames[0] || "",
+    });
+  }, [columnNames, taskForm]);
 
-  const handleCreateBoard = () => {
+  const handleCreateTask = () => {
     //add board to boards
     if (!boardsDispatch) return;
     if (!taskForm.title) {
@@ -77,12 +84,18 @@ export default function AddTask({ boardId }: { boardId: string }) {
     }
 
     const taskId = uuid();
-    // boardsDispatch({
-    //   type: "ADD_BOARD",
-    //   boardName: boardForm.title,
-    //   boardId: boardId,
-    //   columns: boardForm.columns.filter((column) => column !== ""),
-    // });
+    const columnId =
+      currentBoard?.columns.find((column) => column.name === taskForm.status)
+        ?.id || "";
+    console.log(taskForm.title, taskForm.description, taskId, columnId);
+    boardsDispatch({
+      type: "ADD_TASK",
+      taskName: taskForm.title,
+      boardId,
+      columnId: columnId,
+      taskDescription: taskForm.description,
+      taskId,
+    });
 
     //close modal
     handleModal();
@@ -103,19 +116,19 @@ export default function AddTask({ boardId }: { boardId: string }) {
     <>
       <ModalWindowTitle title="Add New Task" />
       <LabelledTextField
-        label={taskDefaultData.inputs.textInput.label}
+        label={taskFieldsStaticData.inputs.textInput.label}
         type="text"
-        placeholder={taskDefaultData.inputs.textInput.placeholder}
+        placeholder={taskFieldsStaticData.inputs.textInput.placeholder}
         value={taskForm.title}
         onChange={handleTitleChange}
         errorMessage={taskForm.titleError}
         inputType="textInput"
       />
       <LabelledTextField
-        label={taskDefaultData.inputs.textAreaInput.label}
-        id={taskDefaultData.inputs.textAreaInput.id}
+        label={taskFieldsStaticData.inputs.textAreaInput.label}
+        id={taskFieldsStaticData.inputs.textAreaInput.id}
         type="textarea"
-        placeholder={taskDefaultData.inputs.textAreaInput.placeholder}
+        placeholder={taskFieldsStaticData.inputs.textAreaInput.placeholder}
         value={taskForm.description}
         onChange={handleDescriptionChange}
         errorMessage={taskForm.descriptionError}
@@ -124,22 +137,23 @@ export default function AddTask({ boardId }: { boardId: string }) {
       />
 
       <MultiInputs
-        label={taskDefaultData.multiInputs.label}
-        buttonText={taskDefaultData.multiInputs.buttonText}
+        label={taskFieldsStaticData.multiInputs.label}
+        buttonText={taskFieldsStaticData.multiInputs.buttonText}
         initialInputs={taskFormDefaultData.subtasks}
         inputs={taskForm.subtasks}
         setInputs={(subtasks) => setTaskForm({ ...taskForm, subtasks })}
       />
       <SelectInput
         currentOption={taskForm.status}
-        value={taskForm.status}
-        onChange={(e) => setTaskForm({ ...taskForm, status: e.target.value })}
-        label={taskDefaultData.selectInput.label}
-        options={columns.map((column) => column)}
+        handleSelectOption={(selectedOption) =>
+          setTaskForm({ ...taskForm, status: selectedOption })
+        }
+        label={taskFieldsStaticData.selectInput.label}
+        options={columnNames || []}
       />
 
-      <ButtonPrimaryS onClick={handleCreateBoard}>
-        {taskDefaultData.button.text}
+      <ButtonPrimaryS onClick={handleCreateTask}>
+        {taskFieldsStaticData.button.text}
       </ButtonPrimaryS>
     </>
   );
