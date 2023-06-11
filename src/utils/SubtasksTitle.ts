@@ -23,9 +23,17 @@ import { type Subtask } from "./DataTypes";
 
  */
 export function getSubtasksTitle(subtasks: Subtask[]) {
-  const subtasksNumber = subtasks.length;
+  if (!subtasks || subtasks?.length === 0) return "0 Subtasks";
+  const subtasksNumber = subtasks?.length;
   const subtasksDone = subtasks.filter((subtask) => subtask.isCompleted).length;
   const subtaskTitle = subtasks.length > 1 ? "Subtasks" : "Subtask";
   const subtaskFullTitle = `${subtaskTitle} (${subtasksDone} of ${subtasksNumber})`;
   return subtaskFullTitle;
+}
+
+export function getSubtasksDescription(subtasks: Subtask[]) {
+  if (!subtasks || subtasks?.length === 0) return "0 Subtasks";
+  const subtasksNumber = subtasks?.length;
+  const subtasksDone = subtasks.filter((subtask) => subtask.isCompleted).length;
+  return `${subtasksDone} of ${subtasksNumber} subtasks`;
 }
