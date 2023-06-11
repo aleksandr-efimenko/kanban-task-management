@@ -25,6 +25,8 @@ export function getBoardIdByTaskId(
       column.tasks.find((task) => task.id === taskId)
     )
   );
+
+  console.log(board?.id);
   return board?.id;
 }
 
@@ -39,6 +41,26 @@ export function getTaskInfoFromId(
     ?.columns.find((column) => column.id === taskColumnId)
     ?.tasks.find((task) => task.id === taskId);
   return task;
+}
+
+export function getTaskIdFromSubtask(subtaskId: string, boards: Board[]) {
+  const task = boards
+    .find((board) =>
+      board.columns.find((column) =>
+        column.tasks.find((task) =>
+          task.subtasks.find((subtask) => subtask.id === subtaskId)
+        )
+      )
+    )
+    ?.columns.find((column) =>
+      column.tasks.find((task) =>
+        task.subtasks.find((subtask) => subtask.id === subtaskId)
+      )
+    )
+    ?.tasks.find((task) =>
+      task.subtasks.find((subtask) => subtask.id === subtaskId)
+    );
+  return task?.id;
 }
 
 export function getBoardDataFromTaskId(
