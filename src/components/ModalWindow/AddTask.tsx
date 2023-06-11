@@ -7,6 +7,7 @@ import { useBoards, useBoardsDispatch } from "@/context/BoardsContext";
 import { ModalContext } from "@/context/ModalContext";
 import { uuid } from "uuidv4";
 import { SelectInput } from "../Inputs/SelectInput";
+import { type Subtask } from "@/utils/DataTypes";
 
 const taskFieldsStaticData = {
   title: "Add New Task",
@@ -83,18 +84,26 @@ export default function AddTask({ boardId }: { boardId: string }) {
       return;
     }
 
-    const taskId = uuid();
     const columnId =
       currentBoard?.columns.find((column) => column.name === taskForm.status)
         ?.id || "";
-    console.log(taskForm.title, taskForm.description, taskId, columnId);
+    // create subtasks objects from subtask names
+    const subtasks: Subtask[] = taskForm.subtasks.map((subtaskName) => {
+      return {
+        id: uuid(),
+        title: subtaskName,
+        isCompleted: false,
+      };
+    });
+
     boardsDispatch({
       type: "ADD_TASK",
+      taskId: uuid(),
       taskName: taskForm.title,
-      boardId,
-      columnId: columnId,
       taskDescription: taskForm.description,
-      taskId,
+      columnId: columnId,
+      boardId,
+      subtasks,
     });
 
     //close modal

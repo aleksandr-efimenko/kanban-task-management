@@ -1,17 +1,4 @@
-import { Subtask } from "@/utils/DataTypes";
-
-// An enum with all the types of actions to use in our reducer
-export enum ActionKind {
-  ADD_COLUMN,
-  CHANGE_COLUMN,
-  DELETE_COLUMN,
-  ADD_TASK,
-  CHANGE_TASK,
-  DELETE_TASK,
-  ADD_SUBTASK,
-  CHANGE_SUBTASK,
-  DELETE_SUBTASK,
-}
+import { type Subtask } from "@/utils/DataTypes";
 
 // An interface for our actions
 export type BoardActions =
@@ -24,9 +11,7 @@ export type BoardActions =
   | AddTaskAction
   | ChangeTaskAction
   | DeleteTaskAction
-  | AddSubtaskAction
-  | ChangeSubtaskAction
-  | DeleteSubtaskAction;
+  | ChangeSubtaskAction;
 
 type AddBoardAction = {
   type: "ADD_BOARD";
@@ -72,7 +57,7 @@ type AddTaskAction = {
   columnId: string;
   boardId: string;
   taskDescription: string;
-  subtasks?: Subtask[];
+  subtasks: Subtask[];
 };
 
 type ChangeTaskAction = {
@@ -81,6 +66,8 @@ type ChangeTaskAction = {
   columnId: string;
   taskId: string;
   taskName: string;
+  taskDescription: string;
+  subtasks: Subtask[];
 };
 
 type DeleteTaskAction = {
@@ -90,27 +77,11 @@ type DeleteTaskAction = {
   taskId: string;
 };
 
-type AddSubtaskAction = {
-  type: "ADD_SUBTASK";
-  boardId: string;
-  columnId: string;
-  taskId: string;
-  subtaskName: string;
-};
-
 type ChangeSubtaskAction = {
   type: "CHANGE_SUBTASK";
   subtaskId: string;
   subtaskName: string;
   isCompleted: boolean;
-};
-
-type DeleteSubtaskAction = {
-  type: "DELETE_SUBTASK";
-  boardId: string;
-  columnId: string;
-  taskId: string;
-  subtaskId: string;
 };
 
 // A function that will never be called, but will throw an error if it is
