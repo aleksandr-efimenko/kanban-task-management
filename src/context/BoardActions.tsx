@@ -6,10 +6,9 @@ export type BoardActions =
   | ChangeBoardAction
   | DeleteBoardAction
   | AddColumnAction
-  | ChangeColumnAction
-  | DeleteColumnAction
   | AddTaskAction
   | ChangeTaskAction
+  | ChangeTaskStatusAction
   | DeleteTaskAction
   | ChangeSubtaskAction;
 
@@ -37,19 +36,6 @@ type AddColumnAction = {
   columnName: string;
 };
 
-type ChangeColumnAction = {
-  type: "CHANGE_COLUMN";
-  boardId: string;
-  columnId: string;
-  columnName: string;
-};
-
-type DeleteColumnAction = {
-  type: "DELETE_COLUMN";
-  boardId: string;
-  columnId: string;
-};
-
 type AddTaskAction = {
   type: "ADD_TASK";
   taskId: string;
@@ -68,6 +54,12 @@ type ChangeTaskAction = {
   taskName: string;
   taskDescription: string;
   subtasks: Subtask[];
+};
+
+type ChangeTaskStatusAction = {
+  type: "CHANGE_TASK_STATUS";
+  taskId: string;
+  newStatus: string;
 };
 
 type DeleteTaskAction = {

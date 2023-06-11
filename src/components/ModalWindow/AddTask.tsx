@@ -64,8 +64,7 @@ export default function AddTask({ boardId }: { boardId: string }) {
   const currentBoard = boards?.find((board) => board.id === boardId);
   const columnNames = currentBoard?.columns.map((column) => column.name);
   useEffect(() => {
-    if (!columnNames) return;
-    if (!columnNames.length) return;
+    if (!columnNames || !columnNames.length) return;
     if (taskForm.status) return;
     setTaskForm({
       ...taskForm,

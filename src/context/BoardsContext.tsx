@@ -11,6 +11,7 @@ import { uuid } from "uuidv4";
 import { type BoardActions, neverReached } from "@/context/BoardActions";
 import { generateColor } from "@/utils/generateColor";
 import {
+  getBoardDataFromTaskId,
   getBoardIdByTaskId,
   getColumnIdByTaskId,
   getTaskIdFromSubtask,
@@ -182,6 +183,7 @@ function boardsReducer(boards: Board[], action: BoardActions): Board[] {
     }
 
     case "CHANGE_TASK": {
+      console.log(action);
       const newBoards = boards.map((board) => {
         if (board.id === action.boardId) {
           return {
@@ -221,40 +223,110 @@ function boardsReducer(boards: Board[], action: BoardActions): Board[] {
       if (!columnId) return boards;
 
       const newBoards = boards.map((board) => {
-        if (board.id === boardId) {
-          return {
-            ...board,
-            columns: board.columns.map((column) => {
-              if (column.id === columnId) {
+        if (board.id !== boardId) {
+          return board;
+        }
+
+        const newColumns = board.columns.map((column) => {
+          if (column.id !== columnId) {
+            return column;
+          }
+
+          const newTasks = column.tasks.map((task) => {
+            if (task.id !== taskId) {
+              return task;
+            }
+
+            const newSubtasks = task.subtasks.map((subtask) => {
+              if (subtask.id === action.subtaskId) {
                 return {
-                  ...column,
-                  tasks: column.tasks.map((task) => {
-                    if (task.id === taskId) {
-                      return {
-                        ...task,
-                        subtasks: task.subtasks.map((subtask) => {
-                          if (subtask.id === action.subtaskId) {
-                            return {
-                              ...subtask,
-                              name: action.subtaskName,
-                              isCompleted: action.isCompleted,
-                            };
-                          }
-                          return subtask;
-                        }),
-                      };
-                    }
-                    return task;
-                  }),
+                  ...subtask,
+                  name: action.subtaskName,
+                  isCompleted: action.isCompleted,
                 };
               }
-              return column;
-            }),
+
+              return subtask;
+            });
+
+            return {
+              ...task,
+              subtasks: newSubtasks,
+            };
+          });
+
+          return {
+            ...column,
+            tasks: newTasks,
           };
-        }
-        return board;
+        });
+
+        return {
+          ...board,
+          columns: newColumns,
+        };
       });
+
       return newBoards;
+    }
+
+    case "CHANGE_TASK_STATUS": {
+      const { taskId, newStatus } = action;
+      const board = getBoardDataFromTaskId(taskId, boards);
+      const previousColumnId = getColumnIdByTaskId(taskId, boards);
+
+      if (!board || !previousColumnId) {
+        return boards;
+      }
+
+      const newColumn = board.columns.find(
+        (column) => column.name === newStatus
+      );
+      // if the new column doesn't exist, do nothing
+      if (!newColumn) {
+        return boards;
+      }
+      // if the task is already in the new column, do nothing
+      if (previousColumnId === newColumn.id) {
+        return boards;
+      }
+
+      const updatedBoards = boards.map((board) => {
+        if (board.id !== board.id) {
+          return board;
+        }
+
+        const updatedColumns = board.columns.map((column) => {
+          if (column.id === newColumn.id) {
+            // find the task in the previous column
+            const task = board.columns
+              .find((column) => column.id === previousColumnId)
+              ?.tasks.find((task) => task.id === taskId);
+
+            if (!task) {
+              return column;
+            }
+            // add the task to the new column
+            return {
+              ...column,
+              tasks: [...column.tasks, { ...task, status: newStatus }],
+            };
+          }
+          // remove the task from the previous column
+          if (column.id === previousColumnId) {
+            return {
+              ...column,
+              tasks: column.tasks.filter((task) => task.id !== taskId),
+            };
+          }
+
+          return column;
+        });
+
+        return { ...board, columns: updatedColumns };
+      });
+
+      return updatedBoards;
     }
 
     default: {

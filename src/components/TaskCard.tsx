@@ -2,7 +2,7 @@ import { ModalContext } from "@/context/ModalContext";
 import { type Subtask } from "@/utils/DataTypes";
 import { useContext } from "react";
 import { TaskView } from "./ModalWindow/TaskView";
-import { getSubtasksDescription } from "@/utils/SubtasksTitle";
+import { generateSubtasksDescription } from "@/utils/SubtasksTitle";
 
 export function TaskCard({
   taskId,
@@ -18,7 +18,7 @@ export function TaskCard({
     handleModal(<TaskView taskId={taskId} />);
   };
 
-  const subtasksDescription = getSubtasksDescription(subtasks);
+  const subtasksDescription = generateSubtasksDescription(subtasks);
   return (
     <div
       className="cursor-pointer rounded-lg bg-white px-4 py-6 shadow-task-card-shadow 

@@ -22,7 +22,7 @@ import { type Subtask } from "./DataTypes";
  * // Subtasks (1 of 2)
 
  */
-export function getSubtasksTitle(subtasks: Subtask[]) {
+export function generateSubtasksTitles(subtasks: Subtask[]) {
   if (!subtasks || subtasks?.length === 0) return "0 Subtasks";
   const subtasksNumber = subtasks?.length;
   const subtasksDone = subtasks.filter((subtask) => subtask.isCompleted).length;
@@ -31,7 +31,7 @@ export function getSubtasksTitle(subtasks: Subtask[]) {
   return subtaskFullTitle;
 }
 
-export function getSubtasksDescription(subtasks: Subtask[]) {
+export function generateSubtasksDescription(subtasks: Subtask[]) {
   if (!subtasks || subtasks?.length === 0) return "0 Subtasks";
   const subtasksNumber = subtasks?.length;
   const subtasksDone = subtasks.filter((subtask) => subtask.isCompleted).length;
