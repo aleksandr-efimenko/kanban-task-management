@@ -20,9 +20,10 @@ type AddBoardAction = {
 };
 
 type ChangeBoardAction = {
-  type: "CHANGE_BOARD";
+  type: "EDIT_BOARD";
   boardId: string;
   boardName: string;
+  columns: string[];
 };
 
 type DeleteBoardAction = {
@@ -47,7 +48,7 @@ type AddTaskAction = {
 };
 
 type ChangeTaskAction = {
-  type: "CHANGE_TASK";
+  type: "EDIT_TASK";
   boardId: string;
   columnId: string;
   taskId: string;
@@ -70,7 +71,7 @@ type DeleteTaskAction = {
 };
 
 type ChangeSubtaskAction = {
-  type: "CHANGE_SUBTASK";
+  type: "EDIT_SUBTASK";
   subtaskId: string;
   subtaskName: string;
   isCompleted: boolean;

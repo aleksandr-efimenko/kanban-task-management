@@ -1,7 +1,6 @@
-import { useBoardsDispatch } from "@/context/BoardsContext";
+import { useBoards, useBoardsDispatch } from "@/context/BoardsContext";
 import { ModalContext } from "@/context/ModalContext";
-import { useRouter } from "next/router";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { uuid } from "uuidv4";
 import { ButtonPrimaryS } from "../Buttons/MainButtons";
 import { LabelledTextField } from "../Inputs/LabelledTextField";
@@ -12,11 +11,21 @@ export function EditBoard({ boardId }: { boardId: string }) {
   const [boardForm, setBoardForm] = useState({
     title: "",
     titleError: "",
-    columns: ["Todo", "Doing"],
+    columns: ["", ""],
   });
   const boardsDispatch = useBoardsDispatch();
   const { handleModal } = useContext(ModalContext);
-  const router = useRouter();
+  const boards = useBoards();
+
+  useEffect(() => {
+    const currendBoard = boards?.find((board) => board.id === boardId);
+    if (!currendBoard) return;
+    setBoardForm({
+      titleError: "",
+      title: currendBoard?.name,
+      columns: currendBoard?.columns.map((col) => col.name),
+    });
+  }, [boardId, boards]);
 
   const handleCreateBoard = () => {
     //add board to boards
@@ -29,17 +38,15 @@ export function EditBoard({ boardId }: { boardId: string }) {
       return;
     }
 
-    const boardId = uuid();
     boardsDispatch({
-      type: "ADD_BOARD",
-      boardName: boardForm.title,
+      type: "EDIT_BOARD",
       boardId: boardId,
+      boardName: boardForm.title,
       columns: boardForm.columns.filter((column) => column !== ""),
     });
 
     //close modal
     handleModal();
-    void router.push(`/boards/${boardId}`);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,9 +72,7 @@ export function EditBoard({ boardId }: { boardId: string }) {
         inputs={boardForm.columns}
         setInputs={(columns) => setBoardForm({ ...boardForm, columns })}
       />
-      <ButtonPrimaryS onClick={handleCreateBoard}>
-        Create New Board
-      </ButtonPrimaryS>
+      <ButtonPrimaryS onClick={handleCreateBoard}>Save Board</ButtonPrimaryS>
     </>
   );
 }

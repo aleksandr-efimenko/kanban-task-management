@@ -8,7 +8,7 @@ export function CheckboxItem({ subtask }: { subtask: Subtask }) {
   if (!dispatch) return null;
   const handleCheckboxChange = () => {
     dispatch({
-      type: "CHANGE_SUBTASK",
+      type: "EDIT_SUBTASK",
       subtaskId: id,
       subtaskName: title,
       isCompleted: !isCompleted,
