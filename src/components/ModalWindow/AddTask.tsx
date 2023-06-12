@@ -87,13 +87,15 @@ export default function AddTask({ boardId }: { boardId: string }) {
       currentBoard?.columns.find((column) => column.name === taskForm.status)
         ?.id || "";
     // create subtasks objects from subtask names
-    const subtasks: Subtask[] = taskForm.subtasks.map((subtaskName) => {
-      return {
-        id: uuid(),
-        title: subtaskName,
-        isCompleted: false,
-      };
-    });
+    const subtasks: Subtask[] = taskForm.subtasks
+      .filter((subtask) => subtask)
+      .map((subtaskName) => {
+        return {
+          id: uuid(),
+          title: subtaskName,
+          isCompleted: false,
+        };
+      });
 
     boardsDispatch({
       type: "ADD_TASK",
