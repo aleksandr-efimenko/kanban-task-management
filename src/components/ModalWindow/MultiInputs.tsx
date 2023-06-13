@@ -3,23 +3,47 @@ import { ButtonSecondary } from "../Buttons/MainButtons";
 import closeIcon from "~/assets/icon-cross.svg";
 import Image, { type StaticImageData } from "next/image";
 
+export type InputObject = {
+  value: string;
+  id: string;
+};
+
+export type MultiInputsProps = {
+  label: string;
+  buttonText: string;
+  inputs: InputObject[];
+  setInputs: (inputs: InputObject[]) => void;
+};
+
 export function MultiInputs({
   label,
   buttonText,
   inputs,
   setInputs,
-}: {
-  label: string;
-  buttonText: string;
-  inputs: string[];
-  setInputs: (inputs: string[]) => void;
-  initialInputs?: string[];
-}) {
+}: MultiInputsProps) {
   const handleRemoveInput = (index: number) => {
     const newInputs = [...inputs];
     newInputs.splice(index, 1);
     setInputs(newInputs);
   };
+
+  const handleAddInput = () => {
+    setInputs([...inputs, { value: "", id: "" }]);
+  };
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    id: string
+  ) => {
+    const newInputs: InputObject[] = inputs.map((input) => {
+      if (input.id === id) {
+        return { ...input, value: e.target.value };
+      }
+      return input;
+    });
+    setInputs(newInputs);
+  };
+
   return (
     <div className="flex max-h-60 flex-col gap-3  overflow-auto">
       <label className="relative text-body-m text-medium-gray dark:text-white">
@@ -28,20 +52,16 @@ export function MultiInputs({
       {inputs.map((input, index) => (
         <div className="flex w-full gap-4" key={index}>
           <TextInput
-            value={input}
+            value={input.value}
             inputType="textInput"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              const newInputs = [...inputs];
-              newInputs[index] = e.target.value;
-              setInputs(newInputs);
-            }}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              handleInputChange(e, input.id)
+            }
           />
           <RemoveInputButton onClick={() => handleRemoveInput(index)} />
         </div>
       ))}
-      <ButtonSecondary onClick={() => setInputs([...inputs, ""])}>
-        {buttonText}
-      </ButtonSecondary>
+      <ButtonSecondary onClick={handleAddInput}>{buttonText}</ButtonSecondary>
     </div>
   );
 }
