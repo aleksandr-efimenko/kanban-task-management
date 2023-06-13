@@ -5,25 +5,29 @@ import { uuid } from "uuidv4";
 import { ButtonPrimaryS } from "../Buttons/MainButtons";
 import { LabelledTextField } from "../Inputs/LabelledTextField";
 import { ModalWindowTitle } from "./ModalWindowTitle";
-import { MultiInputs } from "./MultiInputs";
+import { type InputObject, MultiInputs } from "./MultiInputs";
+import { type Column } from "@/utils/DataTypes";
 
 export function EditBoard({ boardId }: { boardId: string }) {
   const [boardForm, setBoardForm] = useState({
     title: "",
     titleError: "",
-    columns: ["", ""],
+    columns: [
+      { id: uuid(), name: "", color: "", tasks: [] },
+      { id: uuid(), name: "", color: "", tasks: [] },
+    ] as Column[],
   });
   const boardsDispatch = useBoardsDispatch();
   const { handleModal } = useContext(ModalContext);
   const boards = useBoards();
+  const currentBoard = boards?.find((board) => board.id === boardId);
 
   useEffect(() => {
-    const currendBoard = boards?.find((board) => board.id === boardId);
-    if (!currendBoard) return;
+    if (!currentBoard) return;
     setBoardForm({
       titleError: "",
-      title: currendBoard?.name,
-      columns: currendBoard?.columns.map((col) => col.name),
+      title: currentBoard?.name,
+      columns: currentBoard?.columns,
     });
   }, [boardId, boards]);
 
@@ -42,7 +46,7 @@ export function EditBoard({ boardId }: { boardId: string }) {
       type: "EDIT_BOARD",
       boardId: boardId,
       boardName: boardForm.title,
-      columns: boardForm.columns.filter((column) => column !== ""),
+      columns: boardForm.columnNames.filter((column) => column !== ""),
     });
 
     //close modal
@@ -51,6 +55,26 @@ export function EditBoard({ boardId }: { boardId: string }) {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setBoardForm({ ...boardForm, title: e.target.value, titleError: "" });
+  };
+  const handleColumnChange = (newColumnsFromInputs: InputObject[]) => {
+    console.log(newColumnsFromInputs);
+    console.log(boardForm.columns);
+    //change the column object with the same name from input
+    const newColumns = boardForm.columns.map((column) => {
+      const newColumn = newColumnsFromInputs.find(
+        (newColumn) => newColumn.id === column.id
+      );
+      if (!newColumn) return column;
+      return {
+        ...column,
+        name: newColumn.value,
+      };
+    });
+
+    setBoardForm({
+      ...boardForm,
+      columns: newColumns,
+    });
   };
   return (
     <>
@@ -68,9 +92,13 @@ export function EditBoard({ boardId }: { boardId: string }) {
       <MultiInputs
         label="Columns"
         buttonText="+ Add Column"
-        initialInputs={["Todo", "Doing"]}
-        inputs={boardForm.columns}
-        setInputs={(columns) => setBoardForm({ ...boardForm, columns })}
+        inputs={boardForm.columns.map((column) => {
+          return {
+            value: column.name,
+            id: column.id,
+          };
+        })}
+        setInputs={handleColumnChange}
       />
       <ButtonPrimaryS onClick={handleCreateBoard}>Save Board</ButtonPrimaryS>
     </>
