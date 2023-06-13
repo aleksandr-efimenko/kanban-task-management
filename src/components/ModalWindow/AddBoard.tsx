@@ -8,17 +8,21 @@ import { MultiInputs } from "./MultiInputs";
 import { useRouter } from "next/router";
 import { uuid } from "uuidv4";
 
+const initialBoardForm = {
+  title: "",
+  titleError: "",
+  columns: [
+    { title: "Todo", id: uuid() },
+    { title: "Doing", id: uuid() },
+  ],
+};
 export function AddBoard() {
-  const [boardForm, setBoardForm] = useState({
-    title: "",
-    titleError: "",
-    columns: ["Todo", "Doing"],
-  });
+  const [boardForm, setBoardForm] = useState(initialBoardForm);
   const boardsDispatch = useBoardsDispatch();
   const { handleModal } = useContext(ModalContext);
   const router = useRouter();
 
-  const handleCreateBoard = () => {
+  const SaveBoard = () => {
     //add board to boards
     if (!boardsDispatch) return;
     if (!boardForm.title) {
@@ -34,7 +38,7 @@ export function AddBoard() {
       type: "ADD_BOARD",
       boardName: boardForm.title,
       boardId: boardId,
-      columns: boardForm.columns.filter((column) => column !== ""),
+      columns: boardForm.columns.map((column) => column.title),
     });
 
     //close modal
@@ -45,6 +49,34 @@ export function AddBoard() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setBoardForm({ ...boardForm, title: e.target.value, titleError: "" });
+  };
+
+  const handleColumnAdd = () => {
+    setBoardForm({
+      ...boardForm,
+      columns: [...boardForm.columns, { title: "", id: uuid() }],
+    });
+  };
+
+  const handleColumnRemove = (id: string) => {
+    const newColumns = boardForm.columns.filter((column) => column.id !== id);
+    setBoardForm({
+      ...boardForm,
+      columns: newColumns,
+    });
+  };
+
+  const handleColumnChange = (newValue: string, id: string) => {
+    const newColumns = boardForm.columns.map((column) => {
+      if (column.id === id) {
+        return { ...column, title: newValue };
+      }
+      return column;
+    });
+    setBoardForm({
+      ...boardForm,
+      columns: newColumns,
+    });
   };
 
   return (
@@ -63,13 +95,17 @@ export function AddBoard() {
       <MultiInputs
         label="Columns"
         buttonText="+ Add Column"
-        initialInputs={["Todo", "Doing"]}
-        inputs={boardForm.columns}
-        setInputs={(columns) => setBoardForm({ ...boardForm, columns })}
+        inputs={boardForm.columns.map((column) => {
+          return {
+            value: column.title,
+            id: column.id,
+          };
+        })}
+        handleInputChange={handleColumnChange}
+        handleRemoveInput={handleColumnRemove}
+        handleAddInput={handleColumnAdd}
       />
-      <ButtonPrimaryS onClick={handleCreateBoard}>
-        Create New Board
-      </ButtonPrimaryS>
+      <ButtonPrimaryS onClick={SaveBoard}>Create New Board</ButtonPrimaryS>
     </>
   );
 }

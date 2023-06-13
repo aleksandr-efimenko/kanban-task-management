@@ -29,7 +29,7 @@ export function ColumnTitle({ column }: { column: Column }) {
         className={`h-[0.9375rem] w-[0.9375rem] rounded-full`}
         style={{ backgroundColor: bgColor }}
       ></div>
-      <h3 className="text-heading-s font-bold uppercase text-medium-gray">
+      <h3 className="w-full text-heading-s font-bold uppercase text-medium-gray">
         {title}
       </h3>
     </div>

@@ -88,7 +88,7 @@ export default function AddTask({ boardId }: { boardId: string }) {
       .filter((subtask) => subtask.title)
       .map((subtask) => {
         return {
-          id: subtask.id,
+          id: uuid(),
           title: subtask.title,
           isCompleted: false,
         };

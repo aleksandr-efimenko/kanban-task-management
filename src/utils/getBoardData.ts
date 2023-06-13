@@ -25,8 +25,6 @@ export function getBoardIdByTaskId(
       column.tasks.find((task) => task.id === taskId)
     )
   );
-
-  console.log(board?.id);
   return board?.id;
 }
 

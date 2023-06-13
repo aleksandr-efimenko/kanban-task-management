@@ -116,8 +116,6 @@ function boardsReducer(boards: Board[], action: BoardActions): Board[] {
       return newBoards;
     }
     case "ADD_TASK": {
-      console.log(boards);
-      console.log(action);
       const subtasks = action.subtasks ? action.subtasks : [];
       const newBoards = boards.map((board) => {
         if (board.id === action.boardId) {
@@ -149,7 +147,6 @@ function boardsReducer(boards: Board[], action: BoardActions): Board[] {
     }
 
     case "EDIT_TASK": {
-      console.log(action);
       const newBoards = boards.map((board) => {
         if (board.id === action.boardId) {
           return {
@@ -245,6 +242,7 @@ function boardsReducer(boards: Board[], action: BoardActions): Board[] {
       if (!boardId) return boards;
       const columnId = getColumnIdByTaskId(taskId, boards);
       if (!columnId) return boards;
+      console.log(action.subtaskId, action.subtaskName, action.isCompleted);
 
       const newBoards = boards.map((board) => {
         if (board.id !== boardId) {

@@ -13,7 +13,7 @@ export function CheckboxGroup({
     <div className="flex flex-col space-y-2">
       <p className="text-body-l font-semibold">{title}</p>
       {items.map((item) => (
-        <CheckboxItem subtask={item} key={uuid()} />
+        <CheckboxItem subtask={item} key={item.id} />
       ))}
     </div>
   );
