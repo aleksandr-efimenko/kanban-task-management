@@ -44,19 +44,15 @@ const taskFormDefaultData = {
   titleError: "",
   description: "",
   descriptionError: "",
-  subtasks: ["", ""],
+  subtasks: [
+    { title: "", id: uuid() },
+    { title: "", id: uuid() },
+  ],
   status: "",
 };
 
 export default function AddTask({ boardId }: { boardId: string }) {
-  const [taskForm, setTaskForm] = useState({
-    title: taskFormDefaultData.title,
-    titleError: taskFormDefaultData.titleError,
-    description: taskFormDefaultData.description,
-    descriptionError: taskFormDefaultData.descriptionError,
-    subtasks: taskFormDefaultData.subtasks,
-    status: taskFormDefaultData.status,
-  });
+  const [taskForm, setTaskForm] = useState(taskFormDefaultData);
 
   const boardsDispatch = useBoardsDispatch();
   const { handleModal } = useContext(ModalContext);
@@ -72,7 +68,8 @@ export default function AddTask({ boardId }: { boardId: string }) {
     });
   }, [columnNames, taskForm]);
 
-  const handleCreateTask = () => {
+  // dispatch new task to boards
+  const SaveTask = () => {
     //add board to boards
     if (!boardsDispatch) return;
     if (!taskForm.title) {
@@ -86,13 +83,13 @@ export default function AddTask({ boardId }: { boardId: string }) {
     const columnId =
       currentBoard?.columns.find((column) => column.name === taskForm.status)
         ?.id || "";
-    // create subtasks objects from subtask names
+    // create subtasks objects from subtask names remove empty subtasks
     const subtasks: Subtask[] = taskForm.subtasks
-      .filter((subtask) => subtask)
-      .map((subtaskName) => {
+      .filter((subtask) => subtask.title)
+      .map((subtask) => {
         return {
-          id: uuid(),
-          title: subtaskName,
+          id: subtask.id,
+          title: subtask.title,
           isCompleted: false,
         };
       });
@@ -113,6 +110,40 @@ export default function AddTask({ boardId }: { boardId: string }) {
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTaskForm({ ...taskForm, title: e.target.value, titleError: "" });
+  };
+
+  // handle subtask change in subtask array in taskForm state
+  const handleSubtaskChange = (newName: string, id: string) => {
+    const newSubtasks = taskForm.subtasks.map((subtask) => {
+      if (subtask.id === id) {
+        return {
+          ...subtask,
+          title: newName,
+        };
+      }
+      return subtask;
+    });
+    setTaskForm({
+      ...taskForm,
+      subtasks: newSubtasks,
+    });
+  };
+
+  const handleAddSubtask = () => {
+    setTaskForm({
+      ...taskForm,
+      subtasks: [...taskForm.subtasks, { title: "", id: uuid() }],
+    });
+  };
+
+  const handleRemoveSubtask = (id: string) => {
+    const newSubtasks = taskForm.subtasks.filter(
+      (subtask) => subtask.id !== id
+    );
+    setTaskForm({
+      ...taskForm,
+      subtasks: newSubtasks,
+    });
   };
 
   const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -149,9 +180,13 @@ export default function AddTask({ boardId }: { boardId: string }) {
       <MultiInputs
         label={taskFieldsStaticData.multiInputs.label}
         buttonText={taskFieldsStaticData.multiInputs.buttonText}
-        initialInputs={taskFormDefaultData.subtasks}
-        inputs={taskForm.subtasks}
-        setInputs={(subtasks) => setTaskForm({ ...taskForm, subtasks })}
+        inputs={taskForm.subtasks.map((subtask) => ({
+          value: subtask.title,
+          id: subtask.id,
+        }))}
+        handleInputChange={handleSubtaskChange}
+        handleAddInput={handleAddSubtask}
+        handleRemoveInput={handleRemoveSubtask}
       />
       <SelectInput
         currentOption={taskForm.status}
@@ -162,7 +197,7 @@ export default function AddTask({ boardId }: { boardId: string }) {
         options={columnNames || []}
       />
 
-      <ButtonPrimaryS onClick={handleCreateTask}>
+      <ButtonPrimaryS onClick={SaveTask}>
         {taskFieldsStaticData.button.text}
       </ButtonPrimaryS>
     </>

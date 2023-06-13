@@ -1,4 +1,4 @@
-import { type Subtask } from "@/utils/DataTypes";
+import { type Column, type Subtask } from "@/utils/DataTypes";
 
 // An interface for our actions
 export type BoardActions =
@@ -23,7 +23,7 @@ type ChangeBoardAction = {
   type: "EDIT_BOARD";
   boardId: string;
   boardName: string;
-  columns: string[];
+  columns: Column[];
 };
 
 type DeleteBoardAction = {

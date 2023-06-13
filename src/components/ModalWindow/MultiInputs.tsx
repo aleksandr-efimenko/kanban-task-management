@@ -12,38 +12,19 @@ export type MultiInputsProps = {
   label: string;
   buttonText: string;
   inputs: InputObject[];
-  setInputs: (inputs: InputObject[]) => void;
+  handleInputChange: (newValue: string, id: string) => void;
+  handleRemoveInput: (id: string) => void;
+  handleAddInput: () => void;
 };
 
 export function MultiInputs({
   label,
   buttonText,
   inputs,
-  setInputs,
+  handleInputChange,
+  handleRemoveInput,
+  handleAddInput,
 }: MultiInputsProps) {
-  const handleRemoveInput = (index: number) => {
-    const newInputs = [...inputs];
-    newInputs.splice(index, 1);
-    setInputs(newInputs);
-  };
-
-  const handleAddInput = () => {
-    setInputs([...inputs, { value: "", id: "" }]);
-  };
-
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    id: string
-  ) => {
-    const newInputs: InputObject[] = inputs.map((input) => {
-      if (input.id === id) {
-        return { ...input, value: e.target.value };
-      }
-      return input;
-    });
-    setInputs(newInputs);
-  };
-
   return (
     <div className="flex max-h-60 flex-col gap-3  overflow-auto">
       <label className="relative text-body-m text-medium-gray dark:text-white">
@@ -55,10 +36,10 @@ export function MultiInputs({
             value={input.value}
             inputType="textInput"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleInputChange(e, input.id)
+              handleInputChange(e.target.value, input.id)
             }
           />
-          <RemoveInputButton onClick={() => handleRemoveInput(index)} />
+          <RemoveInputButton onClick={() => handleRemoveInput(input.id)} />
         </div>
       ))}
       <ButtonSecondary onClick={handleAddInput}>{buttonText}</ButtonSecondary>

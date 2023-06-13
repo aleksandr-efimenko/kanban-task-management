@@ -5,23 +5,37 @@ import { uuid } from "uuidv4";
 import { ButtonPrimaryS } from "../Buttons/MainButtons";
 import { LabelledTextField } from "../Inputs/LabelledTextField";
 import { ModalWindowTitle } from "./ModalWindowTitle";
-import { type InputObject, MultiInputs } from "./MultiInputs";
+import { MultiInputs } from "./MultiInputs";
 import { type Column } from "@/utils/DataTypes";
+import { generateColor } from "@/utils/generateColor";
 
+const initialBoardForm = {
+  title: "",
+  titleError: "",
+  columns: [
+    { id: uuid(), name: "", color: "", tasks: [] },
+    { id: uuid(), name: "", color: "", tasks: [] },
+  ] as Column[],
+};
+
+/**
+ *  Edit board modal window
+ *
+ * @param param0  boardId
+ * @returns  Edit board modal window
+ *
+ * @example
+ * <EditBoard boardId={boardId} />
+ *
+ */
 export function EditBoard({ boardId }: { boardId: string }) {
-  const [boardForm, setBoardForm] = useState({
-    title: "",
-    titleError: "",
-    columns: [
-      { id: uuid(), name: "", color: "", tasks: [] },
-      { id: uuid(), name: "", color: "", tasks: [] },
-    ] as Column[],
-  });
+  const [boardForm, setBoardForm] = useState(initialBoardForm);
   const boardsDispatch = useBoardsDispatch();
   const { handleModal } = useContext(ModalContext);
   const boards = useBoards();
   const currentBoard = boards?.find((board) => board.id === boardId);
 
+  //fill form with current board data
   useEffect(() => {
     if (!currentBoard) return;
     setBoardForm({
@@ -29,9 +43,44 @@ export function EditBoard({ boardId }: { boardId: string }) {
       title: currentBoard?.name,
       columns: currentBoard?.columns,
     });
-  }, [boardId, boards]);
+  }, [boardId, boards, currentBoard]);
 
-  const handleCreateBoard = () => {
+  // change column name in form state
+  const handleColumnChange = (newName: string, id: string) => {
+    const newColumns = boardForm.columns.map((input) => {
+      if (input.id === id) {
+        return { ...input, name: newName };
+      }
+      return input;
+    });
+    setBoardForm({
+      ...boardForm,
+      columns: newColumns,
+    });
+  };
+
+  // add new column to form state
+  const handleColumnAdd = () => {
+    setBoardForm({
+      ...boardForm,
+      columns: [
+        ...boardForm.columns,
+        { id: uuid(), name: "", color: generateColor(), tasks: [] },
+      ],
+    });
+  };
+
+  // remove column from form state by id
+  const handleColumnRemove = (id: string) => {
+    const newColumns = boardForm.columns.filter((column) => column.id !== id);
+    setBoardForm({
+      ...boardForm,
+      columns: newColumns,
+    });
+  };
+
+  // dispatch action to add new board
+  const SaveBoard = () => {
     //add board to boards
     if (!boardsDispatch) return;
     if (!boardForm.title) {
@@ -46,7 +95,7 @@ export function EditBoard({ boardId }: { boardId: string }) {
       type: "EDIT_BOARD",
       boardId: boardId,
       boardName: boardForm.title,
-      columns: boardForm.columnNames.filter((column) => column !== ""),
+      columns: boardForm.columns,
     });
 
     //close modal
@@ -56,26 +105,7 @@ export function EditBoard({ boardId }: { boardId: string }) {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setBoardForm({ ...boardForm, title: e.target.value, titleError: "" });
   };
-  const handleColumnChange = (newColumnsFromInputs: InputObject[]) => {
-    console.log(newColumnsFromInputs);
-    console.log(boardForm.columns);
-    //change the column object with the same name from input
-    const newColumns = boardForm.columns.map((column) => {
-      const newColumn = newColumnsFromInputs.find(
-        (newColumn) => newColumn.id === column.id
-      );
-      if (!newColumn) return column;
-      return {
-        ...column,
-        name: newColumn.value,
-      };
-    });
 
-    setBoardForm({
-      ...boardForm,
-      columns: newColumns,
-    });
-  };
   return (
     <>
       <ModalWindowTitle title="Add New Board" />
@@ -98,9 +128,11 @@ export function EditBoard({ boardId }: { boardId: string }) {
             id: column.id,
           };
         })}
-        setInputs={handleColumnChange}
+        handleInputChange={handleColumnChange}
+        handleAddInput={handleColumnAdd}
+        handleRemoveInput={handleColumnRemove}
       />
-      <ButtonPrimaryS onClick={handleCreateBoard}>Save Board</ButtonPrimaryS>
+      <ButtonPrimaryS onClick={SaveBoard}>Save Board</ButtonPrimaryS>
     </>
   );
 }

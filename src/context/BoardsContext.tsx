@@ -83,6 +83,7 @@ function boardsReducer(boards: Board[], action: BoardActions): Board[] {
           return {
             ...board,
             name: action.boardName,
+            columns: action.columns,
           };
         }
         return board;
