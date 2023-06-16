@@ -65,8 +65,6 @@ type ChangeTaskStatusAction = {
 
 type DeleteTaskAction = {
   type: "DELETE_TASK";
-  boardId: string;
-  columnId: string;
   taskId: string;
 };
 

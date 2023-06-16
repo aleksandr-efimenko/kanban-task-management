@@ -3,11 +3,15 @@ import { useContext } from "react";
 import { DropdownMenuItem } from "@/components/DropDownMenu/DropdownMenuItem";
 import { DeleteTask } from "../ModalWindow/DeleteDialogs/DeleteTask";
 import EditTask from "../ModalWindow/EditTask";
+import { TaskViewDropdownMenuContext } from "@/context/TaskViewDropdownMenuContext";
+import { TaskView } from "../ModalWindow/TaskView";
 
 export function DropdownEditTaskItem({ taskId }: { taskId: string }) {
   const { handleModal } = useContext(ModalContext);
+  const { handleMenu } = useContext(TaskViewDropdownMenuContext);
   const handleEditTask = () => {
-    handleModal((<EditTask taskId={taskId} />) as React.ReactNode);
+    handleMenu(false);
+    handleModal((<EditTask taskId={taskId} />) as React.ReactNode, true);
   };
 
   const title = "Edit task";
@@ -22,9 +26,22 @@ export function DropdownEditTaskItem({ taskId }: { taskId: string }) {
 
 export function DropdownDeleteTaskItem({ taskId }: { taskId: string }) {
   const { handleModal } = useContext(ModalContext);
+  const { handleMenu } = useContext(TaskViewDropdownMenuContext);
+
+  const handleCancelDelete = () => {
+    handleModal((<TaskView taskId={taskId} />) as React.ReactNode, true);
+  };
 
   const handleDeleteTask = () => {
-    handleModal((<DeleteTask taskId={taskId} />) as React.ReactNode);
+    //close menu
+    handleMenu(false);
+    // open modal
+    handleModal(
+      (
+        <DeleteTask taskId={taskId} handleCancel={handleCancelDelete} />
+      ) as React.ReactNode,
+      true
+    );
   };
 
   const title = "Delete task";

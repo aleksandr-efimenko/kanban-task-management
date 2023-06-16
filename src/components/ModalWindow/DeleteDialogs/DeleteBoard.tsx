@@ -1,5 +1,7 @@
 import { useBoardsDispatch } from "@/context/BoardsContext";
 import { DestructiveDialog } from "@/components/ModalWindow/DeleteDialogs/DeleteDialog";
+import { useContext } from "react";
+import { ModalContext } from "@/context/ModalContext";
 
 type BoardDeleteDialogProps = {
   boardId: string;
@@ -8,6 +10,7 @@ type BoardDeleteDialogProps = {
 
 export function DeleteBoard({ boardId, boardName }: BoardDeleteDialogProps) {
   const dispatch = useBoardsDispatch();
+  const { handleModal } = useContext(ModalContext);
   const handleDelete = () => {
     if (!dispatch) return;
     dispatch({ type: "DELETE_BOARD", boardId: boardId });
@@ -21,6 +24,7 @@ export function DeleteBoard({ boardId, boardName }: BoardDeleteDialogProps) {
       handleDelete={handleDelete}
       title={title}
       description={description}
+      handleCancel={handleModal}
     />
   );
 }

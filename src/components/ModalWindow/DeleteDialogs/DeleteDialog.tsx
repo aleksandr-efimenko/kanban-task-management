@@ -7,12 +7,14 @@ export type DestructiveDialogProps = {
   title: string;
   description: string;
   handleDelete: () => void;
+  handleCancel: () => void;
 };
 
 export function DestructiveDialog({
   title,
   description,
   handleDelete,
+  handleCancel,
 }: DestructiveDialogProps) {
   const { handleModal } = useContext(ModalContext);
   return (
@@ -28,7 +30,7 @@ export function DestructiveDialog({
         >
           Delete
         </ButtonDestructive>
-        <ButtonSecondary onClick={() => handleModal()}>Cancel</ButtonSecondary>
+        <ButtonSecondary onClick={handleCancel}>Cancel</ButtonSecondary>
       </div>
     </>
   );

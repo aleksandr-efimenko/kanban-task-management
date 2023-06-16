@@ -1,7 +1,13 @@
 import { useBoards, useBoardsDispatch } from "@/context/BoardsContext";
 import { DestructiveDialog } from "@/components/ModalWindow/DeleteDialogs/DeleteDialog";
 
-export function DeleteTask({ taskId }: { taskId: string }) {
+export function DeleteTask({
+  taskId,
+  handleCancel,
+}: {
+  taskId: string;
+  handleCancel: () => void;
+}) {
   const dispatch = useBoardsDispatch();
   const boards = useBoards();
   if (!dispatch || !boards) return null;
@@ -30,6 +36,7 @@ export function DeleteTask({ taskId }: { taskId: string }) {
       handleDelete={handleDelete}
       title={title}
       description={description}
+      handleCancel={handleCancel}
     />
   );
 }
