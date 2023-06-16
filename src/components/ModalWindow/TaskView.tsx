@@ -1,7 +1,7 @@
 import { useBoards, useBoardsDispatch } from "@/context/BoardsContext";
 import { ThreeDotsButton } from "../Buttons/ThreeDotsMenu";
 import { ModalWindowTitle } from "./ModalWindowTitle";
-import { useMemo } from "react";
+import { useContext, useMemo } from "react";
 import {
   getBoardDataFromTaskId,
   getColumnIdByTaskId,
@@ -10,6 +10,8 @@ import {
 import { CheckboxGroup } from "../Inputs/CheckboxGroup";
 import { generateSubtasksTitles } from "@/utils/SubtasksTitle";
 import { SelectInput } from "../Inputs/SelectInput";
+import { TaskDropdownMenu } from "../DropDownMenu/DropdownMenu";
+import { TaskViewDropdownMenuContext } from "@/context/TaskViewDropdownMenuContext";
 
 export function TaskView({ taskId }: { taskId: string }) {
   const boards = useBoards();
@@ -18,6 +20,8 @@ export function TaskView({ taskId }: { taskId: string }) {
     if (!taskId || !boards) return null;
     return getTaskInfoFromId(taskId, boards);
   }, [taskId, boards]);
+  const { menuIsOpen, handleMenu } = useContext(TaskViewDropdownMenuContext);
+
   if (!task) return null;
   const { title, description, subtasks, status } = task;
 
@@ -42,7 +46,11 @@ export function TaskView({ taskId }: { taskId: string }) {
     <>
       <div className="flex items-center justify-between gap-6">
         <ModalWindowTitle title={title} />
-        <ThreeDotsButton type="task" id={taskId} />
+        <ThreeDotsButton
+          menuElement={<TaskDropdownMenu taskId={taskId} />}
+          menuIsOpen={menuIsOpen}
+          handleMenu={handleMenu}
+        />
       </div>
       <p className="text-body-l text-medium-gray">{description}</p>
       <CheckboxGroup title={subtasksTitles} items={subtasks} />

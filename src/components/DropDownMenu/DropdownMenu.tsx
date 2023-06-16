@@ -8,7 +8,7 @@ import {
   DropdownEditTaskItem,
 } from "./DropdownMenuTask";
 import { DropdownMenuItem } from "./DropdownMenuItem";
-import { DropdownMenuContext } from "@/context/DrowdownMenuContext";
+import { TopPanelDropdownMenuContext } from "@/context/TopPanelDropdownMenuContext";
 import { useContext, useEffect, useRef, useState } from "react";
 import { listenForOutsideClicks } from "@/utils/listenForOutsideClicks";
 
@@ -54,7 +54,7 @@ export function TaskDropdownMenu({ taskId }: { taskId: string }) {
   return <DropdownMenu buttons={buttons} />;
 }
 
-export function TaskStatuskDropdownMenu({
+export function TaskStatusDropdownMenu({
   options,
   handleClick,
 }: {

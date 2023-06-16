@@ -1,16 +1,21 @@
 import { ModalContext } from "@/context/ModalContext";
+import { TaskViewDropdownMenuContext } from "@/context/TaskViewDropdownMenuContext";
 import { useContext } from "react";
 import { createPortal } from "react-dom";
 
 export function ModalWindow() {
   const { modal, handleModal, modalContent } = useContext(ModalContext);
+  const { handleMenu } = useContext(TaskViewDropdownMenuContext);
   if (!modal) return null;
 
   return createPortal(
     <div className="">
       <div
         className="absolute inset-0 z-30 bg-black bg-opacity-50"
-        onClick={() => handleModal()}
+        onClick={() => {
+          handleModal();
+          handleMenu(false);
+        }}
       ></div>
 
       <div

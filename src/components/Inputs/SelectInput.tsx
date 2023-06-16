@@ -1,6 +1,6 @@
 import Image, { type StaticImageData } from "next/image";
 import { useState } from "react";
-import { TaskStatuskDropdownMenu } from "../DropDownMenu/DropdownMenu";
+import { TaskStatusDropdownMenu } from "../DropDownMenu/DropdownMenu";
 import chevronIcon from "~/assets/icon-chevron-down.svg";
 
 export type SelectInputProps = React.ComponentPropsWithoutRef<"select"> & {
@@ -50,7 +50,7 @@ export function SelectInput(props: SelectInputProps) {
           </option>
         </select>
         {showOptions && (
-          <TaskStatuskDropdownMenu
+          <TaskStatusDropdownMenu
             handleClick={handleSelect}
             options={options}
           />

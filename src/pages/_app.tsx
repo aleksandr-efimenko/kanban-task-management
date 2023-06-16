@@ -8,7 +8,7 @@ import { ThemeProvider } from "next-themes";
 import Layout from "@/components/Layout";
 import { BoardsProvider } from "@/context/BoardsContext";
 import { ModalProvider } from "@/context/ModalContext";
-import { DropdownMenuProvider } from "@/context/DrowdownMenuContext";
+import { TaskViewDropdownMenuProvider } from "@/context/TaskViewDropdownMenuContext";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -18,13 +18,13 @@ const MyApp: AppType<{ session: Session | null }> = ({
     <SessionProvider session={session}>
       <ThemeProvider attribute="class">
         <BoardsProvider>
-          <ModalProvider>
-            <DropdownMenuProvider>
+          <TaskViewDropdownMenuProvider>
+            <ModalProvider>
               <Layout>
                 <Component {...pageProps} />
               </Layout>
-            </DropdownMenuProvider>
-          </ModalProvider>
+            </ModalProvider>
+          </TaskViewDropdownMenuProvider>
         </BoardsProvider>
       </ThemeProvider>
     </SessionProvider>

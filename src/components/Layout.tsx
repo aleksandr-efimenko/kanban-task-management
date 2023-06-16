@@ -1,3 +1,4 @@
+import { TopPanelDropdownMenuProvider } from "@/context/TopPanelDropdownMenuContext";
 import { LeftsidePanel } from "./LeftPanel/LeftsidePanel";
 import { TopPanel } from "./TopPanel";
 import { Plus_Jakarta_Sans } from "next/font/google";
@@ -15,8 +16,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         className={`${plusJakartaSans.className} grid h-screen w-full grid-cols-main-layout grid-rows-main-layout overflow-hidden`}
       >
         <LeftsidePanel />
-        {children}
-        <TopPanel />
+        <TopPanelDropdownMenuProvider>
+          {children}
+          <TopPanel />
+        </TopPanelDropdownMenuProvider>
       </main>
     </>
   );

@@ -242,7 +242,6 @@ function boardsReducer(boards: Board[], action: BoardActions): Board[] {
       if (!boardId) return boards;
       const columnId = getColumnIdByTaskId(taskId, boards);
       if (!columnId) return boards;
-      console.log(action.subtaskId, action.subtaskName, action.isCompleted);
 
       const newBoards = boards.map((board) => {
         if (board.id !== boardId) {
