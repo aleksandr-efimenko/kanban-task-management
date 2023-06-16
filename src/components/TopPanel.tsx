@@ -2,6 +2,9 @@ import { useBoards } from "@/context/BoardsContext";
 import { ThreeDotsButton } from "@/components/Buttons/ThreeDotsMenu";
 import { useRouter } from "next/router";
 import { CreateNewTaskButton } from "./Buttons/CreateNewTaskButton";
+import { BoardDropdownMenu } from "./DropDownMenu/DropdownMenu";
+import { TopPanelDropdownMenuContext } from "@/context/TopPanelDropdownMenuContext";
+import { useContext } from "react";
 
 export function TopPanel() {
   const router = useRouter();
@@ -10,6 +13,7 @@ export function TopPanel() {
   const currentBoard = boards?.find((board) => board.id === router.query.id);
   const boardName = currentBoard ? currentBoard.name : "Board not found";
   const boardId = currentBoard ? currentBoard.id : "";
+  const { menuIsOpen, handleMenu } = useContext(TopPanelDropdownMenuContext);
 
   return (
     <div
@@ -21,7 +25,11 @@ export function TopPanel() {
         <h1 className="text-heading-xl">{boardName}</h1>
         <div className="flex items-center gap-6">
           <CreateNewTaskButton boardId={boardId} />
-          <ThreeDotsButton type="board" id={boardId} />
+          <ThreeDotsButton
+            menuElement={<BoardDropdownMenu boardId={boardId} />}
+            menuIsOpen={menuIsOpen}
+            handleMenu={handleMenu}
+          />
         </div>
       </div>
     </div>

@@ -1,27 +1,17 @@
 import Image, { type StaticImageData } from "next/image";
 import threeDotsIcon from "~/assets/icon-vertical-ellipsis.svg";
-import {
-  BoardDropdownMenu,
-  TaskDropdownMenu,
-} from "@/components/DropDownMenu/DropdownMenu";
-import { useContext } from "react";
-import { DropdownMenuContext } from "@/context/DrowdownMenuContext";
 
-export type DropDownItemType = {
-  type: "board" | "task";
-  id: string;
+export type ThreeDotsButtonProps = {
+  menuElement: JSX.Element;
+  menuIsOpen: boolean;
+  handleMenu: () => void;
 };
 
-export function ThreeDotsButton({ type, id }: DropDownItemType) {
-  const { menuIsOpen, handleMenu } = useContext(DropdownMenuContext);
-  const getMenu = () => {
-    if (type === "board") {
-      return <BoardDropdownMenu boardId={id} />;
-    } else if (type === "task") {
-      return <TaskDropdownMenu taskId={id} />;
-    }
-  };
-
+export function ThreeDotsButton({
+  menuElement,
+  menuIsOpen,
+  handleMenu,
+}: ThreeDotsButtonProps) {
   return (
     <div className="relative">
       <button
@@ -35,7 +25,7 @@ export function ThreeDotsButton({ type, id }: DropDownItemType) {
           height={20}
         />
       </button>
-      {menuIsOpen && getMenu()}
+      {menuIsOpen && menuElement}
     </div>
   );
 }

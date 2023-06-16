@@ -1,11 +1,10 @@
 import Link from "next/link";
-import { useContext } from "react";
-import { DropdownMenuContext } from "@/context/DrowdownMenuContext";
 
 export type DropdownMenuItemProps = {
   title: string;
   destructive?: boolean;
   onClick: () => void;
+  handleMenu?: () => void;
 };
 
 export function DropdownMenuItem({
@@ -13,18 +12,12 @@ export function DropdownMenuItem({
   destructive,
   onClick,
 }: DropdownMenuItemProps) {
-  const { handleMenu } = useContext(DropdownMenuContext);
-
-  const handleClick = () => {
-    onClick();
-    if (handleMenu) handleMenu();
-  };
   const bgColor = destructive
     ? "text-red"
     : "text-medium-gray hover:text-white";
 
   return (
-    <Link href="#" onClick={handleClick}>
+    <Link href="#" onClick={onClick}>
       <p
         className={`rounded-lg px-4 py-2 text-body-l hover:bg-purple  ${bgColor}`}
       >
