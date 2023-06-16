@@ -177,6 +177,31 @@ function boardsReducer(boards: Board[], action: BoardActions): Board[] {
       return newBoards;
     }
 
+    case "DELETE_TASK": {
+      const boardId = getBoardIdByTaskId(action.taskId, boards);
+      const columnId = getColumnIdByTaskId(action.taskId, boards);
+      const newBoards = boards.map((board) => {
+        if (board.id === boardId) {
+          return {
+            ...board,
+            columns: board.columns.map((column) => {
+              if (column.id === columnId) {
+                return {
+                  ...column,
+                  tasks: column.tasks.filter(
+                    (task) => task.id !== action.taskId
+                  ),
+                };
+              }
+              return column;
+            }),
+          };
+        }
+        return board;
+      });
+      return newBoards;
+    }
+
     case "CHANGE_TASK_STATUS": {
       const { taskId, newStatus } = action;
       const board = getBoardDataFromTaskId(taskId, boards);

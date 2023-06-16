@@ -6,21 +6,6 @@ export function DeleteTask({ taskId }: { taskId: string }) {
   const boards = useBoards();
   if (!dispatch || !boards) return null;
 
-  const boardId = boards?.find((board) =>
-    board.columns.find((column) =>
-      column.tasks.find((task) => task.id === taskId)
-    )
-  )?.id;
-  const columnId = boards
-    .find((board) =>
-      board.columns.find((column) =>
-        column.tasks.find((task) => task.id === taskId)
-      )
-    )
-    ?.columns.find((column) =>
-      column.tasks.find((task) => task.id === taskId)
-    )?.id;
-
   const taskTitle = boards
     .find((board) =>
       board.columns.find((column) =>
@@ -33,8 +18,6 @@ export function DeleteTask({ taskId }: { taskId: string }) {
   const handleDelete = () => {
     dispatch({
       type: "DELETE_TASK",
-      boardId: boardId || "",
-      columnId: columnId || "",
       taskId: taskId,
     });
   };
