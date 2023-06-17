@@ -9,9 +9,8 @@ import { uuid } from "uuidv4";
 import { SelectInput } from "../Inputs/SelectInput";
 import { type Subtask } from "@/utils/DataTypes";
 
-const taskFieldsStaticData = {
+const addTaskFormFields = {
   title: "Add New Task",
-
   inputs: {
     textInput: {
       label: "Title",
@@ -29,9 +28,10 @@ const taskFieldsStaticData = {
   multiInputs: {
     label: "Subtasks",
     buttonText: "+ Add New Subtask",
+    placeholders: ["e.g. Make coffee", "e.g. Drink coffee & smile"],
   },
   selectInput: {
-    label: "Current Status",
+    label: "Status",
     id: "task-status",
   },
   button: {
@@ -39,15 +39,15 @@ const taskFieldsStaticData = {
   },
 };
 
-const taskFormDefaultData = {
+export const taskFormDefaultData = {
   title: "",
   titleError: "",
   description: "",
   descriptionError: "",
   subtasks: [
-    { title: "", id: uuid() },
-    { title: "", id: uuid() },
-  ],
+    { title: "", id: uuid(), isCompleted: false },
+    { title: "", id: uuid(), isCompleted: false },
+  ] as Subtask[],
   status: "",
 };
 
@@ -155,21 +155,21 @@ export default function AddTask({ boardId }: { boardId: string }) {
   };
   return (
     <>
-      <ModalWindowTitle title="Add New Task" />
+      <ModalWindowTitle title={addTaskFormFields.title} />
       <LabelledTextField
-        label={taskFieldsStaticData.inputs.textInput.label}
+        label={addTaskFormFields.inputs.textInput.label}
         type="text"
-        placeholder={taskFieldsStaticData.inputs.textInput.placeholder}
+        placeholder={addTaskFormFields.inputs.textInput.placeholder}
         value={taskForm.title}
         onChange={handleTitleChange}
         errorMessage={taskForm.titleError}
         inputType="textInput"
       />
       <LabelledTextField
-        label={taskFieldsStaticData.inputs.textAreaInput.label}
-        id={taskFieldsStaticData.inputs.textAreaInput.id}
+        label={addTaskFormFields.inputs.textAreaInput.label}
+        id={addTaskFormFields.inputs.textAreaInput.id}
         type="textarea"
-        placeholder={taskFieldsStaticData.inputs.textAreaInput.placeholder}
+        placeholder={addTaskFormFields.inputs.textAreaInput.placeholder}
         value={taskForm.description}
         onChange={handleDescriptionChange}
         errorMessage={taskForm.descriptionError}
@@ -178,8 +178,8 @@ export default function AddTask({ boardId }: { boardId: string }) {
       />
 
       <MultiInputs
-        label={taskFieldsStaticData.multiInputs.label}
-        buttonText={taskFieldsStaticData.multiInputs.buttonText}
+        label={addTaskFormFields.multiInputs.label}
+        buttonText={addTaskFormFields.multiInputs.buttonText}
         inputs={taskForm.subtasks.map((subtask) => ({
           value: subtask.title,
           id: subtask.id,
@@ -193,12 +193,12 @@ export default function AddTask({ boardId }: { boardId: string }) {
         handleSelectOption={(selectedOption) =>
           setTaskForm({ ...taskForm, status: selectedOption })
         }
-        label={taskFieldsStaticData.selectInput.label}
+        label={addTaskFormFields.selectInput.label}
         options={columnNames || []}
       />
 
       <ButtonPrimaryS onClick={SaveTask}>
-        {taskFieldsStaticData.button.text}
+        {addTaskFormFields.button.text}
       </ButtonPrimaryS>
     </>
   );

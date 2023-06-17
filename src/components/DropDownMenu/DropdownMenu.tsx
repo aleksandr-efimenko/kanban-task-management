@@ -29,6 +29,7 @@ export function DropdownMenu({
     <div
       // ref={menuRef}
       className={`absolute flex max-h-40 flex-col overflow-auto rounded-lg bg-white 
+
     py-4 dark:bg-very-dark-gray ${position ? position : "right-0"}`}
     >
       {buttons}
@@ -51,7 +52,7 @@ export function TaskDropdownMenu({ taskId }: { taskId: string }) {
     <DropdownEditTaskItem taskId={taskId} key={uuid()} />,
     <DropdownDeleteTaskItem taskId={taskId} key={uuid()} />,
   ];
-  return <DropdownMenu buttons={buttons} />;
+  return <DropdownMenu position="-left-24 top-8 w-48" buttons={buttons} />;
 }
 
 export function TaskStatusDropdownMenu({

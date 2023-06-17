@@ -49,12 +49,10 @@ type AddTaskAction = {
 
 type ChangeTaskAction = {
   type: "EDIT_TASK";
-  boardId: string;
-  columnId: string;
   taskId: string;
-  taskName: string;
-  taskDescription: string;
-  subtasks: Subtask[];
+  newTaskName: string;
+  newTaskDescription: string;
+  newSubtasks: Subtask[];
 };
 
 type ChangeTaskStatusAction = {
