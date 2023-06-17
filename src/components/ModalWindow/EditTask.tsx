@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ButtonPrimaryS } from "../Buttons/MainButtons";
 import { LabelledTextField } from "../Inputs/LabelledTextField";
 import { ModalWindowTitle } from "./ModalWindowTitle";
@@ -7,35 +7,99 @@ import { useBoards, useBoardsDispatch } from "@/context/BoardsContext";
 import { ModalContext } from "@/context/ModalContext";
 import { uuid } from "uuidv4";
 import { SelectInput } from "../Inputs/SelectInput";
+import { taskFormDefaultData } from "./AddTask";
+import {
+  getBoardDataFromTaskId,
+  getTaskInfoFromId,
+} from "@/utils/getBoardData";
+import { generateColor } from "@/utils/generateColor";
 
-const taskFormDefaultData = {
-  title: "",
-  titleError: "",
-  description: "",
-  descriptionError: "",
-  subtasks: ["", ""],
-  status: "",
+const editTaskFormFields = {
+  title: "Edit Task",
+  inputs: {
+    textInput: {
+      label: "Title",
+      id: "task-name",
+      placeholder: "e.g. Take coffee break",
+    },
+    textAreaInput: {
+      label: "Description",
+      id: "task-description",
+      type: "textarea",
+      placeholder:
+        "e.g. It’s always good to take a break. This 15 minute break will recharge the batteries a little.",
+    },
+  },
+  multiInputs: {
+    label: "Subtasks",
+    buttonText: "+ Add New Subtask",
+    placeholders: ["e.g. Make coffee", "e.g. Drink coffee & smile"],
+  },
+  selectInput: {
+    label: "Status",
+    id: "task-status",
+  },
+  button: {
+    text: "Save Changes",
+  },
 };
 
 export default function EditTask({ taskId }: { taskId: string }) {
-  const [taskForm, setTaskForm] = useState({
-    title: taskFormDefaultData.title,
-    titleError: taskFormDefaultData.titleError,
-    description: taskFormDefaultData.description,
-    descriptionError: taskFormDefaultData.descriptionError,
-    subtasks: taskFormDefaultData.subtasks,
-    status: taskFormDefaultData.status,
-  });
-
+  const [taskForm, setTaskForm] = useState(taskFormDefaultData);
   const boardsDispatch = useBoardsDispatch();
   const { handleModal } = useContext(ModalContext);
   const boards = useBoards();
-  if (!boards) return null;
-  const currentBoard = boards.find((board) => board.id === boardId);
-  if (!currentBoard) return null;
-  const columns = currentBoard.columns.map((column) => column.name);
 
-  const handleCreateBoard = () => {
+  //fill form with current board data
+  useEffect(() => {
+    if (!boards) return;
+
+    const currentTask = getTaskInfoFromId(taskId, boards);
+    if (!currentTask) return;
+    setTaskForm({
+      ...taskForm,
+      title: currentTask.title,
+      description: currentTask.description,
+      subtasks: currentTask.subtasks,
+    });
+  }, [taskId, boards, taskForm]);
+
+  // // change column name in form state
+  // const handleColumnChange = (newName: string, id: string) => {
+  //   const newColumns = taskForm.columns.map((input) => {
+  //     if (input.id === id) {
+  //       return { ...input, name: newName };
+  //     }
+  //     return input;
+  //   });
+  //   setTaskForm({
+  //     ...taskForm,
+  //     columns: newColumns,
+  //   });
+  // };
+
+  // // add new column to form state
+  // const handleColumnAdd = () => {
+  //   setTaskForm({
+  //     ...taskForm,
+  //     columns: [
+  //       ...taskForm.columns,
+  //       { id: uuid(), name: "", color: generateColor(), tasks: [] },
+  //     ],
+  //   });
+  // };
+
+  // // remove column from form state by id
+  // const handleColumnRemove = (id: string) => {
+  //   const newColumns = taskForm.columns.filter((column) => column.id !== id);
+  //   setTaskForm({
+  //     ...taskForm,
+  //     columns: newColumns,
+  //   });
+  // };
+
+  // dispatch action to add new board
+  const SaveBoard = () => {
     //add board to boards
     if (!boardsDispatch) return;
     if (!taskForm.title) {
@@ -46,45 +110,39 @@ export default function EditTask({ taskId }: { taskId: string }) {
       return;
     }
 
-    const taskId = uuid();
-    // boardsDispatch({
-    //   type: "ADD_BOARD",
-    //   boardName: boardForm.title,
-    //   boardId: boardId,
-    //   columns: boardForm.columns.filter((column) => column !== ""),
-    // });
+    boardsDispatch({
+      type: "EDIT_TASK",
+      taskId: taskId,
+      newTaskName: taskForm.title,
+      newTaskDescription: taskForm.description,
+      newSubtasks: taskForm.subtasks,
+    });
 
     //close modal
     handleModal();
   };
 
-  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTaskForm({ ...taskForm, title: e.target.value, titleError: "" });
   };
 
-  const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTaskForm({
-      ...taskForm,
-      description: e.target.value,
-      descriptionError: "",
-    });
-  };
   return (
     <>
-      <ModalWindowTitle title="Add New Task" />
+      <ModalWindowTitle title={editTaskFormFields.title} />
       <LabelledTextField
-        label={taskDefaultData.inputs.textInput.label}
+        label={editTaskFormFields.inputs.textInput.label}
         type="text"
-        placeholder={taskDefaultData.inputs.textInput.placeholder}
+        placeholder={editTaskFormFields.inputs.textInput.placeholder}
         value={taskForm.title}
         onChange={handleTitleChange}
         errorMessage={taskForm.titleError}
         inputType="textInput"
       />
       <LabelledTextField
-        label={taskDefaultData.inputs.textAreaInput.label}
+        label={editTaskFormFields.inputs.textAreaInput.label}
+        id={editTaskFormFields.inputs.textAreaInput.id}
         type="textarea"
-        placeholder={taskDefaultData.inputs.textAreaInput.placeholder}
+        placeholder={editTaskFormFields.inputs.textAreaInput.placeholder}
         value={taskForm.description}
         onChange={handleDescriptionChange}
         errorMessage={taskForm.descriptionError}
@@ -93,22 +151,27 @@ export default function EditTask({ taskId }: { taskId: string }) {
       />
 
       <MultiInputs
-        label={taskDefaultData.multiInputs.label}
-        buttonText={taskDefaultData.multiInputs.buttonText}
-        initialInputs={taskFormDefaultData.subtasks}
-        inputs={taskForm.subtasks}
-        setInputs={(subtasks) => setTaskForm({ ...taskForm, subtasks })}
+        label={editTaskFormFields.multiInputs.label}
+        buttonText={editTaskFormFields.multiInputs.buttonText}
+        inputs={taskForm.subtasks.map((subtask) => ({
+          value: subtask.title,
+          id: subtask.id,
+        }))}
+        handleInputChange={handleSubtaskChange}
+        handleAddInput={handleAddSubtask}
+        handleRemoveInput={handleRemoveSubtask}
       />
       <SelectInput
         currentOption={taskForm.status}
-        value={taskForm.status}
-        onChange={(e) => setTaskForm({ ...taskForm, status: e.target.value })}
-        label={taskDefaultData.selectInput.label}
-        options={columns.map((column) => column)}
+        handleSelectOption={(selectedOption) =>
+          setTaskForm({ ...taskForm, status: selectedOption })
+        }
+        label={editTaskFormFields.selectInput.label}
+        options={columnNames || []}
       />
 
-      <ButtonPrimaryS onClick={handleCreateBoard}>
-        {taskDefaultData.button.text}
+      <ButtonPrimaryS onClick={SaveTask}>
+        {editTaskFormFields.button.text}
       </ButtonPrimaryS>
     </>
   );
