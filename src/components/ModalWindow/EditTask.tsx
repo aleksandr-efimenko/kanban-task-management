@@ -12,7 +12,6 @@ import {
   getBoardDataFromTaskId,
   getTaskInfoFromId,
 } from "@/utils/getBoardData";
-import { generateColor } from "@/utils/generateColor";
 
 const editTaskFormFields = {
   title: "Edit Task",
@@ -49,7 +48,8 @@ export default function EditTask({ taskId }: { taskId: string }) {
   const boardsDispatch = useBoardsDispatch();
   const { handleModal } = useContext(ModalContext);
   const boards = useBoards();
-
+  const currentBoard = getBoardDataFromTaskId(taskId, boards || []);
+  const columnNames = currentBoard?.columns.map((column) => column.name);
   //fill form with current board data
   useEffect(() => {
     if (!boards) return;
@@ -64,42 +64,44 @@ export default function EditTask({ taskId }: { taskId: string }) {
     });
   }, [taskId, boards, taskForm]);
 
-  // // change column name in form state
-  // const handleColumnChange = (newName: string, id: string) => {
-  //   const newColumns = taskForm.columns.map((input) => {
-  //     if (input.id === id) {
-  //       return { ...input, name: newName };
-  //     }
-  //     return input;
-  //   });
-  //   setTaskForm({
-  //     ...taskForm,
-  //     columns: newColumns,
-  //   });
-  // };
+  // change column name in form state
+  const handleSubtaskChange = (newName: string, id: string) => {
+    const newSubtasks = taskForm.subtasks.map((input) => {
+      if (input.id === id) {
+        return { ...input, name: newName };
+      }
+      return input;
+    });
+    setTaskForm({
+      ...taskForm,
+      subtasks: newSubtasks,
+    });
+  };
 
-  // // add new column to form state
-  // const handleColumnAdd = () => {
-  //   setTaskForm({
-  //     ...taskForm,
-  //     columns: [
-  //       ...taskForm.columns,
-  //       { id: uuid(), name: "", color: generateColor(), tasks: [] },
-  //     ],
-  //   });
-  // };
+  // add new column to form state
+  const handleAddSubtask = () => {
+    setTaskForm({
+      ...taskForm,
+      subtasks: [
+        ...taskForm.subtasks,
+        { id: uuid(), title: "", isCompleted: false },
+      ],
+    });
+  };
 
-  // // remove column from form state by id
-  // const handleColumnRemove = (id: string) => {
-  //   const newColumns = taskForm.columns.filter((column) => column.id !== id);
-  //   setTaskForm({
-  //     ...taskForm,
-  //     columns: newColumns,
-  //   });
-  // };
+  // remove column from form state by id
+  const handleRemoveSubtask = (id: string) => {
+    const newSubtasks = taskForm.subtasks.filter(
+      (subtask) => subtask.id !== id
+    );
+    setTaskForm({
+      ...taskForm,
+      subtasks: newSubtasks,
+    });
+  };
 
   // dispatch action to add new board
-  const SaveBoard = () => {
+  const SaveTask = () => {
     //add board to boards
     if (!boardsDispatch) return;
     if (!taskForm.title) {
@@ -122,8 +124,11 @@ export default function EditTask({ taskId }: { taskId: string }) {
     handleModal();
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTaskForm({ ...taskForm, title: e.target.value, titleError: "" });
+  };
+  const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTaskForm({ ...taskForm, description: e.target.value });
   };
 
   return (
@@ -145,7 +150,6 @@ export default function EditTask({ taskId }: { taskId: string }) {
         placeholder={editTaskFormFields.inputs.textAreaInput.placeholder}
         value={taskForm.description}
         onChange={handleDescriptionChange}
-        errorMessage={taskForm.descriptionError}
         inputType="textareaInput"
         rows={4}
       />
