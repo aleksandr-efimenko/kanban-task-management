@@ -147,21 +147,23 @@ function boardsReducer(boards: Board[], action: BoardActions): Board[] {
     }
 
     case "EDIT_TASK": {
+      const boardId = getBoardIdByTaskId(action.taskId, boards);
+      const columnId = getColumnIdByTaskId(action.taskId, boards);
       const newBoards = boards.map((board) => {
-        if (board.id === action.boardId) {
+        if (board.id === boardId) {
           return {
             ...board,
             columns: board.columns.map((column) => {
-              if (column.id === action.columnId) {
+              if (column.id === columnId) {
                 return {
                   ...column,
                   tasks: column.tasks.map((task) => {
                     if (task.id === action.taskId) {
                       return {
                         ...task,
-                        title: action.taskName,
-                        description: action.taskDescription,
-                        subtasks: action.subtasks,
+                        title: action.newTaskName,
+                        description: action.newTaskDescription,
+                        subtasks: action.newSubtasks,
                       };
                     }
                     return task;
