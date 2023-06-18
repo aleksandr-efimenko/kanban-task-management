@@ -10,6 +10,7 @@ import { SelectInput } from "../Inputs/SelectInput";
 import { taskFormDefaultData } from "./AddTask";
 import {
   getBoardDataFromTaskId,
+  getColumnIdByTaskId,
   getTaskInfoFromId,
 } from "@/utils/getBoardData";
 
@@ -49,26 +50,31 @@ export default function EditTask({ taskId }: { taskId: string }) {
   const { handleModal } = useContext(ModalContext);
   const boards = useBoards();
   const currentBoard = getBoardDataFromTaskId(taskId, boards || []);
+
+  const currentTask = getTaskInfoFromId(taskId, boards || []);
   const columnNames = currentBoard?.columns.map((column) => column.name);
   //fill form with current board data
   useEffect(() => {
-    if (!boards) return;
-
-    const currentTask = getTaskInfoFromId(taskId, boards);
-    if (!currentTask) return;
+    const currentColumn = currentBoard?.columns.find(
+      (col) => col.id === getColumnIdByTaskId(taskId, boards || [])
+    )?.name;
+    const currentStatus = currentTask?.status
+      ? currentTask?.status
+      : currentColumn;
     setTaskForm({
-      ...taskForm,
-      title: currentTask.title,
-      description: currentTask.description,
-      subtasks: currentTask.subtasks,
+      title: currentTask?.title || "",
+      titleError: "",
+      description: currentTask?.description || "",
+      subtasks: currentTask?.subtasks || [],
+      status: currentStatus || "",
     });
-  }, [taskId, boards, taskForm]);
+  }, [taskId, boards, currentBoard]);
 
   // change column name in form state
   const handleSubtaskChange = (newName: string, id: string) => {
     const newSubtasks = taskForm.subtasks.map((input) => {
       if (input.id === id) {
-        return { ...input, name: newName };
+        return { ...input, title: newName };
       }
       return input;
     });
@@ -118,8 +124,16 @@ export default function EditTask({ taskId }: { taskId: string }) {
       newTaskName: taskForm.title,
       newTaskDescription: taskForm.description,
       newSubtasks: taskForm.subtasks,
+      newStatus: taskForm.status,
     });
 
+    if (taskForm.status !== currentTask?.status) {
+      boardsDispatch({
+        type: "CHANGE_TASK_STATUS",
+        taskId: taskId,
+        newStatus: taskForm.status,
+      });
+    }
     //close modal
     handleModal();
   };
@@ -167,9 +181,10 @@ export default function EditTask({ taskId }: { taskId: string }) {
       />
       <SelectInput
         currentOption={taskForm.status}
-        handleSelectOption={(selectedOption) =>
-          setTaskForm({ ...taskForm, status: selectedOption })
-        }
+        handleSelectOption={(selectedOption) => {
+          console.log(selectedOption);
+          setTaskForm({ ...taskForm, status: selectedOption });
+        }}
         label={editTaskFormFields.selectInput.label}
         options={columnNames || []}
       />

@@ -52,6 +52,7 @@ type ChangeTaskAction = {
   taskId: string;
   newTaskName: string;
   newTaskDescription: string;
+  newStatus: string;
   newSubtasks: Subtask[];
 };
 

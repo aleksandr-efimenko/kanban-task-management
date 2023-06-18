@@ -43,7 +43,6 @@ export const taskFormDefaultData = {
   title: "",
   titleError: "",
   description: "",
-  descriptionError: "",
   subtasks: [
     { title: "", id: uuid(), isCompleted: false },
     { title: "", id: uuid(), isCompleted: false },
@@ -132,7 +131,10 @@ export default function AddTask({ boardId }: { boardId: string }) {
   const handleAddSubtask = () => {
     setTaskForm({
       ...taskForm,
-      subtasks: [...taskForm.subtasks, { title: "", id: uuid() }],
+      subtasks: [
+        ...taskForm.subtasks,
+        { title: "", id: uuid(), isCompleted: false },
+      ],
     });
   };
 
@@ -150,7 +152,6 @@ export default function AddTask({ boardId }: { boardId: string }) {
     setTaskForm({
       ...taskForm,
       description: e.target.value,
-      descriptionError: "",
     });
   };
   return (
@@ -172,7 +173,6 @@ export default function AddTask({ boardId }: { boardId: string }) {
         placeholder={addTaskFormFields.inputs.textAreaInput.placeholder}
         value={taskForm.description}
         onChange={handleDescriptionChange}
-        errorMessage={taskForm.descriptionError}
         inputType="textareaInput"
         rows={4}
       />
