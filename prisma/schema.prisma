@@ -17,7 +17,7 @@ datasource db {
 
 // Necessary for Next auth
 model Account {
-    id                String  @id @default(cuid()) @map("_id") @db.ObjectId
+    id                String  @id @default(auto()) @map("_id") @db.ObjectId
     userId            String  @map("user_id") @db.ObjectId
     type              String
     provider          String
@@ -35,7 +35,7 @@ model Account {
 }
 
 model Session {
-    id           String   @id @default(cuid()) @map("_id") @db.ObjectId
+    id           String   @id @default(auto()) @map("_id") @db.ObjectId
     sessionToken String   @unique
     userId       String   @map("user_id") @db.ObjectId
     expires      DateTime
@@ -43,7 +43,7 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid()) @map("_id") @db.ObjectId
+    id            String    @id @default(auto()) @map("_id") @db.ObjectId
     name          String?
     email         String?   @unique
     emailVerified DateTime?
@@ -54,7 +54,7 @@ model User {
 }
 
 model VerificationToken {
-    id         String   @id @default(cuid()) @map("_id") @db.ObjectId
+    id         String   @id @default(auto()) @map("_id") @db.ObjectId
     identifier String
     token      String   @unique
     expires    DateTime
@@ -63,7 +63,7 @@ model VerificationToken {
 }
 
 model Board {
-    id        String   @id @default(cuid()) @map("_id") @db.ObjectId
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
     name      String
@@ -73,7 +73,7 @@ model Board {
 }
 
 model Column {
-    id        String   @id @default(cuid()) @map("_id") @db.ObjectId
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
     name      String
@@ -83,7 +83,7 @@ model Column {
 }
 
 model Task {
-    id        String    @id @default(cuid()) @map("_id") @db.ObjectId
+    id        String    @id @default(auto()) @map("_id") @db.ObjectId
     createdAt DateTime  @default(now())
     updatedAt DateTime  @updatedAt
     name      String
@@ -93,7 +93,7 @@ model Task {
 }
 
 model Subtask {
-    id        String   @id @default(cuid()) @map("_id")
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
     name      String
