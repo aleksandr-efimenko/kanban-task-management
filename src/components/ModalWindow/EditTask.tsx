@@ -50,7 +50,6 @@ export default function EditTask({ taskId }: { taskId: string }) {
   const { handleModal } = useContext(ModalContext);
   const boards = useBoards();
   const currentBoard = getBoardDataFromTaskId(taskId, boards || []);
-
   const currentTask = getTaskInfoFromId(taskId, boards || []);
   const columnNames = currentBoard?.columns.map((column) => column.name);
   //fill form with current board data
@@ -68,7 +67,15 @@ export default function EditTask({ taskId }: { taskId: string }) {
       subtasks: currentTask?.subtasks || [],
       status: currentStatus || "",
     });
-  }, [taskId, boards, currentBoard]);
+  }, [
+    taskId,
+    boards,
+    currentBoard?.columns,
+    currentTask?.status,
+    currentTask?.title,
+    currentTask?.description,
+    currentTask?.subtasks,
+  ]);
 
   // change column name in form state
   const handleSubtaskChange = (newName: string, id: string) => {
@@ -117,7 +124,7 @@ export default function EditTask({ taskId }: { taskId: string }) {
       });
       return;
     }
-
+    // save changes
     boardsDispatch({
       type: "EDIT_TASK",
       taskId: taskId,
@@ -127,6 +134,7 @@ export default function EditTask({ taskId }: { taskId: string }) {
       newStatus: taskForm.status,
     });
 
+    // change task status if needed
     if (taskForm.status !== currentTask?.status) {
       boardsDispatch({
         type: "CHANGE_TASK_STATUS",
