@@ -8,7 +8,7 @@ import EmailProvider from "next-auth/providers/email";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { env } from "@/env.mjs";
 import { prisma } from "@/server/db";
-
+// const useSecureCookies = !!env.VERCEL_URL;
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
  * object and keep type safety.
@@ -35,6 +35,10 @@ declare module "next-auth" {
  *
  * @see https://next-auth.js.org/configuration/options
  */
+const useSecureCookies = env.NEXTAUTH_URL.startsWith("https://");
+const cookiePrefix = useSecureCookies ? "__Secure-" : "";
+const hostName = new URL(env.NEXTAUTH_URL).hostname;
+
 export const authOptions: NextAuthOptions = {
   callbacks: {
     session: ({ session, user }) => ({
@@ -49,14 +53,14 @@ export const authOptions: NextAuthOptions = {
   providers: [
     EmailProvider({
       server: {
-        host: process.env.EMAIL_SERVER_HOST,
-        port: process.env.EMAIL_SERVER_PORT,
+        host: env.EMAIL_SERVER_HOST,
+        port: env.EMAIL_SERVER_PORT,
         auth: {
-          user: process.env.EMAIL_SERVER_USER,
-          pass: process.env.EMAIL_SERVER_PASSWORD,
+          user: env.EMAIL_SERVER_USER,
+          pass: env.EMAIL_SERVER_PASSWORD,
         },
       },
-      from: process.env.EMAIL_FROM,
+      from: env.EMAIL_FROM,
     }),
     /**
      * ...add more providers here.
@@ -68,6 +72,18 @@ export const authOptions: NextAuthOptions = {
      * @see https://next-auth.js.org/providers/github
      */
   ],
+  cookies: {
+    sessionToken: {
+      name: `${cookiePrefix}next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        domain: "." + hostName,
+        secure: useSecureCookies,
+      },
+    },
+  },
 };
 
 /**
