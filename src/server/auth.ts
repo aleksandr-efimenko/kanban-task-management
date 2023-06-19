@@ -35,7 +35,6 @@ declare module "next-auth" {
  *
  * @see https://next-auth.js.org/configuration/options
  */
-const useSecureCookies = !!env.VERCEL_URL;
 
 export const authOptions: NextAuthOptions = {
   callbacks: {
@@ -47,11 +46,7 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   },
-  session: {
-    strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60, // 30 days
-    updateAge: 24 * 60 * 60, // 24 hours
-  },
+
   adapter: PrismaAdapter(prisma),
   providers: [
     EmailProvider({
@@ -79,20 +74,6 @@ export const authOptions: NextAuthOptions = {
      * @see https://next-auth.js.org/providers/github
      */
   ],
-
-  secret: env.SECRET,
-  cookies: {
-    sessionToken: {
-      name: `${useSecureCookies ? "__Secure-" : ""}next-auth.session-token`,
-      options: {
-        httpOnly: true,
-        sameSite: "lax",
-        path: "/",
-        domain: "." + env.CUSTOM_DOMAIN,
-        secure: useSecureCookies,
-      },
-    },
-  },
 };
 
 /**

@@ -29,10 +29,6 @@ export const env = createEnv({
 
     GITHUB_ID: z.string().min(1),
     GITHUB_SECRET: z.string().min(1),
-
-    VERCEL_URL: z.string().min(1),
-    CUSTOM_DOMAIN: z.string().min(1),
-    SECRET: z.string().min(1),
   },
 
   /**
@@ -62,9 +58,5 @@ export const env = createEnv({
 
     GITHUB_ID: process.env.GITHUB_ID,
     GITHUB_SECRET: process.env.GITHUB_SECRET,
-
-    VERCEL_URL: process.env.VERCEL_URL,
-    CUSTOM_DOMAIN: process.env.CUSTOM_DOMAIN,
-    SECRET: process.env.SECRET,
   },
 });
