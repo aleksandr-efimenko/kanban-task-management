@@ -36,6 +36,7 @@ declare module "next-auth" {
  *
  * @see https://next-auth.js.org/configuration/options
  */
+const useSecureCookies = !!env.VERCEL_URL;
 
 export const authOptions: NextAuthOptions = {
   callbacks: {
@@ -74,6 +75,20 @@ export const authOptions: NextAuthOptions = {
      * @see https://next-auth.js.org/providers/github
      */
   ],
+
+  secret: env.SECRET,
+  cookies: {
+    sessionToken: {
+      name: `${useSecureCookies ? "__Secure-" : ""}next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        domain: "." + env.CUSTOM_DOMAIN,
+        secure: useSecureCookies,
+      },
+    },
+  },
 };
 
 /**
