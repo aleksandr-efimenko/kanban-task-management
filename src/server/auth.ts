@@ -79,7 +79,7 @@ export const authOptions: NextAuthOptions = {
         httpOnly: true,
         sameSite: "lax",
         path: "/",
-        domain: "." + hostName,
+        domain: ".alexefimenko.com",
         secure: useSecureCookies,
       },
     },
