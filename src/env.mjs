@@ -26,6 +26,9 @@ export const env = createEnv({
     EMAIL_SERVER_USER: z.string().min(1),
     EMAIL_SERVER_PASSWORD: z.string().min(1),
     EMAIL_FROM: z.string().email(),
+
+    GITHUB_ID: z.string().min(1),
+    GITHUB_SECRET: z.string().min(1),
   },
 
   /**
@@ -52,5 +55,8 @@ export const env = createEnv({
     EMAIL_SERVER_USER: process.env.EMAIL_SERVER_USER,
     EMAIL_SERVER_PASSWORD: process.env.EMAIL_SERVER_PASSWORD,
     EMAIL_FROM: process.env.EMAIL_FROM,
+
+    GITHUB_ID: process.env.GITHUB_ID,
+    GITHUB_SECRET: process.env.GITHUB_SECRET,
   },
 });
