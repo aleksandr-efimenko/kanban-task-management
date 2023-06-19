@@ -36,9 +36,6 @@ declare module "next-auth" {
  *
  * @see https://next-auth.js.org/configuration/options
  */
-const useSecureCookies = env.NEXTAUTH_URL.startsWith("https://");
-const cookiePrefix = useSecureCookies ? "__Secure-" : "";
-const hostName = new URL(env.NEXTAUTH_URL).hostname;
 
 export const authOptions: NextAuthOptions = {
   callbacks: {
@@ -77,18 +74,6 @@ export const authOptions: NextAuthOptions = {
      * @see https://next-auth.js.org/providers/github
      */
   ],
-  cookies: {
-    sessionToken: {
-      name: `${cookiePrefix}next-auth.session-token`,
-      options: {
-        httpOnly: true,
-        sameSite: "lax",
-        path: "/",
-        domain: ".alexefimenko.com",
-        secure: useSecureCookies,
-      },
-    },
-  },
 };
 
 /**
