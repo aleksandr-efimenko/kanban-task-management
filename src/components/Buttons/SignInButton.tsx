@@ -15,7 +15,9 @@ export function SignInButton() {
     return (
       <>
         <p className="w-64">Not signed in</p>
-        <ButtonPrimaryS onClick={() => signIn()}>Sign in</ButtonPrimaryS>
+        <ButtonPrimaryS className="" onClick={() => signIn()}>
+          Sign in
+        </ButtonPrimaryS>
       </>
     );
   };

@@ -5,16 +5,30 @@ import Image from "next/image";
 import { AddBoard } from "../ModalWindow/AddBoard";
 import { useContext } from "react";
 import { ModalContext } from "@/context/ModalContext";
+import { api } from "@/utils/api";
+import { title } from "process";
 
 export function CreateNewBoardButton() {
   const { handleModal } = useContext(ModalContext);
+
+  const createBoard = api.boards.createBoard.useMutation();
+  const saveBoard = () => {
+    console.log("save board");
+    createBoard.mutate({
+      name: "title",
+    });
+  };
+
   return (
     <Link
       href="#"
       className={`group flex min-h-[3rem] w-full items-center gap-4 
         overflow-hidden text-ellipsis rounded-r-full pl-8 text-purple duration-200
         hover:scale-105`}
-      onClick={() => handleModal((<AddBoard />) as React.ReactNode)}
+      onClick={() => {
+        saveBoard();
+        handleModal((<AddBoard />) as React.ReactNode);
+      }}
     >
       <Image
         src={boardIcon as StaticImageData}

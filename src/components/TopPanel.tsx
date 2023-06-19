@@ -5,11 +5,11 @@ import { CreateNewTaskButton } from "./Buttons/CreateNewTaskButton";
 import { BoardDropdownMenu } from "./DropDownMenu/DropdownMenu";
 import { TopPanelDropdownMenuContext } from "@/context/TopPanelDropdownMenuContext";
 import { useContext } from "react";
+import { SignInButton } from "./Buttons/SignInButton";
 
 export function TopPanel() {
   const router = useRouter();
   const boards = useBoards();
-
   const currentBoard = boards?.find((board) => board.id === router.query.id);
   const boardName = currentBoard ? currentBoard.name : "Board not found";
   const boardId = currentBoard ? currentBoard.id : "";
@@ -24,6 +24,7 @@ export function TopPanel() {
       <div className="flex items-center justify-between pl-6 pt-5">
         <h1 className="text-heading-xl">{boardName}</h1>
         <div className="flex items-center gap-6">
+          <SignInButton />
           <CreateNewTaskButton boardId={boardId} />
           <ThreeDotsButton
             menuElement={<BoardDropdownMenu boardId={boardId} />}

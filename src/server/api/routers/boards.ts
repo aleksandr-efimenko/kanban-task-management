@@ -1,15 +1,7 @@
 import { z } from "zod";
-
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { Board } from "@prisma/client";
 
-interface MyContext {
-  prisma: {
-    board: {
-      findMany: () => Promise<Board[]>;
-    };
-  };
-}
 
 export const boardsRouter = createTRPCRouter({
   getAllBoards: publicProcedure.query(({ ctx }) => {
