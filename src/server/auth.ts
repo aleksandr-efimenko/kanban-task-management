@@ -9,7 +9,6 @@ import GitHubProvider from "next-auth/providers/github";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { env } from "@/env.mjs";
 import { prisma } from "@/server/db";
-// const useSecureCookies = !!env.VERCEL_URL;
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
  * object and keep type safety.
@@ -47,6 +46,11 @@ export const authOptions: NextAuthOptions = {
         id: user.id,
       },
     }),
+  },
+  session: {
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+    updateAge: 24 * 60 * 60, // 24 hours
   },
   adapter: PrismaAdapter(prisma),
   providers: [
