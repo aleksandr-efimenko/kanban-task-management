@@ -2,7 +2,13 @@ import { useModal } from "@/hooks/useModal";
 import { ModalWindow } from "@/components/ModalWindow/ModalWindow";
 import { createContext } from "react";
 
-export const ModalContext = createContext<ReturnType<typeof useModal>>(null);
+export const ModalContext = createContext<ReturnType<typeof useModal>>({
+  modal: false,
+  handleModal: () => {
+    return;
+  },
+  modalContent: null,
+});
 const { Provider } = ModalContext;
 
 export function ModalProvider({ children }: { children: React.ReactNode }) {
