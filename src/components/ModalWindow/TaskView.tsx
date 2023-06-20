@@ -23,7 +23,7 @@ export function TaskView({ taskId }: { taskId: string }) {
   const { menuIsOpen, handleMenu } = useContext(TaskViewDropdownMenuContext);
 
   if (!task) return null;
-  const { title, description, subtasks, status } = task;
+  const { title: title, description, subtasks, status } = task;
 
   const currentBoard = getBoardDataFromTaskId(taskId, boards || []);
   const columnNames = currentBoard?.columns.map((column) => column.name);

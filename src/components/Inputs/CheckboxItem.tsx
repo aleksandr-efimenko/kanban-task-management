@@ -2,7 +2,7 @@ import { useBoardsDispatch } from "@/context/BoardsContext";
 import { type Subtask } from "@/utils/DataTypes";
 
 export function CheckboxItem({ subtask }: { subtask: Subtask }) {
-  const { id, title, isCompleted } = subtask;
+  const { id, title: title, isCompleted } = subtask;
   const dispatch = useBoardsDispatch();
 
   if (!dispatch) return null;

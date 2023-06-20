@@ -3,7 +3,7 @@ import { type Column, type Subtask } from "@/utils/DataTypes";
 // An interface for our actions
 export type BoardActions =
   | AddBoardAction
-  | ChangeBoardAction
+  | EditBoardAction
   | DeleteBoardAction
   | AddColumnAction
   | AddTaskAction
@@ -12,32 +12,32 @@ export type BoardActions =
   | DeleteTaskAction
   | ChangeSubtaskAction;
 
-type AddBoardAction = {
+export type AddBoardAction = {
   type: "ADD_BOARD";
   boardId: string;
   boardName: string;
   columns: string[];
 };
 
-type ChangeBoardAction = {
+export type EditBoardAction = {
   type: "EDIT_BOARD";
   boardId: string;
   boardName: string;
   columns: Column[];
 };
 
-type DeleteBoardAction = {
+export type DeleteBoardAction = {
   type: "DELETE_BOARD";
   boardId: string;
 };
 
-type AddColumnAction = {
+export type AddColumnAction = {
   type: "ADD_COLUMN";
   boardId: string;
   columnName: string;
 };
 
-type AddTaskAction = {
+export type AddTaskAction = {
   type: "ADD_TASK";
   taskId: string;
   taskName: string;
@@ -47,7 +47,7 @@ type AddTaskAction = {
   subtasks: Subtask[];
 };
 
-type ChangeTaskAction = {
+export type ChangeTaskAction = {
   type: "EDIT_TASK";
   taskId: string;
   newTaskName: string;
@@ -56,18 +56,18 @@ type ChangeTaskAction = {
   newSubtasks: Subtask[];
 };
 
-type ChangeTaskStatusAction = {
+export type ChangeTaskStatusAction = {
   type: "CHANGE_TASK_STATUS";
   taskId: string;
   newStatus: string;
 };
 
-type DeleteTaskAction = {
+export type DeleteTaskAction = {
   type: "DELETE_TASK";
   taskId: string;
 };
 
-type ChangeSubtaskAction = {
+export type ChangeSubtaskAction = {
   type: "EDIT_SUBTASK";
   subtaskId: string;
   subtaskName: string;

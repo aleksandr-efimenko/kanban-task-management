@@ -1,5 +1,6 @@
 import { useSession, signIn, signOut } from "next-auth/react";
-import { ButtonPrimaryS } from "./MainButtons";
+import { ButtonPrimaryS, ButtonSecondary } from "./MainButtons";
+import { type Session } from "next-auth";
 
 export function SignInButton() {
   const { data: session } = useSession();
@@ -11,12 +12,15 @@ export function SignInButton() {
   const handleSignOut = async () => {
     await signOut();
   };
+  const getUserInfo = (session: Session) => {
+    return session.user.name ? session.user.name : session.user.email || "";
+  };
 
   const getAuthInfo = () => {
     if (session) {
       return (
         <>
-          <p>Signed in as {session.user.name}</p>
+          <p className="min-w-64">Signed in as {getUserInfo(session)}</p>
           <ButtonPrimaryS
             onClick={() => {
               void handleSignOut();
@@ -30,21 +34,20 @@ export function SignInButton() {
 
     return (
       <>
-        <p className="w-64">Not signed in</p>
-        <ButtonPrimaryS
+        <ButtonSecondary
           className=""
           onClick={() => {
             void handleSignIn();
           }}
         >
           Sign in
-        </ButtonPrimaryS>
+        </ButtonSecondary>
       </>
     );
   };
 
   return (
-    <div className="flex items-center justify-center gap-3">
+    <div className="flex w-full items-center justify-center gap-3">
       {getAuthInfo()}
     </div>
   );

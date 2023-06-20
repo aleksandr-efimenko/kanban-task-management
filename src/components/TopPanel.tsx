@@ -23,7 +23,7 @@ export function TopPanel() {
     >
       <div className="flex items-center justify-between pl-6 pt-5">
         <h1 className="text-heading-xl">{boardName}</h1>
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-6 px-8">
           <SignInButton />
           <CreateNewTaskButton boardId={boardId} />
           <ThreeDotsButton

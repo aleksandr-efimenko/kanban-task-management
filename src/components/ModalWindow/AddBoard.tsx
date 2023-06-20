@@ -7,6 +7,8 @@ import { ModalContext } from "@/context/ModalContext";
 import { MultiInputs } from "./MultiInputs";
 import { useRouter } from "next/router";
 import { uuid } from "uuidv4";
+import { api } from "@/utils/api";
+const testUserId = "6490560f71657f9c5d6f26ef";
 
 const initialBoardForm = {
   title: "",
@@ -16,13 +18,14 @@ const initialBoardForm = {
     { title: "Doing", id: uuid() },
   ],
 };
+
 export function AddBoard() {
   const [boardForm, setBoardForm] = useState(initialBoardForm);
   const boardsDispatch = useBoardsDispatch();
   const { handleModal } = useContext(ModalContext);
   const router = useRouter();
-
-  const SaveBoard = () => {
+  const createBoardMutation = api.boards.createBoard.useMutation();
+  const SaveBoard = async () => {
     //add board to boards
     if (!boardsDispatch) return;
     if (!boardForm.title) {
@@ -33,7 +36,11 @@ export function AddBoard() {
       return;
     }
 
-    const boardId = uuid();
+    const boardId = await createBoardMutation.mutateAsync({
+      name: boardForm.title,
+      ownerId: testUserId,
+    });
+    console.log(boardId);
     boardsDispatch({
       type: "ADD_BOARD",
       boardName: boardForm.title,
@@ -105,7 +112,13 @@ export function AddBoard() {
         handleRemoveInput={handleColumnRemove}
         handleAddInput={handleColumnAdd}
       />
-      <ButtonPrimaryS onClick={SaveBoard}>Create New Board</ButtonPrimaryS>
+      <ButtonPrimaryS
+        onClick={() => {
+          void SaveBoard();
+        }}
+      >
+        Create New Board
+      </ButtonPrimaryS>
     </>
   );
 }

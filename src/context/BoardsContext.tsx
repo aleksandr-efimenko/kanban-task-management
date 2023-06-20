@@ -8,7 +8,11 @@ import {
 import defaultBoardsData from "@/data/defaultBoard.json";
 import type { Task, Board } from "@/utils/DataTypes";
 import { uuid } from "uuidv4";
-import { type BoardActions, neverReached } from "@/context/BoardActions";
+import {
+  type BoardActions,
+  neverReached,
+  EditBoardAction,
+} from "@/context/BoardActions";
 import { generateColor } from "@/utils/generateColor";
 import {
   getBoardDataFromTaskId,
@@ -16,6 +20,12 @@ import {
   getColumnIdByTaskId,
   getTaskIdFromSubtask,
 } from "@/utils/getBoardData";
+import { api } from "@/utils/api";
+import {
+  addBoardDispatch,
+  createBoardInDb,
+  editBoardDispatch,
+} from "./BoardDispatchFunctions";
 
 const initialBoards = defaultBoardsData.boards;
 const boardsWithIds: Board[] = initialBoards.map((board) => ({
@@ -65,30 +75,10 @@ export function useBoardsDispatch() {
 function boardsReducer(boards: Board[], action: BoardActions): Board[] {
   switch (action.type) {
     case "ADD_BOARD": {
-      const newBoard: Board = {
-        id: action.boardId,
-        name: action.boardName || "New Board",
-        columns: action.columns.map((column) => ({
-          id: uuid(),
-          name: column,
-          color: generateColor(),
-          tasks: [] as Task[],
-        })),
-      };
-      return [...boards, newBoard];
+      return addBoardDispatch(boards, action);
     }
     case "EDIT_BOARD": {
-      const newBoards = boards.map((board) => {
-        if (board.id === action.boardId) {
-          return {
-            ...board,
-            name: action.boardName,
-            columns: action.columns,
-          };
-        }
-        return board;
-      });
-      return newBoards;
+      return editBoardDispatch(boards, action);
     }
     case "DELETE_BOARD": {
       const newBoards = boards.filter((board) => board.id !== action.boardId);
@@ -289,7 +279,7 @@ function boardsReducer(boards: Board[], action: BoardActions): Board[] {
               if (subtask.id === action.subtaskId) {
                 return {
                   ...subtask,
-                  name: action.subtaskName,
+                  title: action.subtaskName,
                   isCompleted: action.isCompleted,
                 };
               }

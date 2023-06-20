@@ -1,7 +1,5 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
-import { Board } from "@prisma/client";
-
 
 export const boardsRouter = createTRPCRouter({
   getAllBoards: publicProcedure.query(({ ctx }) => {
@@ -9,15 +7,25 @@ export const boardsRouter = createTRPCRouter({
   }),
 
   createBoard: publicProcedure
-    .input(z.object({ name: z.string() }))
-    .mutation(({ input, ctx }) => {
-      return ctx.prisma.board.create({
+    .input(z.object({ name: z.string(), ownerId: z.string() }))
+    .mutation(async ({ input, ctx }) => {
+      const board = await ctx.prisma.board.create({
         data: {
           createdAt: new Date(),
-          updatedAt: new Date(),
           name: input.name,
-          ownerId: "648f097303133e55475e1169",
+          ownerId: input.ownerId,
         },
+      });
+      console.log(board);
+      return board.id;
+    }),
+
+  updateBoard: publicProcedure
+    .input(z.object({ id: z.string(), name: z.string() }))
+    .mutation(({ input, ctx }) => {
+      return ctx.prisma.board.update({
+        where: { id: input.id },
+        data: { name: input.name },
       });
     }),
 });
