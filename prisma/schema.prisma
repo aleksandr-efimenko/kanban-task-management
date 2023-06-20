@@ -66,7 +66,6 @@ model VerificationToken {
 model Board {
     id        String   @id @default(auto()) @map("_id") @db.ObjectId
     createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
     name      String
     columns   Column[]
     owner     User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
@@ -76,7 +75,6 @@ model Board {
 model Column {
     id        String   @id @default(auto()) @map("_id") @db.ObjectId
     createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
     name      String
     board     Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
     boardId   String   @map("board_id") @db.ObjectId
@@ -86,18 +84,17 @@ model Column {
 model Task {
     id        String    @id @default(auto()) @map("_id") @db.ObjectId
     createdAt DateTime  @default(now())
-    updatedAt DateTime  @updatedAt
-    name      String
+    title     String
     column    Column    @relation(fields: [columnId], references: [id], onDelete: Cascade)
     columnId  String    @map("column_id") @db.ObjectId
     subtasks  Subtask[]
 }
 
 model Subtask {
-    id        String   @id @default(auto()) @map("_id") @db.ObjectId
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    name      String
-    task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
-    taskId    String   @map("task_id") @db.ObjectId
+    id          String   @id @default(auto()) @map("_id") @db.ObjectId
+    createdAt   DateTime @default(now())
+    title       String
+    isCompleted Boolean  @default(false)
+    task        Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+    taskId      String   @map("task_id") @db.ObjectId
 }
