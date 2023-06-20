@@ -94,7 +94,7 @@ export function EditBoard({ boardId }: { boardId: string }) {
     boardsDispatch({
       type: "EDIT_BOARD",
       boardId: boardId,
-      boardName: boardForm.title,
+      newBoardName: boardForm.title,
       columns: boardForm.columns,
     });
 

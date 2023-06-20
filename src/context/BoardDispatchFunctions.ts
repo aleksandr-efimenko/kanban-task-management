@@ -1,16 +1,16 @@
 import { generateColor } from "@/utils/generateColor";
-import { Task, type Board } from "../utils/DataTypes";
-import { AddBoardAction, type EditBoardAction } from "./BoardActions";
+import { type Board } from "../utils/DataTypes";
+import { type AddBoardAction, type EditBoardAction } from "./BoardActions";
 
 export function addBoardDispatch(boards: Board[], action: AddBoardAction) {
   const newBoard: Board = {
     id: action.boardId,
     name: action.boardName || "New Board",
     columns: action.columns.map((column) => ({
-      id: action.boardId,
-      name: column,
-      color: generateColor(),
-      tasks: [] as Task[],
+      id: column.id,
+      name: column.name,
+      color: column.color || generateColor(),
+      tasks: column.tasks,
     })),
   };
   return [...boards, newBoard];
@@ -21,7 +21,7 @@ export function editBoardDispatch(boards: Board[], action: EditBoardAction) {
     if (board.id === action.boardId) {
       return {
         ...board,
-        name: action.boardName,
+        name: action.newBoardName,
         columns: action.columns,
       };
     }

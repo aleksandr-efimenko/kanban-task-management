@@ -8,6 +8,7 @@ import { MultiInputs } from "./MultiInputs";
 import { useRouter } from "next/router";
 import { uuid } from "uuidv4";
 import { api } from "@/utils/api";
+import { type Column } from "@/utils/DataTypes";
 const testUserId = "6490560f71657f9c5d6f26ef";
 
 const initialBoardForm = {
@@ -36,22 +37,29 @@ export function AddBoard() {
       return;
     }
 
-    const boardId = await createBoardMutation.mutateAsync({
+    const board = await createBoardMutation.mutateAsync({
       name: boardForm.title,
       ownerId: testUserId,
+      columns: boardForm.columns.map((column) => column.title),
     });
-    console.log(boardId);
     boardsDispatch({
       type: "ADD_BOARD",
       boardName: boardForm.title,
-      boardId: boardId,
-      columns: boardForm.columns.map((column) => column.title),
+      boardId: board.id,
+      columns: board.columns.map((column) => {
+        return {
+          id: column.id,
+          name: column.name,
+          tasks: [],
+          color: column.color as Column["color"],
+        };
+      }),
     });
 
     //close modal
     handleModal();
     //go to new board
-    void router.push(`/boards/${boardId}`);
+    void router.push(`/boards/${board.id}`);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

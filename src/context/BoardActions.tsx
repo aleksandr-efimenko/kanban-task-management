@@ -16,13 +16,13 @@ export type AddBoardAction = {
   type: "ADD_BOARD";
   boardId: string;
   boardName: string;
-  columns: string[];
+  columns: Column[];
 };
 
 export type EditBoardAction = {
   type: "EDIT_BOARD";
   boardId: string;
-  boardName: string;
+  newBoardName: string;
   columns: Column[];
 };
 
@@ -34,7 +34,9 @@ export type DeleteBoardAction = {
 export type AddColumnAction = {
   type: "ADD_COLUMN";
   boardId: string;
+  newColumnId: string;
   columnName: string;
+  color: string;
 };
 
 export type AddTaskAction = {

@@ -8,11 +8,7 @@ import {
 import defaultBoardsData from "@/data/defaultBoard.json";
 import type { Task, Board } from "@/utils/DataTypes";
 import { uuid } from "uuidv4";
-import {
-  type BoardActions,
-  neverReached,
-  EditBoardAction,
-} from "@/context/BoardActions";
+import { type BoardActions, neverReached } from "@/context/BoardActions";
 import { generateColor } from "@/utils/generateColor";
 import {
   getBoardDataFromTaskId,
@@ -20,12 +16,7 @@ import {
   getColumnIdByTaskId,
   getTaskIdFromSubtask,
 } from "@/utils/getBoardData";
-import { api } from "@/utils/api";
-import {
-  addBoardDispatch,
-  createBoardInDb,
-  editBoardDispatch,
-} from "./BoardDispatchFunctions";
+import { addBoardDispatch, editBoardDispatch } from "./BoardDispatchFunctions";
 
 const initialBoards = defaultBoardsData.boards;
 const boardsWithIds: Board[] = initialBoards.map((board) => ({
@@ -84,7 +75,6 @@ function boardsReducer(boards: Board[], action: BoardActions): Board[] {
       const newBoards = boards.filter((board) => board.id !== action.boardId);
       return newBoards;
     }
-
     case "ADD_COLUMN": {
       const newBoards = boards.map((board) => {
         if (board.id === action.boardId) {
@@ -93,9 +83,9 @@ function boardsReducer(boards: Board[], action: BoardActions): Board[] {
             columns: [
               ...board.columns,
               {
-                id: uuid(),
+                id: action.newColumnId,
                 name: action.columnName,
-                color: generateColor(),
+                color: action.color,
                 tasks: [] as Task[],
               },
             ],

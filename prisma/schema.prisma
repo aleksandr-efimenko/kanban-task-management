@@ -76,6 +76,7 @@ model Column {
     id        String   @id @default(auto()) @map("_id") @db.ObjectId
     createdAt DateTime @default(now())
     name      String
+    color     String?
     board     Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
     boardId   String   @map("board_id") @db.ObjectId
     tasks     Task[]
