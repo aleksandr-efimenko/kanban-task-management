@@ -8,36 +8,8 @@ import { ModalContext } from "@/context/ModalContext";
 import { uuid } from "uuidv4";
 import { SelectInput } from "../Inputs/SelectInput";
 import { type Subtask } from "@/utils/DataTypes";
-
-const addTaskFormFields = {
-  title: "Add New Task",
-  inputs: {
-    textInput: {
-      label: "Title",
-      id: "task-name",
-      placeholder: "e.g. Take coffee break",
-    },
-    textAreaInput: {
-      label: "Description",
-      id: "task-description",
-      type: "textarea",
-      placeholder:
-        "e.g. It’s always good to take a break. This 15 minute break will recharge the batteries a little.",
-    },
-  },
-  multiInputs: {
-    label: "Subtasks",
-    buttonText: "+ Add New Subtask",
-    placeholders: ["e.g. Make coffee", "e.g. Drink coffee & smile"],
-  },
-  selectInput: {
-    label: "Status",
-    id: "task-status",
-  },
-  button: {
-    text: "Create Task",
-  },
-};
+import { api } from "@/utils/api";
+import { addTaskFormFields } from "@/data/addTaskFormFields";
 
 export const taskFormDefaultData = {
   title: "",
@@ -67,8 +39,9 @@ export default function AddTask({ boardId }: { boardId: string }) {
     });
   }, [columnNames, taskForm]);
 
+  const createTaskMutation = api.tasks.createTask.useMutation();
   // dispatch new task to boards
-  const SaveTask = () => {
+  const SaveTask = async () => {
     //add board to boards
     if (!boardsDispatch) return;
     if (!taskForm.title) {
@@ -82,25 +55,40 @@ export default function AddTask({ boardId }: { boardId: string }) {
     const columnId =
       currentBoard?.columns.find((column) => column.name === taskForm.status)
         ?.id || "";
+
+    const newTaskInDb = await createTaskMutation.mutateAsync({
+      title: taskForm.title,
+      description: taskForm.description,
+      columnId,
+      boardId,
+      subtasks: taskForm.subtasks.map((subtask) => subtask.title),
+    });
+
     // create subtasks objects from subtask names remove empty subtasks
-    const subtasks: Subtask[] = taskForm.subtasks
-      .filter((subtask) => subtask.title)
-      .map((subtask) => {
-        return {
-          id: uuid(),
-          title: subtask.title,
-          isCompleted: false,
-        };
-      });
+    // const subtasks: Subtask[] = taskForm.subtasks
+    //   .filter((subtask) => subtask.title)
+    //   .map((subtask) => {
+    //     return {
+    //       id: uuid(),
+    //       title: subtask.title,
+    //       isCompleted: false,
+    //     };
+    //   });
 
     boardsDispatch({
       type: "ADD_TASK",
-      taskId: uuid(),
-      title: taskForm.title,
-      description: taskForm.description,
+      taskId: newTaskInDb.id,
+      title: newTaskInDb.title,
+      description: (newTaskInDb.description || "") as string,
       columnId: columnId,
       boardId,
-      subtasks,
+      subtasks: newTaskInDb.subtasks.map((subtask) => {
+        return {
+          id: subtask.id,
+          title: subtask.title,
+          isCompleted: subtask.isCompleted,
+        } as Subtask;
+      }),
     });
 
     //close modal
