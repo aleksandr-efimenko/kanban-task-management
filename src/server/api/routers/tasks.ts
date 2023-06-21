@@ -6,7 +6,9 @@ export const tasksRouter = createTRPCRouter({
     .input(
       z.object({
         title: z.string(),
+        description: z.string(),
         columnId: z.string().min(1),
+        boardId: z.string().min(1),
       })
     )
     .mutation(async ({ input, ctx }) => {
@@ -14,7 +16,9 @@ export const tasksRouter = createTRPCRouter({
         data: {
           createdAt: new Date(),
           title: input.title,
+          description: input.description,
           columnId: input.columnId,
+          boardId: input.boardId,
         },
       });
       return newTask;

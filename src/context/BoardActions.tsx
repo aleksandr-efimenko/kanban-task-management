@@ -42,10 +42,10 @@ export type AddColumnAction = {
 export type AddTaskAction = {
   type: "ADD_TASK";
   taskId: string;
-  taskName: string;
+  title: string;
   columnId: string;
   boardId: string;
-  taskDescription: string;
+  description: string;
   subtasks: Subtask[];
 };
 

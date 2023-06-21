@@ -109,8 +109,8 @@ function boardsReducer(boards: Board[], action: BoardActions): Board[] {
                     ...column.tasks,
                     {
                       id: action.taskId,
-                      title: action.taskName,
-                      description: action.taskDescription,
+                      title: action.title,
+                      description: action.description,
                       status: column.name,
                       subtasks: subtasks,
                     } as Task,

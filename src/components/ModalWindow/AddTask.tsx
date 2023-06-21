@@ -96,8 +96,8 @@ export default function AddTask({ boardId }: { boardId: string }) {
     boardsDispatch({
       type: "ADD_TASK",
       taskId: uuid(),
-      taskName: taskForm.title,
-      taskDescription: taskForm.description,
+      title: taskForm.title,
+      description: taskForm.description,
       columnId: columnId,
       boardId,
       subtasks,

@@ -70,6 +70,7 @@ model Board {
     columns   Column[]
     owner     User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
     ownerId   String   @map("owner_id") @db.ObjectId
+    Task      Task[]
 }
 
 model Column {
@@ -83,12 +84,15 @@ model Column {
 }
 
 model Task {
-    id        String    @id @default(auto()) @map("_id") @db.ObjectId
-    createdAt DateTime  @default(now())
-    title     String
-    column    Column    @relation(fields: [columnId], references: [id], onDelete: Cascade)
-    columnId  String    @map("column_id") @db.ObjectId
-    subtasks  Subtask[]
+    id          String    @id @default(auto()) @map("_id") @db.ObjectId
+    createdAt   DateTime  @default(now())
+    title       String
+    description String?
+    column      Column    @relation(fields: [columnId], references: [id], onDelete: Cascade)
+    columnId    String    @map("column_id") @db.ObjectId
+    boardId     String    @map("board_id") @db.ObjectId
+    board       Board     @relation(fields: [boardId], references: [id], onDelete: Cascade)
+    subtasks    Subtask[]
 }
 
 model Subtask {
