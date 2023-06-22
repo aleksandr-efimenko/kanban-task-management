@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 import { uuid } from "uuidv4";
 import { api } from "@/utils/api";
 import { type Column } from "@/utils/DataTypes";
-const testUserId = "6490560f71657f9c5d6f26ef";
+import { useSession } from "next-auth/react";
 
 const initialBoardForm = {
   title: "",
@@ -26,6 +26,7 @@ export function AddBoard() {
   const { handleModal } = useContext(ModalContext);
   const router = useRouter();
   const createBoardMutation = api.boards.createBoard.useMutation();
+  const { data: session } = useSession();
   const SaveBoard = async () => {
     //add board to boards
     if (!boardsDispatch) return;
@@ -39,7 +40,7 @@ export function AddBoard() {
 
     const board = await createBoardMutation.mutateAsync({
       name: boardForm.title,
-      ownerId: testUserId,
+      ownerId: session?.user?.id || "",
       columns: boardForm.columns.map((column) => column.title),
     });
     boardsDispatch({
