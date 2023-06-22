@@ -71,11 +71,12 @@ export type DeleteTaskAction = {
 
 export type ChangeSubtaskAction = {
   type: "EDIT_SUBTASK";
-  subtaskId: string;
-  subtaskName: string;
+  id: string;
+  title: string;
   isCompleted: boolean;
 };
 
 // A function that will never be called, but will throw an error if it is
+// called. This is used to ensure that we have a case for every action type
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 export const neverReached = (never: never) => {};

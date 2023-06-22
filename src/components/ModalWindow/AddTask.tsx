@@ -9,18 +9,10 @@ import { uuid } from "uuidv4";
 import { SelectInput } from "../Inputs/SelectInput";
 import { type Subtask } from "@/utils/DataTypes";
 import { api } from "@/utils/api";
-import { addTaskFormFields } from "@/data/addTaskFormFields";
-
-export const taskFormDefaultData = {
-  title: "",
-  titleError: "",
-  description: "",
-  subtasks: [
-    { title: "", id: uuid(), isCompleted: false },
-    { title: "", id: uuid(), isCompleted: false },
-  ] as Subtask[],
-  status: "",
-};
+import {
+  addTaskFormFields,
+  taskFormDefaultData,
+} from "@/data/TaskFormDefaultData";
 
 export default function AddTask({ boardId }: { boardId: string }) {
   const [taskForm, setTaskForm] = useState(taskFormDefaultData);
@@ -79,7 +71,7 @@ export default function AddTask({ boardId }: { boardId: string }) {
       type: "ADD_TASK",
       taskId: newTaskInDb.id,
       title: newTaskInDb.title,
-      description: (newTaskInDb.description || "") as string,
+      description: newTaskInDb.description || "",
       columnId: columnId,
       boardId,
       subtasks: newTaskInDb.subtasks.map((subtask) => {

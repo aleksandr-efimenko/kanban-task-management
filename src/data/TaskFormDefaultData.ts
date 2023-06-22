@@ -1,3 +1,6 @@
+import { type Subtask } from "@prisma/client";
+import { uuid } from "uuidv4";
+
 export const addTaskFormFields = {
   title: "Add New Task",
   inputs: {
@@ -26,4 +29,15 @@ export const addTaskFormFields = {
   button: {
     text: "Create Task",
   },
+};
+
+export const taskFormDefaultData = {
+  title: "",
+  titleError: "",
+  description: "",
+  subtasks: [
+    { title: "", id: uuid(), isCompleted: false },
+    { title: "", id: uuid(), isCompleted: false },
+  ] as Subtask[],
+  status: "",
 };

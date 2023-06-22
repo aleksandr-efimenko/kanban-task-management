@@ -9,8 +9,8 @@ export function CheckboxItem({ subtask }: { subtask: Subtask }) {
   const handleCheckboxChange = () => {
     dispatch({
       type: "EDIT_SUBTASK",
-      subtaskId: id,
-      subtaskName: title,
+      id,
+      title,
       isCompleted: !isCompleted,
     });
   };

@@ -243,7 +243,7 @@ function boardsReducer(boards: Board[], action: BoardActions): Board[] {
       return updatedBoards;
     }
     case "EDIT_SUBTASK": {
-      const taskId = getTaskIdFromSubtask(action.subtaskId, boards);
+      const taskId = getTaskIdFromSubtask(action.id, boards);
       if (!taskId) return boards;
       const boardId = getBoardIdByTaskId(taskId, boards);
       if (!boardId) return boards;
@@ -266,10 +266,10 @@ function boardsReducer(boards: Board[], action: BoardActions): Board[] {
             }
 
             const newSubtasks = task.subtasks.map((subtask) => {
-              if (subtask.id === action.subtaskId) {
+              if (subtask.id === action.id) {
                 return {
                   ...subtask,
-                  title: action.subtaskName,
+                  title: action.title,
                   isCompleted: action.isCompleted,
                 };
               }
