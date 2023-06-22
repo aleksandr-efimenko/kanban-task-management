@@ -25,7 +25,6 @@ export const columnsRouter = createTRPCRouter({
         });
         return newColumn;
       } catch (e) {
-        console.log(e);
         throw new Error("Error creating column");
       }
     }),

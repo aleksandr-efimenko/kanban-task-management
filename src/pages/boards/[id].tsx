@@ -41,12 +41,11 @@ export default function BoardView() {
     );
   };
 
+  const boardName = currentBoard?.name || "";
   return (
     <>
       <Head>
-        <title>
-          Kanban task management web app | {currentBoard?.name || ""}
-        </title>
+        <title>Kanban task management web app | {boardName}</title>
         <meta name="description" content="Kanban task management web app" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

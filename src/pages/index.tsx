@@ -15,8 +15,7 @@ const Home: NextPage = () => {
     }
     void router.push(`/boards/${boards[0].id}`);
   }, [router, boards]);
-  const { data, error } = api.boards.getAllBoards.useQuery();
-  console.log(data);
+
   return (
     <>
       <Head>

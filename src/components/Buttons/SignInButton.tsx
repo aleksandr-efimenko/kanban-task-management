@@ -1,6 +1,7 @@
 import { useSession, signIn, signOut } from "next-auth/react";
 import { ButtonPrimaryS, ButtonSecondary } from "./MainButtons";
 import { type Session } from "next-auth";
+import { api } from "@/utils/api";
 
 export function SignInButton() {
   const { data: session } = useSession();

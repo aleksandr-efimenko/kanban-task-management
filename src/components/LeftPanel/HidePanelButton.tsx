@@ -4,7 +4,7 @@ import { LeftPanelItem } from "./LeftPanelItem";
 
 export function HidePanelButton() {
   const handleClick = () => {
-    console.log("Hide sidebar");
+    // console.log("Hide sidebar");
   };
   return (
     <LeftPanelItem title="Hide Sidebar" href="#" handleClick={handleClick}>
