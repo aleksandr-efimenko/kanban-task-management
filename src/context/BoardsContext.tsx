@@ -4,6 +4,7 @@ import {
   useReducer,
   type Dispatch,
   type Reducer,
+  useEffect,
 } from "react";
 import defaultBoardsData from "@/data/defaultBoard.json";
 import type { Task, Board } from "@/utils/DataTypes";
@@ -17,6 +18,8 @@ import {
   getTaskIdFromSubtask,
 } from "@/utils/getBoardData";
 import { addBoardDispatch, editBoardDispatch } from "./BoardDispatchFunctions";
+import { useSession } from "next-auth/react";
+import { api } from "@/utils/api";
 
 const initialBoards = defaultBoardsData.boards;
 const boardsWithIds: Board[] = initialBoards.map((board) => ({
@@ -45,6 +48,19 @@ export function BoardsProvider({ children }: { children: React.ReactNode }) {
     boardsReducer,
     boardsWithIds
   );
+  const { data: session, status } = useSession();
+  const boardsFromDb = api.boards.getAllBoardsForUser.useQuery(undefined, {
+    enabled: !!session,
+  });
+
+  useEffect(() => {
+    if (!boardsFromDb.data) return;
+    console.log(boardsFromDb.data);
+    dispatch({
+      type: "LOAD_BOARDS",
+      boards: boardsFromDb.data,
+    });
+  }, [boardsFromDb.data]);
 
   return (
     <BoardsContext.Provider value={boards}>
@@ -63,8 +79,11 @@ export function useBoardsDispatch() {
   return useContext(BoardsDispatchContext);
 }
 
-function boardsReducer(boards: Board[], action: BoardActions): Board[] {
+export function boardsReducer(boards: Board[], action: BoardActions): Board[] {
   switch (action.type) {
+    case "LOAD_BOARDS": {
+      return action.boards;
+    }
     case "ADD_BOARD": {
       return addBoardDispatch(boards, action);
     }
@@ -125,7 +144,6 @@ function boardsReducer(boards: Board[], action: BoardActions): Board[] {
       });
       return newBoards;
     }
-
     case "EDIT_TASK": {
       const boardId = getBoardIdByTaskId(action.taskId, boards);
       const columnId = getColumnIdByTaskId(action.taskId, boards);
@@ -158,7 +176,6 @@ function boardsReducer(boards: Board[], action: BoardActions): Board[] {
       });
       return newBoards;
     }
-
     case "DELETE_TASK": {
       const boardId = getBoardIdByTaskId(action.taskId, boards);
       const columnId = getColumnIdByTaskId(action.taskId, boards);
@@ -183,7 +200,6 @@ function boardsReducer(boards: Board[], action: BoardActions): Board[] {
       });
       return newBoards;
     }
-
     case "CHANGE_TASK_STATUS": {
       const { taskId, newStatus } = action;
       const board = getBoardDataFromTaskId(taskId, boards);
@@ -297,7 +313,6 @@ function boardsReducer(boards: Board[], action: BoardActions): Board[] {
 
       return newBoards;
     }
-
     default: {
       // Make sure we always handle all action types
       neverReached(action);

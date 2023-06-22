@@ -1,7 +1,8 @@
-import { type Column, type Subtask } from "@/utils/DataTypes";
+import { type Board, type Column, type Subtask } from "@/utils/DataTypes";
 
 // An interface for our actions
 export type BoardActions =
+  | LoadBoardsAction
   | AddBoardAction
   | EditBoardAction
   | DeleteBoardAction
@@ -11,6 +12,11 @@ export type BoardActions =
   | ChangeTaskStatusAction
   | DeleteTaskAction
   | ChangeSubtaskAction;
+
+export type LoadBoardsAction = {
+  type: "LOAD_BOARDS";
+  boards: Board[];
+};
 
 export type AddBoardAction = {
   type: "ADD_BOARD";
