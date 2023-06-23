@@ -15,7 +15,6 @@ export const boardsRouter = createTRPCRouter({
         columns: { include: { tasks: { include: { subtasks: true } } } },
       },
     });
-    console.log(boards);
     return boards;
   }),
 
@@ -58,5 +57,11 @@ export const boardsRouter = createTRPCRouter({
         where: { id: input.id },
         data: { name: input.name },
       });
+    }),
+
+  deleteBoard: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(({ input, ctx }) => {
+      return ctx.prisma.board.delete({ where: { id: input.id } });
     }),
 });

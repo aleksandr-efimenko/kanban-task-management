@@ -10,7 +10,6 @@ import defaultBoardsData from "@/data/defaultBoard.json";
 import type { Task, Board } from "@/utils/DataTypes";
 import { uuid } from "uuidv4";
 import { type BoardActions, neverReached } from "@/context/BoardActions";
-import { generateColor } from "@/utils/generateColor";
 import {
   getBoardDataFromTaskId,
   getBoardIdByTaskId,
@@ -46,7 +45,7 @@ export const BoardsDispatchContext =
 export function BoardsProvider({ children }: { children: React.ReactNode }) {
   const [boards, dispatch] = useReducer<Reducer<Board[], BoardActions>>(
     boardsReducer,
-    boardsWithIds
+    []
   );
   const { data: session, status } = useSession();
   const boardsFromDb = api.boards.getAllBoardsForUser.useQuery(undefined, {
@@ -54,13 +53,22 @@ export function BoardsProvider({ children }: { children: React.ReactNode }) {
   });
 
   useEffect(() => {
-    if (!boardsFromDb.data) return;
+    if (!session)
+      dispatch({
+        type: "LOAD_BOARDS",
+        boards: boardsWithIds,
+      });
+    if (!boardsFromDb.data)
+      dispatch({
+        type: "LOAD_BOARDS",
+        boards: [],
+      });
     console.log(boardsFromDb.data);
     dispatch({
       type: "LOAD_BOARDS",
       boards: boardsFromDb.data,
     });
-  }, [boardsFromDb.data]);
+  }, [boardsFromDb.data, session]);
 
   return (
     <BoardsContext.Provider value={boards}>
