@@ -9,7 +9,7 @@ import { SignInButton } from "./Buttons/SignInButton";
 
 export function TopPanel() {
   const router = useRouter();
-  const boards = useBoards();
+  const { boards, loading } = useBoards();
   const currentBoard = boards?.find((board) => board.id === router.query.id);
   const boardName = currentBoard ? currentBoard.name : "Board not found";
   const boardId = currentBoard ? currentBoard.id : "";

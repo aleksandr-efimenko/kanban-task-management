@@ -32,7 +32,7 @@ export function EditBoard({ boardId }: { boardId: string }) {
   const [boardForm, setBoardForm] = useState(initialBoardForm);
   const boardsDispatch = useBoardsDispatch();
   const { handleModal } = useContext(ModalContext);
-  const boards = useBoards();
+  const { boards } = useBoards();
   const currentBoard = boards?.find((board) => board.id === boardId);
 
   //fill form with current board data

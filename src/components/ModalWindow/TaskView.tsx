@@ -14,7 +14,7 @@ import { TaskDropdownMenu } from "../DropDownMenu/DropdownMenu";
 import { TaskViewDropdownMenuContext } from "@/context/TaskViewDropdownMenuContext";
 
 export function TaskView({ taskId }: { taskId: string }) {
-  const boards = useBoards();
+  const { boards } = useBoards();
   const boardsDispatch = useBoardsDispatch();
   const task = useMemo(() => {
     if (!taskId || !boards) return null;

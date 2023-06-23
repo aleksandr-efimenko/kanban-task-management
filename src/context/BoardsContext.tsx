@@ -38,7 +38,15 @@ const boardsWithIds: Board[] = initialBoards.map((board) => ({
   })),
 }));
 
-const BoardsContext = createContext<Board[] | null>(null);
+type BoardsContextType = {
+  boards: Board[];
+  loading: boolean;
+};
+
+const BoardsContext = createContext<BoardsContextType>({
+  boards: [],
+  loading: true,
+});
 export const BoardsDispatchContext =
   createContext<Dispatch<BoardActions> | null>(null);
 
@@ -53,17 +61,20 @@ export function BoardsProvider({ children }: { children: React.ReactNode }) {
   });
 
   useEffect(() => {
+    // use local data if no session (user not logged in)
     if (!session)
       dispatch({
         type: "LOAD_BOARDS",
         boards: boardsWithIds,
       });
+
     if (!boardsFromDb.data)
       dispatch({
         type: "LOAD_BOARDS",
         boards: [],
       });
     console.log(boardsFromDb.data);
+    // use data from db if session (user logged in)
     dispatch({
       type: "LOAD_BOARDS",
       boards: boardsFromDb.data,
@@ -71,7 +82,9 @@ export function BoardsProvider({ children }: { children: React.ReactNode }) {
   }, [boardsFromDb.data, session]);
 
   return (
-    <BoardsContext.Provider value={boards}>
+    <BoardsContext.Provider
+      value={{ boards, loading: boardsFromDb.status === "loading" }}
+    >
       <BoardsDispatchContext.Provider value={dispatch}>
         {children}
       </BoardsDispatchContext.Provider>

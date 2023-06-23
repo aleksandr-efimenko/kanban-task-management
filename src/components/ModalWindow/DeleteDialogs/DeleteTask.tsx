@@ -9,7 +9,7 @@ export function DeleteTask({
   handleCancel: () => void;
 }) {
   const dispatch = useBoardsDispatch();
-  const boards = useBoards();
+  const { boards } = useBoards();
   if (!dispatch || !boards) return null;
 
   const taskTitle = boards

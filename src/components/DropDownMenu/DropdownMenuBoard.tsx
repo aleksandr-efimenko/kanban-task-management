@@ -27,7 +27,7 @@ export function DropdownEditBoardItem({ boardId }: { boardId: string }) {
 }
 
 export function DropdownDeleteBoardItem({ boardId }: { boardId: string }) {
-  const boards = useBoards();
+  const { boards } = useBoards();
   const boardName = boards?.find((board) => board.id === boardId)?.name || "";
   const { handleModal } = useContext(ModalContext);
   const { handleMenu } = useContext(TopPanelDropdownMenuContext);

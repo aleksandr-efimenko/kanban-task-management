@@ -19,7 +19,7 @@ export default function AddTask({ boardId }: { boardId: string }) {
 
   const boardsDispatch = useBoardsDispatch();
   const { handleModal } = useContext(ModalContext);
-  const boards = useBoards();
+  const { boards } = useBoards();
   const currentBoard = boards?.find((board) => board.id === boardId);
   const columnNames = currentBoard?.columns.map((column) => column.name);
   useEffect(() => {

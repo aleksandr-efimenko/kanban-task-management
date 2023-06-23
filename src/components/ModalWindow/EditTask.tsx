@@ -21,7 +21,7 @@ export default function EditTask({ taskId }: { taskId: string }) {
   const [taskForm, setTaskForm] = useState(taskFormDefaultData);
   const boardsDispatch = useBoardsDispatch();
   const { handleModal } = useContext(ModalContext);
-  const boards = useBoards();
+  const { boards } = useBoards();
   const currentBoard = getBoardDataFromTaskId(taskId, boards || []);
   const currentTask = getTaskInfoFromId(taskId, boards || []);
   const columnNames = currentBoard?.columns.map((column) => column.name);

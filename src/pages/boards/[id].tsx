@@ -9,7 +9,7 @@ import { uuid } from "uuidv4";
 
 export default function BoardView() {
   const router = useRouter();
-  const boards = useBoards();
+  const { boards } = useBoards();
 
   const currentBoard = boards?.find((board) => board.id === router.query.id);
   const columns = currentBoard?.columns;
