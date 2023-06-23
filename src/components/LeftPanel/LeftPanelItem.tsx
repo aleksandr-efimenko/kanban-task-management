@@ -57,3 +57,14 @@ export function BoardListItem({ title, href, selected }: BoardListItemProps) {
     </LeftPanelItem>
   );
 }
+
+export function SkeletonBoardListItem() {
+  return (
+    <div className="flex min-h-[3rem] w-full items-center gap-4 overflow-hidden rounded-r-full pl-8">
+      <div className="h-4 w-4 animate-pulse rounded-full bg-gray-300"></div>
+      <div className="flex-1">
+        <div className="h-4 w-24 animate-pulse rounded-full bg-gray-300"></div>
+      </div>
+    </div>
+  );
+}

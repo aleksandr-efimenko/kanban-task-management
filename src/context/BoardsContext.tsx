@@ -62,11 +62,13 @@ export function BoardsProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     // use local data if no session (user not logged in)
-    if (!session)
+    if (!session) {
       dispatch({
         type: "LOAD_BOARDS",
         boards: boardsWithIds,
       });
+      return;
+    }
 
     if (!boardsFromDb.data)
       dispatch({
@@ -80,11 +82,17 @@ export function BoardsProvider({ children }: { children: React.ReactNode }) {
       boards: boardsFromDb.data,
     });
   }, [boardsFromDb.data, session]);
-
+  const loadingStatus = () => {
+    if (status === "loading") {
+      return true;
+    }
+    if (session) {
+      return boardsFromDb.isLoading;
+    }
+    return false;
+  };
   return (
-    <BoardsContext.Provider
-      value={{ boards, loading: boardsFromDb.status === "loading" }}
-    >
+    <BoardsContext.Provider value={{ boards, loading: loadingStatus() }}>
       <BoardsDispatchContext.Provider value={dispatch}>
         {children}
       </BoardsDispatchContext.Provider>

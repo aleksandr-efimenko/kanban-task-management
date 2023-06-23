@@ -14,7 +14,7 @@ export function TopPanel() {
   const boardName = currentBoard ? currentBoard.name : "Board not found";
   const boardId = currentBoard ? currentBoard.id : "";
   const { menuIsOpen, handleMenu } = useContext(TopPanelDropdownMenuContext);
-
+  console.log(loading);
   return (
     <div
       className="col-start-2 col-end-2 row-start-1 row-end-2 
@@ -22,7 +22,9 @@ export function TopPanel() {
     dark:border-lines-dark dark:bg-dark-gray"
     >
       <div className="flex items-center justify-between pl-6 pt-5">
-        <h1 className="text-heading-xl">{boardName}</h1>
+        <h1 className="text-heading-xl">
+          {loading ? boardNameSkeleton : boardName}
+        </h1>
         <div className="flex items-center gap-6 px-8">
           <SignInButton />
           <CreateNewTaskButton boardId={boardId} />
@@ -36,3 +38,7 @@ export function TopPanel() {
     </div>
   );
 }
+
+export const boardNameSkeleton = (
+  <div className="h-8 w-64 animate-pulse rounded-md bg-gray-200"></div>
+);
