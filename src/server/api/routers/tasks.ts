@@ -1,5 +1,9 @@
 import { z } from "zod";
-import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "@/server/api/trpc";
 
 export const tasksRouter = createTRPCRouter({
   createTask: publicProcedure
@@ -40,6 +44,14 @@ export const tasksRouter = createTRPCRouter({
       return ctx.prisma.task.update({
         where: { id: input.id },
         data: { title: input.title },
+      });
+    }),
+
+  deleteTask: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(({ input, ctx }) => {
+      return ctx.prisma.task.delete({
+        where: { id: input.id },
       });
     }),
 });

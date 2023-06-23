@@ -1,5 +1,6 @@
 import { useBoards, useBoardsDispatch } from "@/context/BoardsContext";
 import { DestructiveDialog } from "@/components/ModalWindow/DeleteDialogs/DeleteDialog";
+import { api } from "@/utils/api";
 
 export function DeleteTask({
   taskId,
@@ -20,8 +21,9 @@ export function DeleteTask({
     )
     ?.columns.find((column) => column.tasks.find((task) => task.id === taskId))
     ?.tasks.find((task) => task.id === taskId)?.title as string;
-
+  const deleteTaskMutation = api.tasks.deleteTask.useMutation();
   const handleDelete = () => {
+    deleteTaskMutation.mutate({ id: taskId });
     dispatch({
       type: "DELETE_TASK",
       taskId: taskId,
