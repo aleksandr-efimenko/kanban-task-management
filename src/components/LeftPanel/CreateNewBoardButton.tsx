@@ -2,7 +2,7 @@ import { type StaticImageData } from "next/image";
 import Link from "next/link";
 import boardIcon from "~/assets/icon-board.svg";
 import Image from "next/image";
-import { AddBoardForm } from "../ModalWindow/AddBoard";
+import { AddBoardForm } from "../ModalWindow/AddBoardForm";
 import { useContext } from "react";
 import { ModalContext } from "@/context/ModalContext";
 

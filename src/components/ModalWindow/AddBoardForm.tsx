@@ -11,6 +11,7 @@ import { api } from "@/utils/api";
 import { type Column } from "@/utils/DataTypes";
 import { useSession } from "next-auth/react";
 import { addBoard, initialBoardForm } from "@/utils/AddBoardFormFunc";
+import { LoadingSpinner } from "../LoadingSpinner";
 
 export function AddBoardForm() {
   const [boardForm, setBoardForm] = useState(initialBoardForm);
@@ -88,36 +89,38 @@ export function AddBoardForm() {
   return (
     <>
       <ModalWindowTitle title="Add New Board" />
-      <LabelledTextField
-        label="Board Name"
-        type="text"
-        placeholder="e.g. Web Design"
-        value={boardForm.title}
-        onChange={handleInputChange}
-        errorMessage={boardForm.titleError}
-        inputType="textInput"
-      />
-
-      <MultiInputs
-        label="Columns"
-        buttonText="+ Add Column"
-        inputs={boardForm.columns.map((column) => {
-          return {
-            value: column.title,
-            id: column.id,
-          };
-        })}
-        handleInputChange={handleColumnChange}
-        handleRemoveInput={handleColumnRemove}
-        handleAddInput={handleColumnAdd}
-      />
-      <ButtonPrimaryS
-        onClick={() => {
+      <form
+        className="flex flex-col gap-6"
+        onSubmit={(e) => {
+          e.preventDefault();
           void SaveBoard();
         }}
       >
-        Create New Board
-      </ButtonPrimaryS>
+        <LabelledTextField
+          label="Board Name"
+          type="text"
+          placeholder="e.g. Web Design"
+          value={boardForm.title}
+          onChange={handleInputChange}
+          errorMessage={boardForm.titleError}
+          inputType="textInput"
+        />
+        <MultiInputs
+          label="Columns"
+          buttonText="+ Add Column"
+          inputs={boardForm.columns.map((column) => {
+            return {
+              value: column.title,
+              id: column.id,
+            };
+          })}
+          handleInputChange={handleColumnChange}
+          handleRemoveInput={handleColumnRemove}
+          handleAddInput={handleColumnAdd}
+        />
+        <ButtonPrimaryS>Create New Board</ButtonPrimaryS>
+      </form>
+      {createBoardMutation.isLoading && <LoadingSpinner />}
     </>
   );
 }

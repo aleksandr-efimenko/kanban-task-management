@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { ModalContext } from "@/context/ModalContext";
-import { AddColumnForm } from "@/components/ModalWindow/AddColumn";
+import { AddColumnForm } from "@/components/ModalWindow/AddColumnForm";
 
 export function NewColumnButton({ boardId }: { boardId: string }) {
   const { handleModal } = useContext(ModalContext);

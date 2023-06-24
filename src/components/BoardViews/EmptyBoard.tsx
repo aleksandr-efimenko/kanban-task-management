@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { ButtonPrimaryL } from "@/components/Buttons/MainButtons";
 import { ModalContext } from "@/context/ModalContext";
-import { AddColumnForm } from "@/components/ModalWindow/AddColumn";
+import { AddColumnForm } from "@/components/ModalWindow/AddColumnForm";
 
 export function EmptyBoard({ boardId }: { boardId: string }) {
   const { handleModal } = useContext(ModalContext);
