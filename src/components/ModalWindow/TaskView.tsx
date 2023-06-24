@@ -12,6 +12,7 @@ import { generateSubtasksTitles } from "@/utils/SubtasksTitle";
 import { SelectInput } from "../Inputs/SelectInput";
 import { TaskDropdownMenu } from "../DropDownMenu/DropdownMenu";
 import { TaskViewDropdownMenuContext } from "@/context/TaskViewDropdownMenuContext";
+import { api } from "@/utils/api";
 
 export function TaskView({ taskId }: { taskId: string }) {
   const { boards } = useBoards();
@@ -31,9 +32,16 @@ export function TaskView({ taskId }: { taskId: string }) {
     (column) => column.id === getColumnIdByTaskId(taskId, boards || [])
   )?.name;
 
+  const changeTaskStatusMutation = api.tasks.changeTaskColumn.useMutation();
   const currentStatus = status ? status : currentColumnName;
   const handleChangeTaskStatus = (selectedOption: string) => {
     if (!boardsDispatch) return;
+    changeTaskStatusMutation.mutate({
+      id: taskId,
+      columnId: currentBoard?.columns.find(
+        (column) => column.name === selectedOption
+      )?.id as string,
+    });
     boardsDispatch({
       type: "CHANGE_TASK_STATUS",
       taskId,
