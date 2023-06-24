@@ -14,7 +14,7 @@ import {
   taskFormDefaultData,
 } from "@/data/TaskFormDefaultData";
 
-export default function AddTask({ boardId }: { boardId: string }) {
+export default function AddTaskForm({ boardId }: { boardId: string }) {
   const [taskForm, setTaskForm] = useState(taskFormDefaultData);
 
   const boardsDispatch = useBoardsDispatch();

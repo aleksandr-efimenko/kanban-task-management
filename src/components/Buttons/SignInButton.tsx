@@ -1,7 +1,6 @@
 import { useSession, signIn, signOut } from "next-auth/react";
 import { ButtonPrimaryS, ButtonSecondary } from "./MainButtons";
 import { type Session } from "next-auth";
-import { api } from "@/utils/api";
 
 export function SignInButton() {
   const { data: session } = useSession();
@@ -21,20 +20,25 @@ export function SignInButton() {
     if (session) {
       return (
         <>
-          <p className="min-w-64">Signed in as {getUserInfo(session)}</p>
-          <ButtonPrimaryS
-            onClick={() => {
-              void handleSignOut();
-            }}
-          >
-            Sign out
-          </ButtonPrimaryS>
+          <div className="flex flex-col">
+            <p className="min-w-64">Signed in as</p>
+            <p className="min-w-64">{getUserInfo(session)}</p>
+          </div>
+          <div>
+            <ButtonPrimaryS
+              onClick={() => {
+                void handleSignOut();
+              }}
+            >
+              Sign out
+            </ButtonPrimaryS>
+          </div>
         </>
       );
     }
 
     return (
-      <>
+      <div>
         <ButtonSecondary
           className=""
           onClick={() => {
@@ -43,7 +47,7 @@ export function SignInButton() {
         >
           Sign in
         </ButtonSecondary>
-      </>
+      </div>
     );
   };
 
