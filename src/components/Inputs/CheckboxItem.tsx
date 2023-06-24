@@ -1,12 +1,14 @@
 import { useBoardsDispatch } from "@/context/BoardsContext";
 import { type Subtask } from "@/utils/DataTypes";
+import { api } from "@/utils/api";
 
 export function CheckboxItem({ subtask }: { subtask: Subtask }) {
   const { id, title: title, isCompleted } = subtask;
   const dispatch = useBoardsDispatch();
-
+  const editSubtaskMutation = api.subtasks.editSubtask.useMutation();
   if (!dispatch) return null;
   const handleCheckboxChange = () => {
+    editSubtaskMutation.mutate({ id, title, isCompleted: !isCompleted });
     dispatch({
       type: "EDIT_SUBTASK",
       id,
