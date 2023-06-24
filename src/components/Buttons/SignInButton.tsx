@@ -3,7 +3,7 @@ import { ButtonPrimaryS, ButtonSecondary } from "./MainButtons";
 import { type Session } from "next-auth";
 
 export function SignInButton() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   const handleSignIn = async () => {
     await signIn();
@@ -17,6 +17,7 @@ export function SignInButton() {
   };
 
   const getAuthInfo = () => {
+    if (status === "loading") return authInfoSkeleton;
     if (session) {
       return (
         <>
@@ -57,3 +58,9 @@ export function SignInButton() {
     </div>
   );
 }
+
+const authInfoSkeleton = (
+  <div className="flex w-full items-center justify-center gap-3">
+    <div className="h-8 w-32 animate-pulse rounded-md bg-gray-200"></div>
+  </div>
+);
