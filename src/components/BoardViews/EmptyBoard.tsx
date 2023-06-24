@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { ButtonPrimaryL } from "@/components/Buttons/MainButtons";
 import { ModalContext } from "@/context/ModalContext";
-import { AddColumn } from "@/components/ModalWindow/AddColumn";
+import { AddColumnForm } from "@/components/ModalWindow/AddColumn";
 
 export function EmptyBoard({ boardId }: { boardId: string }) {
   const { handleModal } = useContext(ModalContext);
@@ -14,7 +14,7 @@ export function EmptyBoard({ boardId }: { boardId: string }) {
         </h4>
         <div className="w-fit ">
           <ButtonPrimaryL
-            onClick={() => handleModal(<AddColumn boardId={boardId} />)}
+            onClick={() => handleModal(<AddColumnForm boardId={boardId} />)}
           >
             + Add New Column
           </ButtonPrimaryL>

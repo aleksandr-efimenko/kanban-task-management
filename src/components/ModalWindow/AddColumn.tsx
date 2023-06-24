@@ -5,8 +5,9 @@ import { ButtonPrimaryS } from "../Buttons/MainButtons";
 import { LabelledTextField } from "../Inputs/LabelledTextField";
 import { ModalWindowTitle } from "./ModalWindowTitle";
 import { api } from "@/utils/api";
+import { LoadingSpinner } from "../LoadingSpinner";
 
-export function AddColumn({ boardId }: { boardId: string }) {
+export function AddColumnForm({ boardId }: { boardId: string }) {
   const dispatch = useBoardsDispatch();
   const { handleModal } = useContext(ModalContext);
   const [columnName, setColumnName] = useState("");
@@ -38,8 +39,14 @@ export function AddColumn({ boardId }: { boardId: string }) {
 
   return (
     <>
-      <>
-        <ModalWindowTitle title="Add New Column" />
+      <ModalWindowTitle title="Add New Column" />
+      <form
+        className="flex flex-col gap-6"
+        onSubmit={(e: React.FormEvent<HTMLFormElement>): void => {
+          e.preventDefault();
+          void handleAddColumn();
+        }}
+      >
         <LabelledTextField
           label="Board Name"
           type="text"
@@ -52,14 +59,9 @@ export function AddColumn({ boardId }: { boardId: string }) {
           inputType="textInput"
         />
 
-        <ButtonPrimaryS
-          onClick={() => {
-            void handleAddColumn();
-          }}
-        >
-          Create New Column
-        </ButtonPrimaryS>
-      </>
+        <ButtonPrimaryS>Create New Column</ButtonPrimaryS>
+      </form>
+      {createColumnMutation.isLoading && <LoadingSpinner />}
     </>
   );
 }
