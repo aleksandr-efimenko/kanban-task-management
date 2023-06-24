@@ -1,5 +1,5 @@
 import { type Column } from "@/utils/DataTypes";
-import { TaskCard } from "@/components/TaskCard";
+import { TaskCard, TaskCardSkeleton } from "@/components/TaskCard";
 
 export function TaskColumn({ column }: { column: Column }) {
   return (
@@ -32,6 +32,19 @@ export function ColumnTitle({ column }: { column: Column }) {
       <h3 className="w-full text-heading-s font-bold uppercase text-medium-gray">
         {title}
       </h3>
+    </div>
+  );
+}
+
+export function TaskColumnSkeleton() {
+  return (
+    <div className="flex flex-col gap-6 overflow-auto">
+      <div className="h-5 w-1/2 animate-pulse rounded bg-light-gray "></div>
+      <div className="flex flex-col gap-5 ">
+        <TaskCardSkeleton />
+        <TaskCardSkeleton />
+        <TaskCardSkeleton />
+      </div>
     </div>
   );
 }

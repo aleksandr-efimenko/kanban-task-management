@@ -10,6 +10,8 @@ import { uuid } from "uuidv4";
 import { api } from "@/utils/api";
 import { type Column } from "@/utils/DataTypes";
 import { useSession } from "next-auth/react";
+import { generateColor } from "@/utils/generateColor";
+import { type Session } from "next-auth";
 
 const initialBoardForm = {
   title: "",
@@ -18,15 +20,56 @@ const initialBoardForm = {
     { title: "Todo", id: uuid() },
     { title: "Doing", id: uuid() },
   ],
+} as BoardForm;
+
+export type BoardForm = {
+  title: string;
+  titleError?: string;
+  columns: { id: string; title: string; color?: string }[];
 };
 
-export function AddBoard() {
+const createLocalBoard = (boardForm: typeof initialBoardForm) => {
+  return {
+    id: uuid(),
+    name: boardForm.title,
+    columns: boardForm.columns.map((column) => {
+      return {
+        id: column.id,
+        name: column.title,
+        tasks: [],
+        color: generateColor(),
+      };
+    }),
+  };
+};
+
+export const addBoard = async (
+  boardForm: BoardForm,
+  session: Session | null,
+  createBoardMutation: ReturnType<typeof api.boards.createBoard.useMutation>
+) => {
+  if (session?.user) {
+    const board = await createBoardMutation.mutateAsync({
+      name: boardForm.title,
+      ownerId: session?.user?.id || "",
+      columns: boardForm.columns.map((column) => column.title),
+    });
+    return board;
+  } else {
+    const board = createLocalBoard(boardForm);
+    return board;
+  }
+};
+
+export function AddBoardForm() {
   const [boardForm, setBoardForm] = useState(initialBoardForm);
   const boardsDispatch = useBoardsDispatch();
   const { handleModal } = useContext(ModalContext);
   const router = useRouter();
-  const createBoardMutation = api.boards.createBoard.useMutation();
   const { data: session } = useSession();
+
+  const createBoardMutation = api.boards.createBoard.useMutation();
+
   const SaveBoard = async () => {
     //add board to boards
     if (!boardsDispatch) return;
@@ -38,14 +81,10 @@ export function AddBoard() {
       return;
     }
 
-    const board = await createBoardMutation.mutateAsync({
-      name: boardForm.title,
-      ownerId: session?.user?.id || "",
-      columns: boardForm.columns.map((column) => column.title),
-    });
+    const board = await addBoard(boardForm, session, createBoardMutation);
     boardsDispatch({
       type: "ADD_BOARD",
-      boardName: boardForm.title,
+      boardName: board.name,
       boardId: board.id,
       columns: board.columns.map((column) => {
         return {

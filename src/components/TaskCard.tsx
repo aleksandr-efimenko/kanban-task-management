@@ -28,3 +28,12 @@ export function TaskCard({ taskId, title: name, subtasks }: TaskCardProps) {
     </div>
   );
 }
+
+export function TaskCardSkeleton() {
+  return (
+    <div className="rounded-lg bg-white px-4 py-6 shadow-task-card-shadow dark:bg-dark-gray">
+      <div className="h-5 w-1/2 animate-pulse rounded bg-light-gray  "></div>
+      <div className="mt-2 h-3 w-3/4 animate-pulse rounded bg-light-gray "></div>
+    </div>
+  );
+}

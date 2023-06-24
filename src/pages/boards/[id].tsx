@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { TaskColumn } from "@/components/TaskColumn";
+import { TaskColumn, TaskColumnSkeleton } from "@/components/TaskColumn";
 import { NewColumnButton } from "@/components/Buttons/NewColumnButton";
 import { BoardViewContainer } from "@/components/BoardViews/BoardView";
 import Head from "next/head";
@@ -9,12 +9,22 @@ import { uuid } from "uuidv4";
 
 export default function BoardView() {
   const router = useRouter();
-  const { boards } = useBoards();
+  const { boards, loading } = useBoards();
 
   const currentBoard = boards?.find((board) => board.id === router.query.id);
   const columns = currentBoard?.columns;
 
+  // if boards are loading
+  const skeletonBoardView = (
+    <BoardViewContainer columns={true}>
+      <TaskColumnSkeleton />
+    </BoardViewContainer>
+  );
+
   const boardView = () => {
+    if (loading) {
+      return skeletonBoardView;
+    }
     // if user opens a board that doesn't exist
     if (!currentBoard || !router.query.id) {
       return (
