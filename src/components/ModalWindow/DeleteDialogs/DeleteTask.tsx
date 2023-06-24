@@ -1,6 +1,7 @@
 import { useBoards, useBoardsDispatch } from "@/context/BoardsContext";
 import { DestructiveDialog } from "@/components/ModalWindow/DeleteDialogs/DeleteDialog";
 import { api } from "@/utils/api";
+import { useSession } from "next-auth/react";
 
 export function DeleteTask({
   taskId,
@@ -11,6 +12,7 @@ export function DeleteTask({
 }) {
   const dispatch = useBoardsDispatch();
   const { boards } = useBoards();
+  const { data: session } = useSession();
   if (!dispatch || !boards) return null;
 
   const taskTitle = boards
@@ -23,7 +25,8 @@ export function DeleteTask({
     ?.tasks.find((task) => task.id === taskId)?.title as string;
   const deleteTaskMutation = api.tasks.deleteTask.useMutation();
   const handleDelete = () => {
-    deleteTaskMutation.mutate({ id: taskId });
+    //delete task from db if user is logged in
+    if (session) deleteTaskMutation.mutate({ id: taskId });
     dispatch({
       type: "DELETE_TASK",
       taskId: taskId,
