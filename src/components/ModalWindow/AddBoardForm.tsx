@@ -19,7 +19,6 @@ export function AddBoardForm() {
   const { handleModal } = useContext(ModalContext);
   const router = useRouter();
   const { data: session } = useSession();
-
   const createBoardMutation = api.boards.createBoard.useMutation();
 
   const SaveBoard = async () => {
@@ -89,37 +88,35 @@ export function AddBoardForm() {
   return (
     <>
       <ModalWindowTitle title="Add New Board" />
-      <form
-        className="flex flex-col gap-6"
-        onSubmit={(e) => {
-          e.preventDefault();
+      <LabelledTextField
+        label="Board Name"
+        type="text"
+        placeholder="e.g. Web Design"
+        value={boardForm.title}
+        onChange={handleInputChange}
+        errorMessage={boardForm.titleError}
+        inputType="textInput"
+      />
+      <MultiInputs
+        label="Columns"
+        buttonText="+ Add Column"
+        inputs={boardForm.columns.map((column) => {
+          return {
+            value: column.title,
+            id: column.id,
+          };
+        })}
+        handleInputChange={handleColumnChange}
+        handleRemoveInput={handleColumnRemove}
+        handleAddInput={handleColumnAdd}
+      />
+      <ButtonPrimaryS
+        onClick={() => {
           void SaveBoard();
         }}
       >
-        <LabelledTextField
-          label="Board Name"
-          type="text"
-          placeholder="e.g. Web Design"
-          value={boardForm.title}
-          onChange={handleInputChange}
-          errorMessage={boardForm.titleError}
-          inputType="textInput"
-        />
-        <MultiInputs
-          label="Columns"
-          buttonText="+ Add Column"
-          inputs={boardForm.columns.map((column) => {
-            return {
-              value: column.title,
-              id: column.id,
-            };
-          })}
-          handleInputChange={handleColumnChange}
-          handleRemoveInput={handleColumnRemove}
-          handleAddInput={handleColumnAdd}
-        />
-        <ButtonPrimaryS>Create New Board</ButtonPrimaryS>
-      </form>
+        Create New Board
+      </ButtonPrimaryS>
       {createBoardMutation.isLoading && <LoadingSpinner />}
     </>
   );
