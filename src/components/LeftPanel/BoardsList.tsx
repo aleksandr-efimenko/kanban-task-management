@@ -2,7 +2,6 @@ import {
   BoardListItem,
   SkeletonBoardListItem,
 } from "@/components/LeftPanel/LeftPanelItem";
-import { CreateNewBoardButton } from "@/components/LeftPanel/CreateNewBoardButton";
 import { useRouter } from "next/router";
 import { useBoards } from "@/context/BoardsContext";
 
@@ -25,12 +24,11 @@ export function BoardsList() {
   const boardListNumber = boards?.length ?? "";
 
   return (
-    <div className="flex flex-col pr-6">
-      <h2 className="pb-[1.1875rem] pl-8 text-heading-s uppercase text-medium-gray">
+    <div className="flex flex-col overflow-auto pr-6">
+      <h2 className="pb-[1.1875rem] pl-8 text-heading-s uppercase text-medium-gray ">
         ALL BOARDS ({loading ? "..." : boardListNumber})
       </h2>
       {loading ? skeletonBoardList : boardList}
-      <CreateNewBoardButton />
     </div>
   );
 }

@@ -2,6 +2,7 @@ import { Logo } from "@/components/Logo";
 import { ThemeToggleSwitch } from "@/components/ThemeToggleSwitch";
 import { BoardsList } from "@/components/LeftPanel/BoardsList";
 import { HidePanelButton } from "@/components/LeftPanel/HidePanelButton";
+import { CreateNewBoardButton } from "./CreateNewBoardButton";
 
 export function LeftsidePanel() {
   return (
@@ -15,6 +16,7 @@ export function LeftsidePanel() {
       <Logo />
       <BoardsList />
       <div className="flex flex-col gap-2 pb-8 pr-8">
+        <CreateNewBoardButton />
         <ThemeToggleSwitch />
         <HidePanelButton />
       </div>
