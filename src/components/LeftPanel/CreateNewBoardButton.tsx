@@ -12,9 +12,10 @@ export function CreateNewBoardButton() {
   return (
     <Link
       href="#"
-      className={`group flex min-h-[3rem] w-full items-center gap-4 justify-self-start
-        overflow-hidden text-ellipsis rounded-r-full pl-8 text-purple duration-200
-        hover:scale-105`}
+      className={`group flex min-h-[3rem] w-full items-center gap-4 justify-self-start overflow-hidden
+       text-ellipsis rounded-r-full pl-8 text-purple duration-200
+
+       `}
       onClick={() => {
         handleModal((<AddBoardForm />) as React.ReactNode);
       }}

@@ -14,9 +14,11 @@ export function LeftsidePanel() {
     "
     >
       <Logo />
-      <BoardsList />
-      <div className="flex flex-col gap-2 pb-8 pr-8">
+      <div className="flex flex-col overflow-auto">
+        <BoardsList />
         <CreateNewBoardButton />
+      </div>
+      <div className="flex flex-col gap-2 pb-8 pr-8">
         <ThemeToggleSwitch />
         <HidePanelButton />
       </div>

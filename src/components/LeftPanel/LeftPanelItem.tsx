@@ -36,7 +36,7 @@ export function LeftPanelItem({
       onClick={handleClick}
     >
       {children}
-      <p className="flex-1">{title}</p>
+      <p className={`flex-1`}>{title}</p>
     </Link>
   );
 }

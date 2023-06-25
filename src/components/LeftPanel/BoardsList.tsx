@@ -24,7 +24,7 @@ export function BoardsList() {
   const boardListNumber = boards?.length ?? "";
 
   return (
-    <div className="flex flex-col overflow-auto pr-6">
+    <div className="flex h-fit flex-col overflow-auto pr-6">
       <h2 className="pb-[1.1875rem] pl-8 text-heading-s uppercase text-medium-gray ">
         ALL BOARDS ({loading ? "..." : boardListNumber})
       </h2>

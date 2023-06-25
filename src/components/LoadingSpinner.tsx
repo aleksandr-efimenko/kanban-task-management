@@ -1,6 +1,6 @@
 export function LoadingSpinner() {
   return (
-    <div className="absolute inset-0 bg-white opacity-90 dark:bg-dark-gray">
+    <div className="absolute inset-0 rounded-md bg-white opacity-90  dark:bg-dark-gray">
       <div
         role="status"
         className="absolute left-1/2 top-2/4 -translate-x-1/2 -translate-y-1/2"
