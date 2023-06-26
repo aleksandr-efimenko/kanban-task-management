@@ -7,6 +7,19 @@ import { useBoards } from "@/context/BoardsContext";
 import { EmptyBoard } from "@/components/BoardViews/EmptyBoard";
 import { uuid } from "uuidv4";
 
+// if boards are loading
+const skeletonBoardView = (
+  <BoardViewContainer columns={true}>
+    <TaskColumnSkeleton />
+  </BoardViewContainer>
+);
+// if board is not found in the context
+const boardNotFound = (
+  <BoardViewContainer columns={false}>
+    <h1 className="text-heading-xl text-medium-gray">Board not found</h1>
+  </BoardViewContainer>
+);
+
 export default function BoardView() {
   const router = useRouter();
   const { boards, loading } = useBoards();
@@ -14,10 +27,18 @@ export default function BoardView() {
   const currentBoard = boards?.find((board) => board.id === router.query.id);
   const columns = currentBoard?.columns;
 
-  // if boards are loading
-  const skeletonBoardView = (
+  const emptyBoard = (
+    <BoardViewContainer columns={false}>
+      <EmptyBoard boardId={currentBoard?.id || ""} />
+    </BoardViewContainer>
+  );
+
+  const boardWithColumns = (
     <BoardViewContainer columns={true}>
-      <TaskColumnSkeleton />
+      {columns?.map((column) => (
+        <TaskColumn key={column.id ? column.id : uuid()} column={column} />
+      ))}
+      <NewColumnButton boardId={currentBoard?.id || ""} />
     </BoardViewContainer>
   );
 
@@ -27,28 +48,13 @@ export default function BoardView() {
     }
     // if user opens a board that doesn't exist
     if (!currentBoard || !router.query.id) {
-      return (
-        <BoardViewContainer columns={false}>
-          <h1 className="text-heading-xl text-medium-gray">Board not found</h1>
-        </BoardViewContainer>
-      );
+      return boardNotFound;
     }
     // if user opens a board that has no columns
     if (columns?.length === 0) {
-      return (
-        <BoardViewContainer columns={false}>
-          <EmptyBoard boardId={currentBoard.id} />
-        </BoardViewContainer>
-      );
+      return emptyBoard;
     }
-    return (
-      <BoardViewContainer columns={true}>
-        {columns?.map((column) => (
-          <TaskColumn key={column.id ? column.id : uuid()} column={column} />
-        ))}
-        <NewColumnButton boardId={currentBoard.id} />
-      </BoardViewContainer>
-    );
+    return boardWithColumns;
   };
 
   const boardName = currentBoard?.name || "";
