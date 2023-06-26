@@ -19,6 +19,7 @@ import {
 import { addBoardDispatch, editBoardDispatch } from "./BoardDispatchFunctions";
 import { useSession } from "next-auth/react";
 import { api } from "@/utils/api";
+import router from "next/router";
 
 const initialBoards = defaultBoardsData.boards;
 const boardsWithIds: Board[] = initialBoards.map((board) => ({
@@ -62,26 +63,21 @@ export function BoardsProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     // use local data if no session (user not logged in)
-    if (!session) {
+    if (!session && status !== "loading") {
+      console.log("no session");
       dispatch({
         type: "LOAD_BOARDS",
         boards: boardsWithIds,
       });
+      void router.push(`/`);
       return;
     }
 
-    if (!boardsFromDb.data)
-      dispatch({
-        type: "LOAD_BOARDS",
-        boards: [],
-      });
-    console.log(boardsFromDb.data);
-    // use data from db if session (user logged in)
     dispatch({
       type: "LOAD_BOARDS",
       boards: boardsFromDb.data,
     });
-  }, [boardsFromDb.data, session]);
+  }, [boardsFromDb.data, session, status]);
   const loadingStatus = () => {
     if (status === "loading") {
       return true;

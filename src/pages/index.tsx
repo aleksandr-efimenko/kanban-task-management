@@ -8,13 +8,15 @@ import { useBoards } from "@/context/BoardsContext";
 
 const Home: NextPage = () => {
   const router = useRouter();
-  const { boards } = useBoards();
+  const { boards, loading } = useBoards();
+
   useEffect(() => {
     if (!boards || !boards[0]) {
       return;
     }
-    // void router.push(`/boards/${boards[0].id}`);
-  }, [router, boards]);
+
+    if (!loading) void router.push(`/boards/${boards[0].id}`);
+  }, [router, boards, loading]);
 
   return (
     <>
