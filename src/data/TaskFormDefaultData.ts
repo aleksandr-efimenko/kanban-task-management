@@ -1,4 +1,3 @@
-import { type Subtask } from "@prisma/client";
 import { uuid } from "uuidv4";
 
 export const addTaskFormFields = {
@@ -36,9 +35,9 @@ export const taskFormDefaultData = {
   titleError: "",
   description: "",
   subtasks: [
-    { title: "", id: uuid(), isCompleted: false },
-    { title: "", id: uuid(), isCompleted: false },
-  ] as Subtask[],
+    { title: "", id: uuid(), isCompleted: false, titleError: "" },
+    { title: "", id: uuid(), isCompleted: false, titleError: "" },
+  ],
   status: "",
 };
 

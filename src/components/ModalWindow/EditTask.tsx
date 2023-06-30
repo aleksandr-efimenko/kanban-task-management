@@ -16,6 +16,7 @@ import {
   getColumnIdByTaskId,
   getTaskInfoFromId,
 } from "@/utils/getBoardData";
+import { api } from "@/utils/api";
 
 export default function EditTask({ taskId }: { taskId: string }) {
   const [taskForm, setTaskForm] = useState(taskFormDefaultData);
@@ -25,6 +26,9 @@ export default function EditTask({ taskId }: { taskId: string }) {
   const currentBoard = getBoardDataFromTaskId(taskId, boards || []);
   const currentTask = getTaskInfoFromId(taskId, boards || []);
   const columnNames = currentBoard?.columns.map((column) => column.name);
+
+  const updateTaskMutation = api.tasks.updateTask.useMutation();
+
   //fill form with current board data
   useEffect(() => {
     const currentColumn = currentBoard?.columns.find(
@@ -54,7 +58,7 @@ export default function EditTask({ taskId }: { taskId: string }) {
   const handleSubtaskChange = (newName: string, id: string) => {
     const newSubtasks = taskForm.subtasks.map((input) => {
       if (input.id === id) {
-        return { ...input, title: newName };
+        return { ...input, title: newName, titleError: "" };
       }
       return input;
     });
@@ -70,7 +74,7 @@ export default function EditTask({ taskId }: { taskId: string }) {
       ...taskForm,
       subtasks: [
         ...taskForm.subtasks,
-        { id: uuid(), title: "", isCompleted: false },
+        { id: uuid(), title: "", isCompleted: false, titleError: "" },
       ],
     });
   };
@@ -90,6 +94,7 @@ export default function EditTask({ taskId }: { taskId: string }) {
   const SaveTask = () => {
     //add board to boards
     if (!boardsDispatch) return;
+    // check if title is empty then show error
     if (!taskForm.title) {
       setTaskForm({
         ...taskForm,
@@ -97,6 +102,22 @@ export default function EditTask({ taskId }: { taskId: string }) {
       });
       return;
     }
+    // check if subtask title is empty then show error
+    taskForm.subtasks.forEach((subtask) => {
+      if (!subtask.title) {
+        setTaskForm({
+          ...taskForm,
+          subtasks: taskForm.subtasks.map((input) => {
+            if (input.id === subtask.id) {
+              return { ...input, titleError: "Cant't be empty" };
+            }
+            return input;
+          }),
+        });
+      }
+    });
+    if (taskForm.subtasks.some((subtask) => !subtask.title)) return;
+
     // save changes
     boardsDispatch({
       type: "EDIT_TASK",
@@ -155,6 +176,7 @@ export default function EditTask({ taskId }: { taskId: string }) {
         inputs={taskForm.subtasks.map((subtask) => ({
           value: subtask.title,
           id: subtask.id,
+          errorMessage: subtask.titleError,
         }))}
         handleInputChange={handleSubtaskChange}
         handleAddInput={handleAddSubtask}

@@ -37,6 +37,7 @@ export function EditBoard({ boardId }: { boardId: string }) {
   const { handleModal } = useContext(ModalContext);
   const { boards } = useBoards();
   const currentBoard = boards?.find((board) => board.id === boardId);
+
   const updateBoardMutation = api.boards.updateBoard.useMutation();
   const createColumnMutation = api.columns.createColumn.useMutation();
   const updateColumnMutation = api.columns.updateColumn.useMutation();
@@ -149,7 +150,7 @@ export function EditBoard({ boardId }: { boardId: string }) {
         id: boardId,
         name: boardForm.title,
       });
-      console.log(newBoard);
+
       boardsDispatch({
         type: "EDIT_BOARD",
         boardId: boardId,

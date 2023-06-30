@@ -6,6 +6,7 @@ import Image, { type StaticImageData } from "next/image";
 export type InputObject = {
   value: string;
   id: string;
+  errorMessage?: string;
 };
 
 export type MultiInputsProps = {
@@ -38,6 +39,7 @@ export function MultiInputs({
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               handleInputChange(e.target.value, input.id)
             }
+            errorMessage={input.errorMessage}
           />
           <RemoveInputButton onClick={() => handleRemoveInput(input.id)} />
         </div>
