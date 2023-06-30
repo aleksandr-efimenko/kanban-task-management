@@ -8,6 +8,8 @@ import { ModalWindowTitle } from "./ModalWindowTitle";
 import { MultiInputs } from "./MultiInputs";
 import { type Column } from "@/utils/DataTypes";
 import { generateColor } from "@/utils/generateColor";
+import { api } from "@/utils/api";
+import { useSession } from "next-auth/react";
 
 const initialBoardForm = {
   title: "",
@@ -34,7 +36,11 @@ export function EditBoard({ boardId }: { boardId: string }) {
   const { handleModal } = useContext(ModalContext);
   const { boards } = useBoards();
   const currentBoard = boards?.find((board) => board.id === boardId);
-
+  const updateBoardMutation = api.boards.updateBoard.useMutation();
+  const createColumnMutation = api.columns.createColumn.useMutation();
+  const updateColumnMutation = api.columns.updateColumn.useMutation();
+  const deleteColumnMutation = api.columns.deleteColumn.useMutation();
+  const { data: session } = useSession();
   //fill form with current board data
   useEffect(() => {
     if (!currentBoard) return;
@@ -80,7 +86,7 @@ export function EditBoard({ boardId }: { boardId: string }) {
   };
 
   // dispatch action to add new board
-  const SaveBoard = () => {
+  const SaveBoard = async () => {
     //add board to boards
     if (!boardsDispatch) return;
     if (!boardForm.title) {
@@ -90,14 +96,73 @@ export function EditBoard({ boardId }: { boardId: string }) {
       });
       return;
     }
+    if (session) {
+      const columnsToDelete = currentBoard?.columns.filter((column) => {
+        return !boardForm.columns.some((newColumn) => {
+          return column.id === newColumn.id;
+        });
+      });
+      if (columnsToDelete && columnsToDelete.length > 0) {
+        await Promise.all(
+          columnsToDelete.map(async (column) => {
+            await deleteColumnMutation.mutateAsync({
+              id: column.id,
+            });
+          })
+        );
+      }
 
-    boardsDispatch({
-      type: "EDIT_BOARD",
-      boardId: boardId,
-      newBoardName: boardForm.title,
-      columns: boardForm.columns,
-    });
+      const columnsToUpdate = boardForm.columns.filter((column) => {
+        return currentBoard?.columns.some((newColumn) => {
+          return column.id === newColumn.id;
+        });
+      });
+      if (columnsToUpdate && columnsToUpdate.length > 0) {
+        await Promise.all(
+          columnsToUpdate.map(async (column) => {
+            await updateColumnMutation.mutateAsync({
+              id: column.id,
+              name: column.name,
+            });
+          })
+        );
+      }
 
+      const columnsToAdd = boardForm.columns.filter((column) => {
+        return !currentBoard?.columns.some((newColumn) => {
+          return column.id === newColumn.id;
+        });
+      });
+      if (columnsToAdd && columnsToAdd.length > 0) {
+        await Promise.all(
+          columnsToAdd.map(async (column) => {
+            await createColumnMutation.mutateAsync({
+              name: column.name,
+              boardId: boardId,
+            });
+          })
+        );
+      }
+
+      const newBoard = await updateBoardMutation.mutateAsync({
+        id: boardId,
+        name: boardForm.title,
+      });
+      console.log(newBoard);
+      boardsDispatch({
+        type: "EDIT_BOARD",
+        boardId: boardId,
+        newBoardName: boardForm.title,
+        columns: newBoard?.columns,
+      });
+    } else {
+      boardsDispatch({
+        type: "EDIT_BOARD",
+        boardId: boardId,
+        newBoardName: boardForm.title,
+        columns: boardForm.columns,
+      });
+    }
     //close modal
     handleModal();
   };
@@ -132,7 +197,13 @@ export function EditBoard({ boardId }: { boardId: string }) {
         handleAddInput={handleColumnAdd}
         handleRemoveInput={handleColumnRemove}
       />
-      <ButtonPrimaryS onClick={SaveBoard}>Save Board</ButtonPrimaryS>
+      <ButtonPrimaryS
+        onClick={() => {
+          void SaveBoard();
+        }}
+      >
+        Save Board
+      </ButtonPrimaryS>
     </>
   );
 }

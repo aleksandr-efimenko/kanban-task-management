@@ -5,6 +5,7 @@ import {
   publicProcedure,
 } from "@/server/api/trpc";
 import { generateColor } from "@/utils/generateColor";
+import { prisma } from "@/server/db";
 
 export const boardsRouter = createTRPCRouter({
   getAllBoardsForUser: protectedProcedure.query(async ({ ctx }) => {
@@ -51,12 +52,31 @@ export const boardsRouter = createTRPCRouter({
     }),
 
   updateBoard: publicProcedure
-    .input(z.object({ id: z.string(), name: z.string() }))
-    .mutation(({ input, ctx }) => {
-      return ctx.prisma.board.update({
+    .input(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      //update board name
+      const updatedBoard = await ctx.prisma.board.update({
         where: { id: input.id },
         data: { name: input.name },
+        include: {
+          columns: { include: { tasks: { include: { subtasks: true } } } },
+        },
       });
+      console.log(updatedBoard);
+      // return updated board
+      // const newBoard = await ctx.prisma.board.findFirst({
+      //   where: { id: input.id },
+      //   include: {
+      //     columns: { include: { tasks: { include: { subtasks: true } } } },
+      //   },
+      // });
+      // console.log(newBoard);
+      return updatedBoard;
     }),
 
   deleteBoard: protectedProcedure

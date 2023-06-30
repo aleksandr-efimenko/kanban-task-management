@@ -1,9 +1,9 @@
 import { z } from "zod";
-import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { generateColor } from "@/utils/generateColor";
 
 export const columnsRouter = createTRPCRouter({
-  createColumn: publicProcedure
+  createColumn: protectedProcedure
     .input(
       z.object({
         name: z.string(),
@@ -29,7 +29,15 @@ export const columnsRouter = createTRPCRouter({
       }
     }),
 
-  updateColumn: publicProcedure
+  deleteColumn: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(({ input, ctx }) => {
+      return ctx.prisma.column.delete({
+        where: { id: input.id },
+      });
+    }),
+
+  updateColumn: protectedProcedure
     .input(z.object({ id: z.string(), name: z.string() }))
     .mutation(({ input, ctx }) => {
       return ctx.prisma.column.update({
