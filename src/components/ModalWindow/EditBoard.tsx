@@ -10,6 +10,7 @@ import { type Column } from "@/utils/DataTypes";
 import { generateColor } from "@/utils/generateColor";
 import { api } from "@/utils/api";
 import { useSession } from "next-auth/react";
+import { LoadingSpinner } from "../LoadingSpinner";
 
 const initialBoardForm = {
   title: "",
@@ -204,6 +205,10 @@ export function EditBoard({ boardId }: { boardId: string }) {
       >
         Save Board
       </ButtonPrimaryS>
+      {(updateBoardMutation.isLoading ||
+        createColumnMutation.isLoading ||
+        updateColumnMutation.isLoading ||
+        deleteColumnMutation.isLoading) && <LoadingSpinner />}
     </>
   );
 }
