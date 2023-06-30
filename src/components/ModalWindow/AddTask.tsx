@@ -13,6 +13,7 @@ import {
   addTaskFormFields,
   taskFormDefaultData,
 } from "@/data/TaskFormDefaultData";
+import { LoadingSpinner } from "../LoadingSpinner";
 
 export default function AddTaskForm({ boardId }: { boardId: string }) {
   const [taskForm, setTaskForm] = useState(taskFormDefaultData);
@@ -43,6 +44,20 @@ export default function AddTaskForm({ boardId }: { boardId: string }) {
       });
       return;
     }
+    taskForm.subtasks.map((subtask) => {
+      if (!subtask.title) {
+        setTaskForm({
+          ...taskForm,
+          subtasks: taskForm.subtasks.map((subtask) => {
+            if (!subtask.title) {
+              return { ...subtask, titleError: "Cant't be empty" };
+            }
+            return subtask;
+          }),
+        });
+      }
+    });
+    if (taskForm.subtasks.some((subtask) => !subtask.title)) return;
 
     const columnId =
       currentBoard?.columns.find((column) => column.name === taskForm.status)
@@ -98,6 +113,7 @@ export default function AddTaskForm({ boardId }: { boardId: string }) {
         return {
           ...subtask,
           title: newName,
+          titleError: "",
         };
       }
       return subtask;
@@ -113,7 +129,7 @@ export default function AddTaskForm({ boardId }: { boardId: string }) {
       ...taskForm,
       subtasks: [
         ...taskForm.subtasks,
-        { title: "", id: uuid(), isCompleted: false },
+        { title: "", id: uuid(), isCompleted: false, titleError: "" },
       ],
     });
   };
@@ -163,6 +179,7 @@ export default function AddTaskForm({ boardId }: { boardId: string }) {
         inputs={taskForm.subtasks.map((subtask) => ({
           value: subtask.title,
           id: subtask.id,
+          errorMessage: subtask.titleError,
         }))}
         handleInputChange={handleSubtaskChange}
         handleAddInput={handleAddSubtask}
@@ -177,9 +194,14 @@ export default function AddTaskForm({ boardId }: { boardId: string }) {
         options={columnNames || []}
       />
 
-      <ButtonPrimaryS onClick={SaveTask}>
+      <ButtonPrimaryS
+        onClick={() => {
+          void SaveTask();
+        }}
+      >
         {addTaskFormFields.button.text}
       </ButtonPrimaryS>
+      {createTaskMutation.isLoading && <LoadingSpinner />}
     </>
   );
 }
