@@ -5,8 +5,13 @@ import {
   publicProcedure,
 } from "@/server/api/trpc";
 import { generateColor } from "@/utils/generateColor";
-import { defaultUser } from "@/data/defaultDataUpload";
 
+import defaultBoards from "@/data/defaultBoard.json";
+export const defaultUser = {
+  name: "Guest",
+  email: "test@example.com",
+  id: "64a01eb855d0203aca08e6a5",
+};
 export const boardsRouter = createTRPCRouter({
   getAllBoardsForDemoUser: publicProcedure.query(async ({ ctx }) => {
     const boards = await ctx.prisma.board.findMany({
@@ -60,7 +65,7 @@ export const boardsRouter = createTRPCRouter({
       return newBoard;
     }),
 
-  updateBoard: publicProcedure
+  updateBoard: protectedProcedure
     .input(
       z.object({
         id: z.string(),
@@ -93,4 +98,43 @@ export const boardsRouter = createTRPCRouter({
     .mutation(({ input, ctx }) => {
       return ctx.prisma.board.delete({ where: { id: input.id } });
     }),
+
+  createDefaultBoards: publicProcedure.mutation(async ({ ctx }) => {
+    for (const board of defaultBoards.boards) {
+      await ctx.prisma.board.create({
+        data: {
+          createdAt: new Date(),
+          name: board.name,
+          ownerId: defaultUser.id,
+          columns: {
+            create: [
+              ...board.columns.map((column) => ({
+                name: column.name,
+                createdAt: new Date(),
+                color: column.color || generateColor(),
+                tasks: {
+                  create: [
+                    ...column.tasks.map((task) => ({
+                      title: task.title,
+                      createdAt: new Date(),
+                      description: task.description,
+                      subtasks: {
+                        create: [
+                          ...task.subtasks.map((subtask) => ({
+                            title: subtask.title,
+                            createdAt: new Date(),
+                          })),
+                        ],
+                      },
+                    })),
+                  ],
+                },
+              })),
+            ],
+          },
+        },
+      });
+    }
+    return "success";
+  }),
 });
