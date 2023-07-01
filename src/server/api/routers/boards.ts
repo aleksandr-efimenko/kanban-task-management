@@ -5,11 +5,20 @@ import {
   publicProcedure,
 } from "@/server/api/trpc";
 import { generateColor } from "@/utils/generateColor";
-import { prisma } from "@/server/db";
+import { defaultUser } from "@/data/defaultDataUpload";
 
 export const boardsRouter = createTRPCRouter({
+  getAllBoardsForDemoUser: publicProcedure.query(async ({ ctx }) => {
+    const boards = await ctx.prisma.board.findMany({
+      where: { ownerId: defaultUser.id },
+      include: {
+        columns: { include: { tasks: { include: { subtasks: true } } } },
+      },
+    });
+    return boards;
+  }),
+
   getAllBoardsForUser: protectedProcedure.query(async ({ ctx }) => {
-    console.log(ctx.session?.user?.id);
     const boards = await ctx.prisma.board.findMany({
       where: { ownerId: ctx.session?.user?.id },
       include: {
