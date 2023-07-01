@@ -6,33 +6,57 @@ import { LabelledTextField } from "../Inputs/LabelledTextField";
 import { ModalWindowTitle } from "./ModalWindowTitle";
 import { api } from "@/utils/api";
 import { LoadingSpinner } from "../LoadingSpinner";
+import { useSession } from "next-auth/react";
+import { uuid } from "uuidv4";
+import { generateColor } from "@/utils/generateColor";
 
 export function AddColumnForm({ boardId }: { boardId: string }) {
   const dispatch = useBoardsDispatch();
   const { handleModal } = useContext(ModalContext);
   const [columnName, setColumnName] = useState("");
-  const [errorMesage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const { data: session } = useSession();
   const createColumnMutation = api.columns.createColumn.useMutation();
+
+  const handleColumnNameChange = (e: React.FormEvent<HTMLInputElement>) => {
+    setErrorMessage("");
+    setColumnName(e.currentTarget.value);
+  };
+
+  const addColumn = async (boardId: string, columnName: string) => {
+    let newColumnId: string;
+    let color: string;
+
+    if (session) {
+      const newColumn = await createColumnMutation.mutateAsync({
+        boardId: boardId,
+        name: columnName,
+      });
+      newColumnId = newColumn.id;
+      color = newColumn.color || "blue";
+    } else {
+      newColumnId = uuid();
+      color = generateColor();
+    }
+    if (!dispatch) return;
+    dispatch({
+      type: "ADD_COLUMN",
+      boardId,
+      columnName,
+      newColumnId,
+      color,
+    });
+  };
 
   const handleAddColumn = async () => {
     if (columnName === "") {
       setErrorMessage("Can't be empty");
       return;
     }
-
     if (!dispatch) return;
-    const newColumn = await createColumnMutation.mutateAsync({
-      boardId: boardId,
-      name: columnName,
-    });
 
-    dispatch({
-      type: "ADD_COLUMN",
-      boardId: boardId,
-      columnName: columnName,
-      newColumnId: newColumn.id,
-      color: newColumn.color || "blue",
-    });
+    await addColumn(boardId, columnName);
+
     setColumnName("");
     handleModal();
   };
@@ -52,10 +76,8 @@ export function AddColumnForm({ boardId }: { boardId: string }) {
           type="text"
           placeholder="e.g. Web Design"
           value={columnName}
-          onChange={(e: React.FormEvent<HTMLInputElement>): void =>
-            setColumnName((e.target as HTMLInputElement).value)
-          }
-          errorMessage={errorMesage}
+          onChange={handleColumnNameChange}
+          errorMessage={errorMessage}
           inputType="textInput"
         />
 
