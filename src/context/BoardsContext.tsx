@@ -6,44 +6,25 @@ import {
   type Reducer,
   useEffect,
 } from "react";
-import defaultBoardsData from "@/data/defaultBoard.json";
-import type { Task, Board } from "@/utils/DataTypes";
-import { uuid } from "uuidv4";
 import { type BoardActions, neverReached } from "@/context/BoardActions";
-import {
-  getBoardDataFromTaskId,
-  getBoardIdByTaskId,
-  getColumnIdByTaskId,
-  getTaskIdFromSubtask,
-} from "@/utils/getBoardData";
 import { addBoardDispatch, editBoardDispatch } from "./BoardDispatchFunctions";
 import { useSession } from "next-auth/react";
 import { api } from "@/utils/api";
 import router from "next/router";
+import type { Task, Board, Column, Subtask } from "@prisma/client";
 
-const initialBoards = defaultBoardsData.boards;
-const boardsWithIds: Board[] = initialBoards.map((board) => ({
-  ...board,
-  id: uuid(),
-  columns: board.columns.map((column) => ({
-    ...column,
-    id: uuid(),
-    tasks: column.tasks.map((task) => ({
-      ...task,
-      id: uuid(),
-      subtasks: task.subtasks.map((subtask) => ({
-        ...subtask,
-        id: uuid(),
-      })),
-    })),
-  })),
-}));
-
-type BoardsContextType = {
-  boards: Board[];
-  loading: boolean;
+export type BoardWithColumnsAndTasks = Board & {
+  columns: (Column & {
+    tasks: (Task & {
+      subtasks: Subtask[];
+    })[];
+  })[];
 };
 
+type BoardsContextType = {
+  boards: BoardWithColumnsAndTasks[];
+  loading: boolean;
+};
 const BoardsContext = createContext<BoardsContextType>({
   boards: [],
   loading: true,
@@ -52,41 +33,48 @@ export const BoardsDispatchContext =
   createContext<Dispatch<BoardActions> | null>(null);
 
 export function BoardsProvider({ children }: { children: React.ReactNode }) {
-  const [boards, dispatch] = useReducer<Reducer<Board[], BoardActions>>(
-    boardsReducer,
-    []
-  );
+  const [boards, dispatch] = useReducer<
+    Reducer<BoardWithColumnsAndTasks, BoardActions>
+  >(boardsReducer, []);
   const { data: session, status } = useSession();
   const boardsFromDb = api.boards.getAllBoardsForUser.useQuery(undefined, {
     enabled: !!session,
   });
+  const defaultBoards = api.boards.getAllBoardsForDemoUser.useQuery(undefined, {
+    enabled: !session,
+  });
+  console.log(defaultBoards.data);
 
   useEffect(() => {
     // use local data if no session (user not logged in)
-    if (!session && status !== "loading") {
-      console.log("no session");
+    if (!session && status !== "loading" && defaultBoards.data) {
       dispatch({
         type: "LOAD_BOARDS",
-        boards: boardsWithIds,
+        boards: defaultBoards.data,
       });
-      void router.push(`/`);
+      // void router.push(`/`);
       return;
     }
-
+    // use data from db if session (user logged in)
+    if (!boardsFromDb.data) return;
     dispatch({
       type: "LOAD_BOARDS",
       boards: boardsFromDb.data,
     });
-  }, [boardsFromDb.data, session, status]);
+  }, [boardsFromDb.data, session, status, defaultBoards.data]);
+
   const loadingStatus = () => {
-    if (status === "loading") {
+    if (status === "loading" || defaultBoards.isLoading) {
+      console.log("loading");
       return true;
     }
-    if (session) {
-      return boardsFromDb.isLoading;
+    if (session && boardsFromDb.isLoading) {
+      console.log("loading");
+      return true;
     }
     return false;
   };
+
   return (
     <BoardsContext.Provider value={{ boards, loading: loadingStatus() }}>
       <BoardsDispatchContext.Provider value={dispatch}>
@@ -104,7 +92,10 @@ export function useBoardsDispatch() {
   return useContext(BoardsDispatchContext);
 }
 
-export function boardsReducer(boards: Board[], action: BoardActions): Board[] {
+export function boardsReducer(
+  boards: BoardWithColumnsAndTasks[],
+  action: BoardActions
+): BoardWithColumnsAndTasks[] {
   switch (action.type) {
     case "LOAD_BOARDS": {
       return action.boards;
@@ -140,7 +131,7 @@ export function boardsReducer(boards: Board[], action: BoardActions): Board[] {
       return newBoards;
     }
     case "ADD_TASK": {
-      const subtasks = action.subtasks ? action.subtasks : [];
+      const subtasks = action.subtasks;
       const newBoards = boards.map((board) => {
         if (board.id === action.boardId) {
           return {
@@ -157,7 +148,7 @@ export function boardsReducer(boards: Board[], action: BoardActions): Board[] {
                       description: action.description,
                       status: column.name,
                       subtasks: subtasks,
-                    } as Task,
+                    },
                   ],
                 };
               }
