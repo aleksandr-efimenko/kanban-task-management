@@ -5,7 +5,6 @@ import { api } from "@/utils/api";
 
 import "@/styles/globals.css";
 import { ThemeProvider } from "next-themes";
-import Layout from "@/components/Layout";
 import { BoardsProvider } from "@/context/BoardsContext";
 import { ModalProvider } from "@/context/ModalContext";
 import { TaskViewDropdownMenuProvider } from "@/context/TaskViewDropdownMenuContext";
@@ -20,9 +19,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
         <BoardsProvider>
           <TaskViewDropdownMenuProvider>
             <ModalProvider>
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
+              <Component {...pageProps} />
             </ModalProvider>
           </TaskViewDropdownMenuProvider>
         </BoardsProvider>

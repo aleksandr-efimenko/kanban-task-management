@@ -6,6 +6,8 @@ import Head from "next/head";
 import { useBoards } from "@/context/BoardsContext";
 import { EmptyBoard } from "@/components/BoardViews/EmptyBoard";
 import { uuid } from "uuidv4";
+import BoardsLayout from "@/components/Layouts/BoardsLayout";
+import React from "react";
 
 // if boards are loading
 const skeletonBoardView = (
@@ -36,7 +38,7 @@ export default function BoardView() {
   const boardWithColumns = (
     <BoardViewContainer columns={true}>
       {columns?.map((column) => (
-        <TaskColumn key={column.id ? column.id : uuid()} column={column} />
+        <TaskColumn key={column.id} column={column} />
       ))}
       <NewColumnButton boardId={currentBoard?.id || ""} />
     </BoardViewContainer>
@@ -59,13 +61,13 @@ export default function BoardView() {
 
   const boardName = currentBoard?.name || "";
   return (
-    <>
+    <BoardsLayout>
       <Head>
         <title>Kanban task management web app | {boardName}</title>
         <meta name="description" content="Kanban task management web app" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {boardView()}
-    </>
+    </BoardsLayout>
   );
 }
