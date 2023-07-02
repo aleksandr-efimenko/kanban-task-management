@@ -1,14 +1,17 @@
 import { useBoardsDispatch } from "@/context/BoardsContext";
-import { type Subtask } from "@/utils/DataTypes";
 import { api } from "@/utils/api";
+import { type Subtask } from "@prisma/client";
+import { useSession } from "next-auth/react";
 
 export function CheckboxItem({ subtask }: { subtask: Subtask }) {
   const { id, title: title, isCompleted } = subtask;
   const dispatch = useBoardsDispatch();
   const editSubtaskMutation = api.subtasks.editSubtask.useMutation();
+  const { data: session } = useSession();
   if (!dispatch) return null;
   const handleCheckboxChange = () => {
-    editSubtaskMutation.mutate({ id, title, isCompleted: !isCompleted });
+    if (session)
+      editSubtaskMutation.mutate({ id, title, isCompleted: !isCompleted });
     dispatch({
       type: "EDIT_SUBTASK",
       id,
