@@ -91,7 +91,7 @@ export default function EditTask({ taskId }: { taskId: string }) {
   };
 
   // dispatch action to add new board
-  const SaveTask = () => {
+  const SaveTask = async () => {
     //add board to boards
     if (!boardsDispatch) return;
     // check if title is empty then show error
@@ -118,7 +118,16 @@ export default function EditTask({ taskId }: { taskId: string }) {
     });
     if (taskForm.subtasks.some((subtask) => !subtask.title)) return;
 
-    // save changes
+    //save changes to db
+    await updateTaskMutation.mutateAsync({
+      id: taskId,
+      newTitle: taskForm.title,
+      newDescription: taskForm.description,
+      newStatus: taskForm.status,
+      newColumnId: taskForm.status,
+    });
+
+    // save changes to context
     boardsDispatch({
       type: "EDIT_TASK",
       taskId: taskId,
@@ -192,7 +201,11 @@ export default function EditTask({ taskId }: { taskId: string }) {
         options={columnNames || []}
       />
 
-      <ButtonPrimaryS onClick={SaveTask}>
+      <ButtonPrimaryS
+        onClick={() => {
+          void SaveTask();
+        }}
+      >
         {editTaskFormFields.button.text}
       </ButtonPrimaryS>
     </>

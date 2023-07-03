@@ -1,8 +1,8 @@
 import { ModalContext } from "@/context/ModalContext";
-import { type Subtask } from "@/utils/DataTypes";
 import { useContext } from "react";
 import { TaskView } from "./ModalWindow/TaskView";
 import { generateSubtasksDescription } from "@/utils/SubtasksTitle";
+import { type Subtask } from "@prisma/client";
 
 export type TaskCardProps = {
   taskId: string;

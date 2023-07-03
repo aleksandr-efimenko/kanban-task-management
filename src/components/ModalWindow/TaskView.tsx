@@ -1,47 +1,49 @@
 import { useBoards, useBoardsDispatch } from "@/context/BoardsContext";
 import { ThreeDotsButton } from "../Buttons/ThreeDotsMenu";
 import { ModalWindowTitle } from "./ModalWindowTitle";
-import { useContext, useMemo } from "react";
-import {
-  getBoardDataFromTaskId,
-  getColumnIdByTaskId,
-  getTaskInfoFromId,
-} from "@/utils/getBoardData";
+import { useContext } from "react";
 import { CheckboxGroup } from "../Inputs/CheckboxGroup";
 import { generateSubtasksTitles } from "@/utils/SubtasksTitle";
 import { SelectInput } from "../Inputs/SelectInput";
 import { TaskDropdownMenu } from "../DropDownMenu/DropdownMenu";
 import { TaskViewDropdownMenuContext } from "@/context/TaskViewDropdownMenuContext";
 import { api } from "@/utils/api";
+import { useSession } from "next-auth/react";
+import {
+  getTaskInfoFromId,
+  getBoardDataFromTaskId,
+  getColumnIdByTaskId,
+} from "@/utils/getBoardData";
 
 export function TaskView({ taskId }: { taskId: string }) {
   const { boards } = useBoards();
   const boardsDispatch = useBoardsDispatch();
-  const task = useMemo(() => {
-    if (!taskId || !boards) return null;
-    return getTaskInfoFromId(taskId, boards);
-  }, [taskId, boards]);
-  const { menuIsOpen, handleMenu } = useContext(TaskViewDropdownMenuContext);
+  const task = getTaskInfoFromId(taskId, boards || []);
 
+  const { menuIsOpen, handleMenu } = useContext(TaskViewDropdownMenuContext);
+  const { data: session } = useSession();
   if (!task) return null;
   const { title: title, description, subtasks, status } = task;
 
   const currentBoard = getBoardDataFromTaskId(taskId, boards || []);
-  const columnNames = currentBoard?.columns.map((column) => column.name);
+  const columnNames = currentBoard?.columns.map((column) => {
+    return { id: column.id, name: column.name };
+  });
   const currentColumnName = currentBoard?.columns.find(
     (column) => column.id === getColumnIdByTaskId(taskId, boards || [])
   )?.name;
 
   const changeTaskStatusMutation = api.tasks.changeTaskColumn.useMutation();
-  const currentStatus = status ? status : currentColumnName;
+
   const handleChangeTaskStatus = (selectedOption: string) => {
     if (!boardsDispatch) return;
-    changeTaskStatusMutation.mutate({
-      id: taskId,
-      columnId: currentBoard?.columns.find(
-        (column) => column.name === selectedOption
-      )?.id as string,
-    });
+    if (session)
+      changeTaskStatusMutation.mutate({
+        id: taskId,
+        columnId: currentBoard?.columns.find(
+          (column) => column.name === selectedOption
+        )?.id as string,
+      });
     boardsDispatch({
       type: "CHANGE_TASK_STATUS",
       taskId,

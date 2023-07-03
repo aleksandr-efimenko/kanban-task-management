@@ -3,17 +3,21 @@ import { useState } from "react";
 import { TaskStatusDropdownMenu } from "../DropDownMenu/DropdownMenu";
 import chevronIcon from "~/assets/icon-chevron-down.svg";
 
+export type OptionProp = {
+  id?: string;
+  name: string;
+};
+
 export type SelectInputProps = React.ComponentPropsWithoutRef<"select"> & {
   label: string;
-  options: string[];
-  currentOption: string;
+  options: OptionProp[];
+  currentOption: OptionProp;
   handleSelectOption: (value: string) => void;
 };
 
 export function SelectInput(props: SelectInputProps) {
   const { label, options, currentOption, handleSelectOption } = props;
   const [showOptions, setShowOptions] = useState(false);
-
   const id = "status-select";
   const handleSelect = (value: string) => {
     handleSelectOption(value);
@@ -30,7 +34,7 @@ export function SelectInput(props: SelectInputProps) {
       <div className="custom-select relative">
         <select
           onClick={() => {
-            handleSelectOption(currentOption);
+            handleSelectOption(currentOption.name);
             setShowOptions(!showOptions);
           }}
           className="
@@ -45,8 +49,8 @@ export function SelectInput(props: SelectInputProps) {
             "
           {...props}
         >
-          <option className="hidden" value={currentOption}>
-            {currentOption}
+          <option className="hidden" value={currentOption.name}>
+            {currentOption.name}
           </option>
         </select>
         {showOptions && (

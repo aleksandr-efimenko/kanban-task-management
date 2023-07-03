@@ -6,10 +6,10 @@ import {
 } from "next-auth";
 import EmailProvider from "next-auth/providers/email";
 import GitHubProvider from "next-auth/providers/github";
+// import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { env } from "@/env.mjs";
 import { prisma } from "@/server/db";
-import { api } from "@/utils/api";
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
  * object and keep type safety.
@@ -65,6 +65,38 @@ export const authOptions: NextAuthOptions = {
       clientId: env.GITHUB_ID,
       clientSecret: env.GITHUB_SECRET,
     }),
+    // CredentialsProvider({
+    //   name: "Credentials",
+    //   credentials: {
+    //     username: {
+    //       label: "Username",
+    //       type: "text",
+    //       placeholder: "demo",
+    //       value: "demo",
+    //     },
+    //     password: {
+    //       label: "Password",
+    //       type: "password",
+    //       placeholder: "demo",
+    //       value: "demo",
+    //     },
+    //   },
+    //   authorize(credentials, req) {
+    //     const { username, password } = credentials as {
+    //       username: string;
+    //       password: string;
+    //     };
+    //     const user = api.users
+    //     const user = { id: "1", name: "Demo user", email: "demo@example.com" };
+
+    //     if (user) {
+    //       return user;
+    //     } else {
+    //       return null;
+    //     }
+    //   },
+    // }),
+
     /**
      * ...add more providers here.
      *

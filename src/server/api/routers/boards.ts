@@ -5,13 +5,13 @@ import {
   publicProcedure,
 } from "@/server/api/trpc";
 import { generateColor } from "@/utils/generateColor";
-
 import defaultBoards from "@/data/defaultBoard.json";
 export const defaultUser = {
   name: "Guest",
   email: "test@example.com",
   id: "64a01eb855d0203aca08e6a5",
 };
+
 export const boardsRouter = createTRPCRouter({
   getAllBoardsForDemoUser: publicProcedure.query(async ({ ctx }) => {
     const boards = await ctx.prisma.board.findMany({

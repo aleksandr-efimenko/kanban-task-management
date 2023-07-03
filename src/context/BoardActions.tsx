@@ -1,4 +1,5 @@
-import { type Board, type Column, type Subtask } from "@/utils/DataTypes";
+import type { Task, Board, Column, Subtask } from "@prisma/client";
+import { BoardWithColumnsAndTasks } from "./BoardsContext";
 
 // An interface for our actions
 export type BoardActions =
@@ -15,7 +16,7 @@ export type BoardActions =
 
 export type LoadBoardsAction = {
   type: "LOAD_BOARDS";
-  boards: Board[];
+  boards: BoardWithColumnsAndTasks[];
 };
 
 export type AddBoardAction = {

@@ -6,7 +6,6 @@ import { ButtonPrimaryS } from "../Buttons/MainButtons";
 import { LabelledTextField } from "../Inputs/LabelledTextField";
 import { ModalWindowTitle } from "./ModalWindowTitle";
 import { MultiInputs } from "./MultiInputs";
-import { type Column } from "@/utils/DataTypes";
 import { generateColor } from "@/utils/generateColor";
 import { api } from "@/utils/api";
 import { useSession } from "next-auth/react";
@@ -18,7 +17,7 @@ const initialBoardForm = {
   columns: [
     { id: uuid(), name: "", color: "", tasks: [] },
     { id: uuid(), name: "", color: "", tasks: [] },
-  ] as Column[],
+  ],
 };
 
 /**

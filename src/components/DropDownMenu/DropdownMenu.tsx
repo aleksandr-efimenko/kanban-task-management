@@ -8,6 +8,7 @@ import {
   DropdownEditTaskItem,
 } from "./DropdownMenuTask";
 import { DropdownMenuItem } from "./DropdownMenuItem";
+import { type OptionProp } from "../Inputs/SelectInput";
 // import { TopPanelDropdownMenuContext } from "@/context/TopPanelDropdownMenuContext";
 // import { useContext, useEffect, useRef, useState } from "react";
 // import { listenForOutsideClicks } from "@/utils/listenForOutsideClicks";
@@ -59,13 +60,13 @@ export function TaskStatusDropdownMenu({
   options,
   handleClick,
 }: {
-  options: string[];
+  options: OptionProp[];
   handleClick: (value: string) => void;
 }) {
   const buttons = options.map((option) => (
     <DropdownMenuItem
-      onClick={() => handleClick(option)}
-      title={option}
+      onClick={() => handleClick(option.name)}
+      title={option.name}
       destructive={false}
       key={uuid()}
     />

@@ -1,6 +1,5 @@
-import { uuid } from "uuidv4";
+import { type Subtask } from "@prisma/client";
 import { CheckboxItem } from "./CheckboxItem";
-import { type Subtask } from "@/utils/DataTypes";
 
 export function CheckboxGroup({
   title,

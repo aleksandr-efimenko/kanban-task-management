@@ -20,7 +20,6 @@ export const tasksRouter = createTRPCRouter({
           title: input.title,
           description: input.description,
           columnId: input.columnId,
-          boardId: input.boardId,
           subtasks: {
             create: [
               ...input.subtasks.map((subtask) => ({
@@ -38,18 +37,19 @@ export const tasksRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.string(),
-        title: z.string(),
-        description: z.string(),
-        columnId: z.string(),
+        newTitle: z.string(),
+        newDescription: z.string(),
+        newColumnId: z.string(),
+        newStatus: z.string(),
       })
     )
     .mutation(({ input, ctx }) => {
       return ctx.prisma.task.update({
         where: { id: input.id },
         data: {
-          title: input.title,
-          description: input.description,
-          columnId: input.columnId,
+          title: input.newTitle,
+          description: input.newDescription,
+          columnId: input.newColumnId,
         },
       });
     }),

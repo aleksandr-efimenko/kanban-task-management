@@ -8,7 +8,6 @@ import { MultiInputs } from "./MultiInputs";
 import { useRouter } from "next/router";
 import { uuid } from "uuidv4";
 import { api } from "@/utils/api";
-import { type Column } from "@/utils/DataTypes";
 import { useSession } from "next-auth/react";
 import { addBoard, initialBoardForm } from "@/utils/AddBoardFormFunc";
 import { LoadingSpinner } from "../LoadingSpinner";
@@ -41,8 +40,7 @@ export function AddBoardForm() {
         return {
           id: column.id,
           name: column.name,
-          tasks: [],
-          color: column.color as Column["color"],
+          color: column.color,
         };
       }),
     });

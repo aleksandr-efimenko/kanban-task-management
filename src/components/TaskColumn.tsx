@@ -1,5 +1,5 @@
-import { type Column } from "@/utils/DataTypes";
 import { TaskCard, TaskCardSkeleton } from "@/components/TaskCard";
+import { type Column } from "@prisma/client";
 
 export function TaskColumn({ column }: { column: Column }) {
   return (
