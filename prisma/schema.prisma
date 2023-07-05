@@ -64,27 +64,27 @@ model VerificationToken {
 }
 
 model Board {
-    id        String   @id @default(auto()) @map("_id") @db.ObjectId
-    createdAt DateTime @default(now())
+    id        String    @id @default(auto()) @map("_id") @db.ObjectId
+    createdAt DateTime? @default(now())
     name      String
     columns   Column[]
-    owner     User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-    ownerId   String   @map("owner_id") @db.ObjectId
+    owner     User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+    ownerId   String    @map("owner_id") @db.ObjectId
 }
 
 model Column {
-    id        String   @id @default(auto()) @map("_id") @db.ObjectId
-    createdAt DateTime @default(now())
+    id        String    @id @default(auto()) @map("_id") @db.ObjectId
+    createdAt DateTime? @default(now())
     name      String
     color     String?
-    board     Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
-    boardId   String   @map("board_id") @db.ObjectId
+    board     Board     @relation(fields: [boardId], references: [id], onDelete: Cascade)
+    boardId   String    @map("board_id") @db.ObjectId
     tasks     Task[]
 }
 
 model Task {
     id          String    @id @default(auto()) @map("_id") @db.ObjectId
-    createdAt   DateTime  @default(now())
+    createdAt   DateTime? @default(now())
     title       String
     description String?
     column      Column    @relation(fields: [columnId], references: [id], onDelete: Cascade)
@@ -93,10 +93,10 @@ model Task {
 }
 
 model Subtask {
-    id          String   @id @default(auto()) @map("_id") @db.ObjectId
-    createdAt   DateTime @default(now())
+    id          String    @id @default(auto()) @map("_id") @db.ObjectId
+    createdAt   DateTime? @default(now())
     title       String
-    isCompleted Boolean  @default(false)
-    task        Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
-    taskId      String   @map("task_id") @db.ObjectId
+    isCompleted Boolean   @default(false)
+    task        Task      @relation(fields: [taskId], references: [id], onDelete: Cascade)
+    taskId      String    @map("task_id") @db.ObjectId
 }
