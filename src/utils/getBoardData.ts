@@ -1,5 +1,9 @@
-import type { BoardWithColumnsAndTasks } from "@/context/BoardsContext";
-import type { Board, Task } from "@prisma/client";
+import type {
+  BoardWithColumnsAndTasks,
+  ColumnWithTasks,
+  TaskWithSubtasks,
+} from "@/context/BoardsContext";
+import type { Board, Subtask, Task } from "@prisma/client";
 
 export function getColumnIdByTaskId(
   taskId: string,
@@ -17,6 +21,21 @@ export function getColumnIdByTaskId(
   return column?.id;
 }
 
+export function getColumnDataFromTaskId(
+  taskId: string,
+  boards: BoardWithColumnsAndTasks[]
+): ColumnWithTasks | undefined {
+  const board = boards.find((board) =>
+    board.columns.find((column) =>
+      column.tasks.find((task) => task.id === taskId)
+    )
+  );
+  const column = board?.columns.find((column) =>
+    column.tasks.find((task) => task.id === taskId)
+  );
+  return column;
+}
+
 export function getBoardIdByTaskId(
   taskId: string,
   boards: BoardWithColumnsAndTasks[]
@@ -32,7 +51,7 @@ export function getBoardIdByTaskId(
 export function getTaskInfoFromId(
   taskId: string,
   boards: BoardWithColumnsAndTasks[]
-): Task | undefined {
+): TaskWithSubtasks | undefined {
   const taskBoardId = getBoardIdByTaskId(taskId, boards);
   const taskColumnId = getColumnIdByTaskId(taskId, boards);
   const task = boards
@@ -68,11 +87,31 @@ export function getTaskIdFromSubtask(
 export function getBoardDataFromTaskId(
   taskId: string,
   boards: BoardWithColumnsAndTasks[]
-): Board | undefined {
+): BoardWithColumnsAndTasks | undefined {
   const board = boards.find((board) =>
     board.columns.find((column) =>
       column.tasks.find((task) => task.id === taskId)
     )
   );
   return board;
+}
+
+export function getColumnsFromBoardId(
+  boardId: string,
+  boards: BoardWithColumnsAndTasks[]
+): BoardWithColumnsAndTasks["columns"] | undefined {
+  const board = boards.find((board) => board.id === boardId);
+  return board?.columns;
+}
+
+export function getSubtasksFromTaskId(
+  taskId: string,
+  boards: BoardWithColumnsAndTasks[]
+): Subtask[] | undefined {
+  const subtasks = boards
+    .flatMap((board) => board.columns)
+    .flatMap((column) => column.tasks)
+    .flatMap((task) => task.subtasks)
+    .filter((subtask) => subtask.taskId === taskId);
+  return subtasks;
 }

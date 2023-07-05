@@ -21,6 +21,16 @@ export type BoardWithColumnsAndTasks = Board & {
   })[];
 };
 
+export type ColumnWithTasks = Column & {
+  tasks: (Task & {
+    subtasks: Subtask[];
+  })[];
+};
+
+export type TaskWithSubtasks = Task & {
+  subtasks: Subtask[];
+};
+
 type BoardsContextType = {
   boards: BoardWithColumnsAndTasks[];
   loading: boolean;
@@ -217,7 +227,7 @@ export function boardsReducer(
       return newBoards;
     }
     case "CHANGE_TASK_STATUS": {
-      const { taskId, newStatus } = action;
+      const { taskId, newColumnId: newStatus } = action;
       const board = getBoardDataFromTaskId(taskId, boards);
       const previousColumnId = getColumnIdByTaskId(taskId, boards);
 

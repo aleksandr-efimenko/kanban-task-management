@@ -41,6 +41,8 @@ export function AddBoardForm() {
           id: column.id,
           name: column.name,
           color: column.color,
+          boardId: board.id,
+          createdAt: null,
         };
       }),
     });

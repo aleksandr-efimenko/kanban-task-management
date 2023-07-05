@@ -68,7 +68,7 @@ export type ChangeTaskAction = {
 export type ChangeTaskStatusAction = {
   type: "CHANGE_TASK_STATUS";
   taskId: string;
-  newStatus: string;
+  newColumnId: string;
 };
 
 export type DeleteTaskAction = {

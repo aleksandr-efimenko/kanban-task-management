@@ -13,7 +13,7 @@ import {
 } from "@/data/TaskFormDefaultData";
 import {
   getBoardDataFromTaskId,
-  getColumnIdByTaskId,
+  getColumnDataFromTaskId,
   getTaskInfoFromId,
 } from "@/utils/getBoardData";
 import { api } from "@/utils/api";
@@ -26,17 +26,17 @@ export default function EditTask({ taskId }: { taskId: string }) {
   const currentBoard = getBoardDataFromTaskId(taskId, boards || []);
   const currentTask = getTaskInfoFromId(taskId, boards || []);
   const columnNames = currentBoard?.columns.map((column) => column.name);
-
+  const currentColumn = currentBoard?.columns.find(
+    (col) => col.id === getColumnDataFromTaskId(taskId, boards || [])?.id
+  )?.name;
   const updateTaskMutation = api.tasks.updateTask.useMutation();
 
   //fill form with current board data
   useEffect(() => {
     const currentColumn = currentBoard?.columns.find(
-      (col) => col.id === getColumnIdByTaskId(taskId, boards || [])
+      (col) => col.id === getColumnDataFromTaskId(taskId, boards || [])?.id
     )?.name;
-    const currentStatus = currentTask?.status
-      ? currentTask?.status
-      : currentColumn;
+    const currentStatus = currentColumn;
     setTaskForm({
       title: currentTask?.title || "",
       titleError: "",
@@ -48,7 +48,7 @@ export default function EditTask({ taskId }: { taskId: string }) {
     taskId,
     boards,
     currentBoard?.columns,
-    currentTask?.status,
+    currentColumn,
     currentTask?.title,
     currentTask?.description,
     currentTask?.subtasks,
@@ -142,7 +142,7 @@ export default function EditTask({ taskId }: { taskId: string }) {
       boardsDispatch({
         type: "CHANGE_TASK_STATUS",
         taskId: taskId,
-        newStatus: taskForm.status,
+        newColumnId: taskForm.status,
       });
     }
     //close modal

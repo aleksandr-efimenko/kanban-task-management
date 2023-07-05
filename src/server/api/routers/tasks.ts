@@ -55,11 +55,11 @@ export const tasksRouter = createTRPCRouter({
     }),
 
   changeTaskColumn: protectedProcedure
-    .input(z.object({ id: z.string(), columnId: z.string() }))
+    .input(z.object({ id: z.string(), newColumnId: z.string() }))
     .mutation(({ input, ctx }) => {
       return ctx.prisma.task.update({
         where: { id: input.id },
-        data: { columnId: input.columnId },
+        data: { columnId: input.newColumnId },
       });
     }),
 

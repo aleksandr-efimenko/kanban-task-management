@@ -61,11 +61,11 @@ export function TaskStatusDropdownMenu({
   handleClick,
 }: {
   options: OptionProp[];
-  handleClick: (value: string) => void;
+  handleClick: (value: OptionProp) => void;
 }) {
   const buttons = options.map((option) => (
     <DropdownMenuItem
-      onClick={() => handleClick(option.name)}
+      onClick={() => handleClick(option)}
       title={option.name}
       destructive={false}
       key={uuid()}
