@@ -1,28 +1,46 @@
-# Create T3 App
+# Kanban Desk
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+![Kanban Desk](https://github.com/aleksandr-efimenko/kanban-task-management/assets/10911832/08aa56a6-5903-4019-a89a-f2f308061c58)
 
-## What's next? How do I make an app with this?
+## Overview
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+Welcome to Kanban Desk, a powerful task management full-stack web application built with cutting-edge technologies. This project leverages TypeScript, Next.js, React, Tailwind CSS, MongoDB, NextAuth.js, Prisma, tRPC, and Zod to provide a seamless and feature-rich experience for managing tasks using the Kanban methodology.
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+## Features
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+1. Create Boards
+Easily set up multiple boards to represent different projects, teams, or categories. Boards serve as the top-level container for organizing your tasks, providing a flexible structure to match your workflow.
 
-## Learn More
+2. Define Columns
+Within each board, define custom columns that represent the different stages of your workflow. Whether it's "To Do," "In Progress," or "Completed," columns provide a visual representation of your tasks' progress.
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+3. Add Tasks
+Populate your columns with tasks that encapsulate the work to be done. Each task can be assigned a title, description, due date, and other relevant details to ensure clarity and context.
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+4. Manage Subtasks
+Break down tasks into subtasks to further detail and organize the work. Subtasks enable you to create a hierarchical structure, making it easier to track progress on smaller components of a larger task.
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+## Getting Started
 
-## How do I deploy this?
+To get started with Kanban Desk, follow these steps:
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+1. Clone the repository: `git clone https://github.com/aleksandr-efimenko/kanban-task-management.git`
+2. Install dependencies: `npm install`
+3. Set up the MongoDB database and configure the connection in the project.
+4. Configure authentication settings in NextAuth.js.
+5. Run the application: `npm run dev`
+
+## Technologies Used
+
+- TypeScript
+- Next.js
+- React
+- Tailwind CSS
+- MongoDB
+- NextAuth.js
+- Prisma
+- tRPC
+- Zod
+
+## Acknowledgements
+The idea and design for this application was inspired by [Frontend Mentor](https://www.frontendmentor.io/challenges/kanban-task-management-web-app-wgQLt-HlbB). 
